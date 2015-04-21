@@ -3,14 +3,10 @@
  */
 define([
     // Dependencies
-    'ngRoute',
-    'ctrl'
+    'ngRoute'
 ], function(
 ){
-
-    var edge = angular.module('edge', ['ngRoute', 'edge.controllers']);
-
-
+    var edge = angular.module('edge', ['ngRoute', 'edge.controllers', 'ui.bootstrap']);
 
     edge.config(function($routeProvider){
 

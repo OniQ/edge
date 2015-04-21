@@ -1,0 +1,33 @@
+body{
+    background-color: aliceblue;
+}
+#main {
+}
+#displayWindow{
+    border-radius: 15px;
+    border: 5px solid #262626;
+    height: 100%;
+}
+#toolBar{
+    padding: 3px;
+    padding-left: 10px;
+}
+#componentsPanel{
+}
+#middleApp{
+    height: 100%;
+}
+.h100{
+    height: 100%;
+}
+.angularContainer{
+    height: 70%;
+}
+#displayWrapper{
+    padding-right: 2px;
+    height: 100%;
+}
+#componentsPanel{
+    height: 100%;
+    overflow-y: auto;
+}

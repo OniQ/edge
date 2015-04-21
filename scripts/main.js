@@ -10,17 +10,24 @@ require.config({
         // Aliases and paths of modules
         "angular" : "lib/angular",
         "ngRoute" : "lib/angular-route",
-        "ctrl" : "app/controllers/controllers",
-        "edgeCtrl": "app/controllers/edgeControllers"
+        "edgeCtrl": "app/controllers/edgeControllers",
+        "ctrl": "app/controllers",
+        "ui-bootstrap": "lib/ui-bootstrap-tpls-0.12.1"
     },
     shim:{
         'angular': {
         },
+        'edgeCtrl': {
+            deps: ['angular']
+        },
         'ngRoute': {
             deps: ['angular']
         },
+        'ui-bootstrap':{
+            deps: ['angular']
+        },
         'edge': {
-            deps: ['angular', 'ctrl']
+            deps: ['angular', 'ctrl/mainController', 'ui-bootstrap']
         }
     }
 });
