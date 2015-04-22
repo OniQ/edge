@@ -20,7 +20,11 @@
             <accordion close-others="oneAtATime">
                 <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
                     <div ng-repeat="item in group.items">
-                        {{item}}
+                        <div class="btn btn-primary" data-drag="true"
+                             data-jqyoui-options="{revert: 'invalid'}"
+                             jqyoui-draggable="{animate:true}">
+                            {{item}}
+                        </div>
                     </div>
                 </accordion-group>
             </accordion>

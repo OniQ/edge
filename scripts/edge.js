@@ -6,7 +6,7 @@ define([
     'ngRoute'
 ], function(
 ){
-    var edge = angular.module('edge', ['ngRoute', 'edge.controllers', 'ui.bootstrap']);
+    var edge = angular.module('edge', ['ngRoute', 'edge.controllers', 'ui.bootstrap', 'ngDragDrop']);
 
     edge.config(function($routeProvider){
 

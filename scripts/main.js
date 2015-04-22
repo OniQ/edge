@@ -12,22 +12,37 @@ require.config({
         "ngRoute" : "lib/angular-route",
         "edgeCtrl": "app/controllers/edgeControllers",
         "ctrl": "app/controllers",
-        "ui-bootstrap": "lib/ui-bootstrap-tpls-0.12.1"
+        "ui-bootstrap": "lib/ui-bootstrap-tpls-0.12.1",
+        "dragdrop": "lib/angular-dragdrop",
+        "jquery": "lib/jquery-1.11.2",
+        "jquery-ui": "lib/jquery-ui"
     },
     shim:{
+        'jquery': {
+            'exports': 'jQuery'
+        },
+        'jquery-ui': {
+            'deps': ['jquery']
+        },
         'angular': {
+            'exports': 'angular',
+            'deps': ['jquery', 'jquery-ui']
         },
-        'edgeCtrl': {
-            deps: ['angular']
+        'jquery-ui':{
+            deps: ['jquery']
         },
-        'ngRoute': {
+        'dragdrop':{
             deps: ['angular']
         },
         'ui-bootstrap':{
             deps: ['angular']
         },
+        'ctrl/mainController':{
+            deps: ['angular']
+        },
         'edge': {
-            deps: ['angular', 'ctrl/mainController', 'ui-bootstrap']
+            deps: ['angular', 'ctrl/mainController',
+                'ui-bootstrap', 'dragdrop']
         }
     }
 });
