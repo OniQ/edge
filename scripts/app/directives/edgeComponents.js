@@ -1,7 +1,7 @@
 /**
  * Created by OniQ on 22/04/15.
  */
-define(['edgeDirectives'], function(edgeDirectives){
+define(['../modules/edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeComponents', function(){
         return {
             templateUrl: "/edge/templates/panels/componentsPanel.html",

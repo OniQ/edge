@@ -10,19 +10,20 @@ require.config({
         // Aliases and paths of modules
         "angular" : "lib/angular",
         "ngRoute" : "lib/angular-route",
-        "edgeCtrl": "app/controllers/edgeControllers",
+        "edgeCtrl": "app/modules/edgeControllers",
         "ctrl": "app/controllers",
         "ui-bootstrap": "lib/ui-bootstrap-tpls-0.12.1",
         "dragdrop": "lib/angular-dragdrop",
         "jquery": "lib/jquery-1.11.2",
         "jquery-ui": "lib/jquery-ui",
-        "edgeDirectives": "app/directives/edgeDirectives",
-        "components": "app/directives/edgeComponents"
+        "edgeDirectives": "app/modules/edgeDirectives"
     },
     shim:{
         'edge': {
             deps: ['angular', 'ctrl/mainController',
-                'ui-bootstrap', 'dragdrop', 'components']
+                'ui-bootstrap', 'dragdrop',
+                'app/directives/edgeComponents', 'app/directives/edgeConfig',
+                'app/directives/edgeToolbar']
         }
     }
 });

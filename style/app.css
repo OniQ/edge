@@ -13,6 +13,7 @@ body{
     padding-left: 10px;
 }
 #componentsPanel{
+    padding:0;
 }
 #middleApp{
     height: 100%;
@@ -21,7 +22,7 @@ body{
     height: 100%;
 }
 .angularContainer{
-    height: 70%;
+    height: 60%;
 }
 #displayWrapper{
     padding-right: 2px;

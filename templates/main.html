@@ -1,13 +1,5 @@
 <div id="main" class="container-fluid h100">
-    <div id="toolBar">
-        <button id="configPanelToggleBtn" class="btn btn-default btn-xs" ng-click="isConfigPanelCollapsed = !isConfigPanelCollapsed">
-                    <span class="glyphicon"
-                          ng-class="{
-                            'glyphicon glyphicon-chevron-down': isConfigPanelCollapsed,
-                            'glyphicon glyphicon-chevron-up': !isConfigPanelCollapsed
-                          }"
-                          aria-hidden="true"></span>
-        </button>
+    <div id="toolBar" edge-toolbar>
     </div>
     <div class="row" id="middleApp">
         <div class="col-xs-9" id="displayWrapper">
@@ -21,16 +13,6 @@
         </div>
     </div>
     <div id="configPanel" collapse="isConfigPanelCollapsed">
-        <div class="well well-lg">
-            <div class="form-group has-success has-feedback">
-                <label class="control-label" for="inputGroupSuccess1">Input group with success</label>
-                <div class="input-group">
-                    <span class="input-group-addon">@</span>
-                    <input type="text" class="form-control" id="inputGroupSuccess1" aria-describedby="inputGroupSuccess1Status">
-                </div>
-                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                <span id="inputGroupSuccess1Status" class="sr-only">(success)</span>
-            </div>
-        </div>
+        <div edge-config></div>
     </div>
 </div>
