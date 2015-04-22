@@ -23,13 +23,14 @@ require.config({
             deps: ['angular', 'ctrl/mainController',
                 'ui-bootstrap', 'dragdrop',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
-                'app/directives/edgeToolbar']
+                'app/directives/edgeToolbar', 'app/directives/edgeDisplay']
         }
     }
 });
 
 require(
     [
+        'edgeCore',
         'angular',
         'edge'
     ],
