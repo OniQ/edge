@@ -15,40 +15,21 @@ require.config({
         "ui-bootstrap": "lib/ui-bootstrap-tpls-0.12.1",
         "dragdrop": "lib/angular-dragdrop",
         "jquery": "lib/jquery-1.11.2",
-        "jquery-ui": "lib/jquery-ui"
+        "jquery-ui": "lib/jquery-ui",
+        "edgeDirectives": "app/directives/edgeDirectives",
+        "components": "app/directives/edgeComponents"
     },
     shim:{
-        'jquery': {
-            'exports': 'jQuery'
-        },
-        'jquery-ui': {
-            'deps': ['jquery']
-        },
-        'angular': {
-            'exports': 'angular',
-            'deps': ['jquery', 'jquery-ui']
-        },
-        'jquery-ui':{
-            deps: ['jquery']
-        },
-        'dragdrop':{
-            deps: ['angular']
-        },
-        'ui-bootstrap':{
-            deps: ['angular']
-        },
-        'ctrl/mainController':{
-            deps: ['angular']
-        },
         'edge': {
             deps: ['angular', 'ctrl/mainController',
-                'ui-bootstrap', 'dragdrop']
+                'ui-bootstrap', 'dragdrop', 'components']
         }
     }
 });
 
 require(
     [
+        'angular',
         'edge'
     ],
     function () {

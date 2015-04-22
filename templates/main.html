@@ -17,23 +17,7 @@
             </div>
         </div>
         <div id="componentsPanel" class="col-xs-3">
-            <accordion close-others="oneAtATime">
-                <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
-                    <div ng-repeat="item in group.items">
-                        <div class="btn btn-primary" data-drag="true"
-                             data-jqyoui-options="{
-                                revert: 'invalid',
-                                appendTo: 'body',
-                                containment: 'window',
-                                helper: 'clone',
-                                scroll: false
-                             }"
-                             jqyoui-draggable="{animate:true}">
-                            {{item}}
-                        </div>
-                    </div>
-                </accordion-group>
-            </accordion>
+            <div edge-components></div>
         </div>
     </div>
     <div id="configPanel" collapse="isConfigPanelCollapsed">
