@@ -20,7 +20,7 @@ require.config({
     },
     shim:{
         'edge': {
-            deps: ['angular', 'ctrl/mainController',
+            deps: ['ctrl/mainController',
                 'ui-bootstrap', 'dragdrop',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
                 'app/directives/edgeToolbar', 'app/directives/edgeDisplay']
@@ -31,7 +31,6 @@ require.config({
 require(
     [
         'edgeCore',
-        'angular',
         'edge'
     ],
     function () {

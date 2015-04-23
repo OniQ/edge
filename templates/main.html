@@ -1,9 +1,9 @@
-<div id="main" class="container-fluid h100">
+<div id="main" class="container-fluid" ng-class="{'h100': isResizable}">
     <div id="toolBar" edge-toolbar>
     </div>
     <div class="row" id="middleApp">
-        <div class="col-xs-9" id="displayWrapper">
-            <canvas id="displayWindow" edge-display>
+        <div class="col-xs-9" id="displayWrapper" ng-class="{'h100': isResizable}">
+            <canvas width="500" height="500" id="displayWindow" edge-display ng-class="{'fullScreen': isResizable}">
                 Unable to initialize WebGL. Your browser may not support it.
             </canvas>
         </div>

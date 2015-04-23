@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html class="h100">
+<html ng-class="{'h100': isResizable}">
 <head lang="en">
     <meta charset="UTF-8">
     <title>EDGE</title>
     <script src="/edge/scripts/lib/jquery-1.11.2.js"></script>
     <script src="/edge/scripts/lib/jquery-ui.js"></script>
+    <script src="/edge/scripts/lib/angular.js"></script>
     <script data-main="/edge/scripts/main" src="/edge/scripts/require.js"></script>
     <link rel="stylesheet" type="text/css" href="/edge/style/app.css"/>
     <link rel="stylesheet" type="text/css" href="/edge/style/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/edge/style/jquery-ui.css"/>
 </head>
-<body class="h100">
+<body ng-class="{'h100': isResizable}">
     <div class="angularContainer" ng-view></div>
 </body>
 </html>

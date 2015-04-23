@@ -6,12 +6,15 @@ body{
 #displayWindow{
     border-radius: 15px;
     border: 12px solid #262626;
+}
+
+.fullScreen{
     height: 100%;
     width: 100%;
 }
+
 #toolBar{
-    padding: 3px;
-    padding-left: 10px;
+    padding: 3px 3px 3px 10px;
 }
 #componentsPanel{
     padding:0;
@@ -27,9 +30,11 @@ body{
 }
 #displayWrapper{
     padding-right: 2px;
-    height: 100%;
 }
 #componentsPanel{
     height: 100%;
     overflow-y: auto;
+}
+.redBkg{
+    background-color: darkred;
 }

@@ -19,5 +19,9 @@ define([
             .otherwise({ redirectTo: "/" });
     });
 
+    edge.run(function($rootScope){
+        $rootScope.isResizable = true;
+    });
+
     return edge;
 });

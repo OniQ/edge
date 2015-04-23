@@ -1,8 +1,16 @@
-<button id="configPanelToggleBtn" class="btn btn-default btn-xs" ng-click="isConfigPanelCollapsed = !isConfigPanelCollapsed">
+<button id="configPanelToggleBtn" class="btn btn-default btn-sm" ng-click="isConfigPanelCollapsed = !isConfigPanelCollapsed">
                     <span class="glyphicon"
                           ng-class="{
                             'glyphicon glyphicon-chevron-down': isConfigPanelCollapsed,
                             'glyphicon glyphicon-chevron-up': !isConfigPanelCollapsed
+                          }"
+                          aria-hidden="true"></span>
+</button>
+<button id="dynamicSizeToggleBtn" class="btn btn-default btn-sm" ng-click="$root.isResizable = !$root.isResizable">
+                    <span class="glyphicon"
+                          ng-class="{
+                            'glyphicon glyphicon-resize-full': !$root.isResizable,
+                            'glyphicon glyphicon-resize-small': $root.isResizable
                           }"
                           aria-hidden="true"></span>
 </button>
