@@ -3,12 +3,12 @@
     </div>
     <div class="row" id="middleApp">
         <div class="col-xs-9" id="displayWrapper" ng-class="{'h100': isResizable}">
-            <canvas width="500" height="500" id="displayWindow" edge-display ng-class="{'fullScreen': isResizable}">
+            <canvas class="middleComponent" width="{{canvasWidth}}" height="{{canvasHeight}}" id="displayWindow" edge-display ng-class="{'fullScreen': isResizable}">
                 Unable to initialize WebGL. Your browser may not support it.
             </canvas>
-        </div>
-        <div id="componentsPanel" class="col-xs-3">
-            <div edge-components></div>
+            <div class="middleComponent" id="componentsPanel" class="col-xs-3">
+                <div edge-components></div>
+            </div>
         </div>
     </div>
     <div id="configPanel" collapse="isConfigPanelCollapsed">

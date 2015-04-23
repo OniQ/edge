@@ -20,7 +20,9 @@ define([
     });
 
     edge.run(function($rootScope){
-        $rootScope.isResizable = true;
+        $rootScope.isResizable = false;
+        $rootScope.canvasWidth = 640;
+        $rootScope.canvasHeight = 480;
     });
 
     return edge;

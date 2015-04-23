@@ -6,6 +6,7 @@ body{
 #displayWindow{
     border-radius: 15px;
     border: 12px solid #262626;
+    float: left;
 }
 
 .fullScreen{
@@ -17,10 +18,11 @@ body{
     padding: 3px 3px 3px 10px;
 }
 #componentsPanel{
-    padding:0;
+    padding: 0 0 0 5px;
 }
 #middleApp{
     height: 100%;
+    white-space: nowrap;
 }
 .h100{
     height: 100%;
@@ -37,4 +39,8 @@ body{
 }
 .redBkg{
     background-color: darkred;
+}
+.middleComponent {
+    display:inline-block;
+    white-space: normal;
 }
