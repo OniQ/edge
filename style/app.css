@@ -43,3 +43,6 @@ body{
     display:inline-block;
     white-space: normal;
 }
+.k-widget.k-numerictextbox{
+    width: 100%;
+}

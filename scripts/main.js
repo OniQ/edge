@@ -24,9 +24,6 @@ require.config({
                 'ui-bootstrap', 'dragdrop', 'lib/kendo.all.min',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
                 'app/directives/edgeToolbar', 'app/directives/edgeDisplay']
-        },
-        'lib/kendo.all.min':{
-            deps: ['angular']
         }
     }
 });

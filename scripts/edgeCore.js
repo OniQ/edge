@@ -75,7 +75,11 @@ function edgeCore() {
         var vertexBuffer;
         vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-        var verts = [ .5, .5, 0.0, -.5, .5, 0.0, .5, -.5, 0.0, -.5, -.5, 0.0 ];
+        var verts = [ .5, .5, 0.0,
+                     -.5, .5, 0.0,
+                      .5, -.5, 0.0,
+                     -.5, -.5, 0.0
+        ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts),
             gl.STATIC_DRAW);
         var square = {
@@ -195,6 +199,8 @@ function edgeCore() {
 
     window.onkeydown = checkKey;
 
+
+
     function clear(){
         gl.clear(gl.COLOR_BUFFER_BIT);
         initViewport();
@@ -202,6 +208,30 @@ function edgeCore() {
 
     function initViewport(){
         gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    this.mouseState = {
+        isPressed: false,
+        x: null,
+        y: null
+    };
+
+    function handleMouseDown(event) {
+        mouseDown = true;
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+    }
+
+    function handleMouseUp(event) {
+        edge.mouseState.mouseDown = false;
+    }
+
+    function handleMouseMove(event) {
+        var newX = event.clientX;
+        var newY = event.clientY;
+        var rect = canvas.getBoundingClientRect();
+        edge.mouseState.x = newX - rect.left
+        edge.mouseState.y = newY - rect.top;
     }
 
     this.turnOn = function(_canvas){
@@ -214,6 +244,9 @@ function edgeCore() {
         square = createSquare(gl);
         initShader(gl);
         draw(gl, square);
+        document.onmousedown = handleMouseDown;
+        document.onmouseup = handleMouseUp;
+        document.onmousemove = handleMouseMove;
         run();
         /*gl.clearColor(0.2, 0.2, 0.35, 1.0);                      // Set clear color to black, fully opaque
         gl.enable(gl.DEPTH_TEST);                               // Enable depth testing
