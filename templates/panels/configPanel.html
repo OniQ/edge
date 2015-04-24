@@ -1,11 +1,21 @@
 <div class="well well-lg">
-    <div class="form-group has-success has-feedback">
-        <label class="control-label" for="inputGroupSuccess1">Input group with success</label>
-        <div class="input-group">
-            <span class="input-group-addon">@</span>
-            <input type="text" class="form-control" id="inputGroupSuccess1" aria-describedby="inputGroupSuccess1Status">
+    <div ng-repeat="field in fields">
+        <div class="animate-switch-container"
+             ng-switch on="field.type">
+            <div class="col-xs-6">
+                <div class="animate-switch" ng-switch-when="string">
+                    <div class="row form-group">
+                        <label class="control-label col-xs-4"><span translate>{{field.name}}</span>:</label>
+                        <div class="col-xs-8">
+                            <input class="form-control" ng-model="field.value"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate-switch" ng-switch-when="number">
+                    <input kendo-numeric-text-box k-min="0" k-format="'0.'" k-ng-model="field.value"/>
+                </div>
+                <div class="animate-switch" ng-switch-default>{{field.type}}</div>
+            </div>
         </div>
-        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-        <span id="inputGroupSuccess1Status" class="sr-only">(success)</span>
     </div>
 </div>

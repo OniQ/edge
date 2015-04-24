@@ -7,7 +7,7 @@ define([
 ], function(
 ){
     var edge = angular.module('edge', ['ngRoute', 'edge.controllers',
-        'edge.directives', 'ui.bootstrap', 'ngDragDrop']);
+        'edge.directives', 'ui.bootstrap', 'ngDragDrop', 'kendo.directives']);
 
     edge.config(function($routeProvider){
 
