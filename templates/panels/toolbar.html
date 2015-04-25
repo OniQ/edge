@@ -1,4 +1,28 @@
-<button id="configPanelToggleBtn" class="btn btn-default btn-sm" ng-click="isConfigPanelCollapsed = !isConfigPanelCollapsed">
+<button id="saveBtn" name="Save" class="btn btn-default btn-sm" ng-click="saveComponents()">
+                    <span class="glyphicon glyphicon-floppy-save"
+                          aria-hidden="true"></span>
+</button>
+<button id="duplicateBtn" name="Duplicate" class="btn btn-default btn-sm" ng-click="duplicate()">
+                    <span class="glyphicon glyphicon-duplicate"
+                          aria-hidden="true"></span>
+</button>
+<button id="playBtn" name="Play" class="btn btn-default btn-sm" ng-click="play()">
+                    <span class="glyphicon glyphicon-play"
+                          aria-hidden="true"></span>
+</button>
+<button id="buildBtn" name="Build" class="btn btn-default btn-sm" ng-click="buildGame()">
+                    <span class="glyphicon glyphicon-export"
+                          aria-hidden="true"></span>
+</button>
+<button id="addBtn" name="Add" class="btn btn-default btn-sm" ng-click="addComponent()">
+                    <span class="glyphicon glyphicon-plus"
+                          aria-hidden="true"></span>
+</button>
+<button id="removeBtn" name="Remove" class="btn btn-default btn-sm" ng-click="removeComponent()">
+                    <span class="glyphicon glyphicon-minus"
+                          aria-hidden="true"></span>
+</button>
+<button id="configPanelToggleBtn" name="Collapse config panel" class="btn btn-default btn-sm" ng-click="isConfigPanelCollapsed = !isConfigPanelCollapsed">
                     <span class="glyphicon"
                           ng-class="{
                             'glyphicon glyphicon-chevron-down': isConfigPanelCollapsed,
@@ -6,7 +30,7 @@
                           }"
                           aria-hidden="true"></span>
 </button>
-<button id="dynamicSizeToggleBtn" class="btn btn-default btn-sm" ng-click="makeDisplayResizable()">
+<button id="dynamicSizeToggleBtn" name="Dynamic screen size" class="btn btn-default btn-sm" ng-click="$root.isResizable = !$root.isResizable;">
                     <span class="glyphicon"
                           ng-class="{
                             'glyphicon glyphicon-resize-full': !$root.isResizable,
@@ -14,11 +38,19 @@
                           }"
                           aria-hidden="true"></span>
 </button>
-<button id="scrollableConfigToggleBtn" class="btn btn-default btn-sm" ng-click="isScrollableConfig = !isScrollableConfig">
+<button id="scrollableConfigToggleBtn" name="Scrollable config" class="btn btn-default btn-sm" ng-click="isScrollableConfig = !isScrollableConfig">
                     <span class="glyphicon"
                           ng-class="{
                             'glyphicon glyphicon-indent-right': !isScrollableConfig,
                             'glyphicon glyphicon-align-left': isScrollableConfig
+                          }"
+                          aria-hidden="true"></span>
+</button>
+<button id="showDefaultComponentsBtn" name="Show default components" class="btn btn-default btn-sm" ng-click="isDefaultComponentsHidden = !isDefaultComponentsHidden">
+                    <span class="glyphicon"
+                          ng-class="{
+                            'glyphicon glyphicon-eye-open': !isDefaultComponentsHidden,
+                            'glyphicon glyphicon-eye-close': isDefaultComponentsHidden
                           }"
                           aria-hidden="true"></span>
 </button>
