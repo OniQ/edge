@@ -14,4 +14,12 @@
                           }"
                           aria-hidden="true"></span>
 </button>
-{{mouseState}}
+<button id="scrollableConfigToggleBtn" class="btn btn-default btn-sm" ng-click="isScrollableConfig = !isScrollableConfig">
+                    <span class="glyphicon"
+                          ng-class="{
+                            'glyphicon glyphicon-indent-right': !isScrollableConfig,
+                            'glyphicon glyphicon-align-left': isScrollableConfig
+                          }"
+                          aria-hidden="true"></span>
+</button>
+<span id="infoBar">{{mouseState}}</span>

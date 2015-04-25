@@ -1,4 +1,4 @@
-<div class="well well-lg container-fluid">
+<div class="well well-lg container-fluid" ng-class="{'scrollableConfig': isScrollableConfig}">
     <div ng-repeat="column in columns">
         <div ng-class="colClass">
             <div ng-repeat="field in column">
@@ -6,17 +6,37 @@
                      ng-switch on="field.type">
                     <div class="config-switch" ng-switch-when="string">
                         <div class="row form-group">
-                            <label class="control-label col-xs-4"><span translate>{{field.name}}</span>:</label>
+                            <label class="control-label col-xs-4">{{field.name}}:</label>
                             <div class="col-xs-8">
-                                <input class="form-control" ng-model="field.value"/>
+                                <input ng-change="synchConfig(field)" class="form-control" ng-model="field.value"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-switch" ng-switch-when="boolean">
+                        <div class="row form-group">
+                            <label class="control-label col-xs-4">{{field.name}}:</label>
+                            <div class="col-xs-8">
+                                <input ng-change="synchConfig(field)" type="checkbox" ng-model="field.value"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-switch" ng-switch-when="array">
+                        <div class="row form-group">
+                            <label class="control-label col-xs-4">{{field.name}}:</label>
+                            <div class="col-xs-8">
+                                <select ng-change="synchConfig(field)" kendo-drop-down-list ng-model="field.value"
+                                        k-data-source="field.options"
+                                        k-data-text-field="'text'" k-data-value-field="'value'">
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="config-switch" ng-switch-when="number">
                         <div class="row form-group">
-                            <label class="control-label col-xs-4"><span translate>{{field.name}}</span>:</label>
+                            <label class="control-label col-xs-4">{{field.name}}:</label>
                             <div class="col-xs-8">
-                                <input kendo-numeric-text-box k-min="0" k-format="'0.'" k-ng-model="field.value"/>
+                                <input ng-change="synchConfig(field)" kendo-numeric-text-box k-min="0" k-format="'0.'"
+                                       ng-model="field.value"/>
                             </div>
                         </div>
                     </div>

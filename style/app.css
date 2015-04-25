@@ -46,3 +46,7 @@ body{
 .k-widget.k-numerictextbox{
     width: 100%;
 }
+.scrollableConfig{
+    overflow-y: auto;
+    height: 163px;
+}
