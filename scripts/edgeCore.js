@@ -173,6 +173,12 @@ function edgeCore() {
         window.requestAnimationFrame(run);
     }
 
+    function onKeyDown(ev){
+        checkKey(ev);
+        if (edgeEditor)
+            edgeEditor.processKeyDown(ev);
+    }
+
     function checkKey(ev){
         switch(ev.keyCode){
             case KEYCODES['1']:{
@@ -197,9 +203,7 @@ function edgeCore() {
         }
     }
 
-    window.onkeydown = checkKey;
-
-
+    window.onkeydown = onKeyDown;
 
     function clear(){
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -355,4 +359,4 @@ var KEYCODES = {
     'backslash' : 220,
     'closebracket' : 221,
     'single_quote' : 222
-}
+};

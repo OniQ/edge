@@ -6,51 +6,6 @@ define(['edgeDirectives'], function(edgeDirectives){
         return {
             templateUrl: "/edge/templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
-                $scope.configuration = {
-                        title: "test title",
-                        level: 20,
-                        a: 'a',
-                        b: 'b',
-                        C: 'c',
-                        d: 'd',
-                        f: 'f',
-                        e: 'e',
-                        g: 'g',
-                        x: 'xxx',
-                        a1: 'a',
-                        b2: 'b',
-                        C3: 'c',
-                        d4: 'd',
-                        f1: 'f',
-                        e2: 'e',
-                        g3: 'g',
-                        x4: 'xxx',
-                        is: true,
-                        list: ['ok', 'go'],
-                        title1: "test title",
-                        level1: 20,
-                        a7: 'a',
-                        b7: 'b',
-                        C7: 'c',
-                        d7: 'd',
-                        f7: 'f',
-                        e7: 'e',
-                        g7: 'g',
-                        x7: 'xxx',
-                        a71: 'a',
-                        b72: 'b',
-                        C73: 'c',
-                        d74: 'd',
-                        f71: 'f',
-                        e72: 'e',
-                        g73: 'g',
-                        x74: 'xxx',
-                        i7s: true,
-                        l7ist: ['ok', 'go']
-                        //map: {
-                        //    o: 'pkpkpk'
-                        //}
-                    };
 
                 $scope.synchConfig = function(opt){
                     if (opt.type == 'number')

@@ -8,9 +8,9 @@ define([
 ){
     var edge = angular.module('edge', ['ngRoute', 'edge.controllers',
         'edge.directives', 'ui.bootstrap', 'ngDragDrop', 'kendo.directives',
-    'ui.bootstrap']);
+    'ui.bootstrap', 'LocalStorageModule']);
 
-    edge.config(function($routeProvider){
+    edge.config(function($routeProvider, localStorageServiceProvider){
 
         $routeProvider
             .when('/', {
@@ -18,12 +18,16 @@ define([
                 controller: 'mainController'
             })
             .otherwise({ redirectTo: "/" });
+
+        localStorageServiceProvider
+            .setPrefix('edge');
     });
 
     edge.run(function($rootScope){
         $rootScope.isResizable = false;
         $rootScope.canvasWidth = 640;
         $rootScope.canvasHeight = 480;
+        $rootScope.autoSaveComponents = true;
     });
 
     return edge;

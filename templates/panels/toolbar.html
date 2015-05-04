@@ -1,5 +1,13 @@
-<button id="saveBtn" name="Save" class="btn btn-default btn-sm" ng-click="saveComponents()">
+<button id="saveBtn" class="btn btn-default btn-sm" ng-click="synchLocalStorage()">
                     <span class="glyphicon glyphicon-floppy-save"
+                          aria-hidden="true"></span>
+</button>
+<button id="autoSaveBtn" name="Auto save" class="btn btn-default btn-sm" ng-click="$root.autoSaveComponents = !$root.autoSaveComponents">
+                    <span class="glyphicon"
+                          ng-class="{
+                            'glyphicon glyphicon-floppy-saved': $root.autoSaveComponents,
+                            'glyphicon glyphicon-floppy-remove': !$root.autoSaveComponents
+                          }"
                           aria-hidden="true"></span>
 </button>
 <button id="duplicateBtn" name="Duplicate" class="btn btn-default btn-sm" ng-click="duplicate()">

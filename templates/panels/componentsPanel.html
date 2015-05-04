@@ -2,6 +2,7 @@
     <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
         <div ng-repeat="item in group.items">
             <div class="btn btn-primary" data-drag="true"
+                 ng-click="changeConfigFile(item)"
                  data-jqyoui-options="{
                                 revert: 'invalid',
                                 appendTo: 'body',
@@ -10,7 +11,7 @@
                                 scroll: false
                              }"
                  jqyoui-draggable="{animate:true}">
-                {{item}}
+                {{item.name}}
             </div>
         </div>
     </accordion-group>

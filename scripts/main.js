@@ -23,7 +23,11 @@ require.config({
             deps: ['ctrl/mainController',
                 'ui-bootstrap', 'dragdrop', 'lib/kendo.all.min',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
-                'app/directives/edgeToolbar', 'app/directives/edgeDisplay']
+                'app/directives/edgeToolbar', 'app/directives/edgeDisplay',
+                'lib/angular-local-storage']
+        },
+        'edgeCore':{
+            deps: ['edgeEditor']
         }
     }
 });
