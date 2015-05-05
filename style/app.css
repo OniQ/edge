@@ -50,3 +50,10 @@ body{
     overflow-y: auto;
     height: 163px;
 }
+.submitted .ng-invalid{
+    border: 1px solid red;
+}
+.scrollableModal{
+    max-height: 300px;
+    overflow-y: scroll;
+}

@@ -1,0 +1,79 @@
+<div class="modal-header">
+    <h3 class="modal-title">Add new component</h3>
+</div>
+{{$id}}
+<form name="newComponentForm" ng-class="{'submitted': submitted}" ng-submit="add(model)" >
+    <div class="modal-body scrollableModal">
+        <div class="container-fluid">
+            <div class="row form-group">
+                <label class="control-label col-xs-2">Name:</label>
+                <div class="col-xs-8">
+                    <input class="form-control" ng-model="model.name" required>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="control-label col-xs-2">Type:</label>
+                <div class="col-xs-8">
+                    <select kendo-drop-down-list ng-model="model.type"
+                            k-data-source="types"
+                            k-data-text-field="'text'" k-data-value-field="'value'">
+                    </select>
+                </div>
+            </div>
+            <div class="config-switch-container"
+                 ng-switch on="model.type">
+                <div class="config-switch" ng-switch-when="list">
+                    <div ng-repeat="val in model.values track by $index">
+                        <div class="row form-group">
+                            <label class="control-label col-xs-2">Option:</label>
+                            <div class="col-xs-6">
+                                <input class="form-control" ng-model="model.values[$index]"/>
+                            </div>
+                            <div ng-if="$index != 0" class="col-xs-1">
+                                <button type="button" ng-click="model.values.splice($index, 1);" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div class="col-xs-1" ng-if="$last">
+                                <button type="button" class="btn btn-warning" ng-click="model.values.push('')">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="config-switch" ng-switch-when="string">
+                    <div class="row form-group">
+                        <label class="control-label col-xs-2">Value:</label>
+                        <div class="col-xs-8">
+                            <input class="form-control" ng-model="model.fieldValue"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="config-switch" ng-switch-when="boolean">
+                    <div class="row form-group">
+                        <label class="control-label col-xs-2">Value:</label>
+                        <div class="col-xs-8">
+                            <input type="checkbox" ng-model="model.fieldValue"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="config-switch" ng-switch-when="number">
+                    <div class="row form-group">
+                        <label class="control-label col-xs-2">Value:</label>
+                        <div class="col-xs-8">
+                            <input kendo-numeric-text-box k-min="0" k-format="'0.'"
+                                   ng-model="model.fieldValue"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="submitted = true;">
+            Add
+        </button>
+        <button type="button" class="btn btn-warning" ng-click="$dismiss()">Cancel</button>
+    </div>
+</form>

@@ -3,7 +3,7 @@
  */
 define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeComponents', function($http, $q, localStorageService,
-                                                        $interval, $rootScope){
+                                                        $interval, $rootScope, $modal){
         return {
             templateUrl: "/edge/templates/panels/componentsPanel.html",
             controller: function($scope, $element, $attrs) {
@@ -14,6 +14,21 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $scope.components = {
                     'default': [],
                     'custom': []
+                };
+
+                $scope.addComponent = function(){
+                    if ($scope.configuration) {
+                        var modalInstance = $modal.open({
+                            animation: true,
+                            templateUrl: 'modals/componentModal.html',
+                            controller: 'componentModalController',
+                            resolve: {
+                                configuration: function () {
+                                    return $scope.configuration;
+                                }
+                            }
+                        });
+                    }
                 };
 
                 var chain1 = $http.get('../data/components/default/test1.json').success(function(testComponent){
@@ -30,22 +45,15 @@ define(['edgeDirectives'], function(edgeDirectives){
                     });
                 });
 
-                //localStorageService.set('customComponents',
-                //    {
-                //        "storageTest" : {"a" : "a"}
-                //    }
-                //);
+                $scope.addNewComponent = function(newComponent){
+                    $scope.customComponents[newComponent.name] = {};
+                };
 
-                var customComponents = localStorageService.get('customComponents');
+                $scope.unbind = localStorageService.bind($scope, 'customComponents');
 
-                $interval(function () {
-                    if ($rootScope.autoSaveComponents == true)
-                        localStorageService.set('customComponents', customComponents);
-                }, 100);
-
-                for (var prop in customComponents) {
+                for (var prop in $scope.customComponents) {
                     $scope.components['custom'].push({
-                        content: customComponents[prop],
+                        content: $scope.customComponents[prop],
                         name: prop
                     });
                 }
@@ -59,6 +67,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         });
                     }
                 });
+
                 $scope.changeConfigFile = function(selectedComponent){
                     $scope.configuration = selectedComponent.content;
                 }
