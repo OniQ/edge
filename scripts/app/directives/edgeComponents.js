@@ -69,6 +69,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                 });
 
                 $scope.changeConfigFile = function(selectedComponent){
+                    $scope.selectedComponent = selectedComponent;
                     $scope.configuration = selectedComponent.content;
                 }
             }

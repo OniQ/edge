@@ -1,7 +1,7 @@
 <accordion close-others="oneAtATime">
     <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
         <div ng-repeat="item in group.items">
-            <div class="btn btn-primary" data-drag="true"
+            <div class="btn" ng-class="{'btn-primary': selectedComponent == item, 'btn-default': selectedComponent != item}" data-drag="true"
                  ng-click="changeConfigFile(item)"
                  data-jqyoui-options="{
                                 revert: 'invalid',

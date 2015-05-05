@@ -58,7 +58,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         while ($scope.fields.length > 0)
                             $scope.columns.push($scope.fields.splice(0, size));
                     }
-                });
+                }, true);
             }
         };
     });
