@@ -21,6 +21,7 @@ require.config({
     shim:{
         'edge': {
             deps: ['ctrl/mainController', 'ctrl/componentModalController',
+                'ctrl/inputModalController',
                 'ui-bootstrap', 'dragdrop', 'lib/kendo.all.min',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
                 'app/directives/edgeToolbar', 'app/directives/edgeDisplay',

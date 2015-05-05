@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{data.title}}</h3>
+</div>
+<form name="newComponentForm" ng-class="{'submitted': submitted}" ng-submit="submit(data)" >
+    <div class="modal-body scrollableModal">
+        <div class="container-fluid">
+            <div class="row form-group">
+                <label class="control-label col-xs-2">{{data.label}}:</label>
+                <div class="col-xs-8">
+                    <input class="form-control" ng-model="data.value" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="submitted = true;">
+            Add
+        </button>
+        <button type="button" class="btn btn-warning" ng-click="$dismiss()">Cancel</button>
+    </div>
+</form>

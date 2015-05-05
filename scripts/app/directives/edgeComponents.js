@@ -16,7 +16,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     'custom': []
                 };
 
-                $scope.addComponent = function(){
+                $scope.addField = function(){
                     if ($scope.configuration) {
                         var modalInstance = $modal.open({
                             animation: true,
@@ -34,28 +34,58 @@ define(['edgeDirectives'], function(edgeDirectives){
                 var chain1 = $http.get('../data/components/default/test1.json').success(function(testComponent){
                     $scope.components.default.push({
                         content: testComponent,
-                        name: 'Test1'
+                        name: 'Test1',
+                        category: 'default'
                     });
                 });
 
                 var chain2 = $http.get('../data/components/default/test2.json').success(function(testComponent){
                     $scope.components.default.push({
                         content: testComponent,
-                        name: 'Test2'
+                        name: 'Test2',
+                        category: 'default'
                     });
                 });
 
-                $scope.addNewComponent = function(newComponent){
-                    $scope.customComponents[newComponent.name] = {};
+                $scope.addNewComponent = function(newComponentField){
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'modals/inputModal.html',
+                        controller: 'inputModalController',
+                        resolve: {
+                            data: function () {
+                                return {
+                                    title: 'Insert new component name',
+                                    label: 'Name'
+                                }
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function(response){
+                        $scope.customComponents[response] = {};
+                        addGroupItem(response, 'custom');
+                    });
+                };
+
+                function addGroupItem(prop, category) {
+                    $scope.components[category].push({
+                        content: $scope.customComponents[prop],
+                        name: prop,
+                        category: category
+                    });
+                }
+
+
+                $scope.removeComponent = function(item, category){
+                    delete $scope.customComponents[item.name];
+                    $scope.components[category].splice($scope.components[category].indexOf(item), 1);
                 };
 
                 $scope.unbind = localStorageService.bind($scope, 'customComponents');
 
                 for (var prop in $scope.customComponents) {
-                    $scope.components['custom'].push({
-                        content: $scope.customComponents[prop],
-                        name: prop
-                    });
+                    addGroupItem(prop, 'custom');
                 }
 
                 var componentLoadTasks = [chain1, chain2];

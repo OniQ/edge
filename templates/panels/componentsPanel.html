@@ -1,17 +1,35 @@
 <accordion close-others="oneAtATime">
     <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
-        <div ng-repeat="item in group.items">
-            <div class="btn" ng-class="{'btn-primary': selectedComponent == item, 'btn-default': selectedComponent != item}" data-drag="true"
-                 ng-click="changeConfigFile(item)"
-                 data-jqyoui-options="{
-                                revert: 'invalid',
-                                appendTo: 'body',
-                                containment: 'window',
-                                helper: 'clone',
-                                scroll: false
-                             }"
-                 jqyoui-draggable="{animate:true}">
-                {{item.name}}
+
+        <div class="col-xs-12" ng-if="group.items.length == 0 && $index != 0">
+            <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div ng-repeat="item in group.items" class="row">
+            <div class="col-xs-6">
+                <div class="btn" ng-class="{'btn-primary': selectedComponent == item, 'btn-default': selectedComponent != item}" data-drag="true"
+                     ng-click="changeConfigFile(item)"
+                     data-jqyoui-options="{
+                                    revert: 'invalid',
+                                    appendTo: 'body',
+                                    containment: 'window',
+                                    helper: 'clone',
+                                    scroll: false
+                                 }"
+                     jqyoui-draggable="{animate:true}">
+                    {{item.name}}
+                </div>
+            </div>
+            <div class="col-xs-1" ng-if="$parent.$index != 0">
+                <button type="button" class="btn btn-danger btn-xs" ng-click="removeComponent(item, group.title)">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col-xs-1" ng-if="$last && $parent.$index != 0">
+                <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
             </div>
         </div>
     </accordion-group>

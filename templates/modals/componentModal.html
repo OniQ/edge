@@ -29,7 +29,7 @@
                                 <input class="form-control" ng-model="model.values[$index]"/>
                             </div>
                             <div ng-if="$index != 0" class="col-xs-1">
-                                <button type="button" ng-click="model.values.splice($index, 1);" class="btn btn-warning">
+                                <button type="button" ng-click="model.values.splice($index, 1);" class="btn btn-danger">
                                     <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                                 </button>
                             </div>
@@ -62,7 +62,7 @@
                         <label class="control-label col-xs-2">Value:</label>
                         <div class="col-xs-8">
                             <input kendo-numeric-text-box k-min="0" k-format="'0.'"
-                                   ng-model="model.fieldValue"/>
+                                   k-ng-model="model.fieldValue"/>
                         </div>
                     </div>
                 </div>
