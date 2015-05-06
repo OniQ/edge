@@ -7,12 +7,6 @@ define(['edgeDirectives'], function(edgeDirectives){
             templateUrl: "/edge/templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
 
-                $scope.synchConfig = function(opt){
-                    if (opt.type == 'number')
-                        opt.value = parseInt(opt.value);
-                    $scope.configuration[opt.name] = opt.value;
-                };
-
                 function getDropDownOptions(array){
                     if (!angular.isArray($scope.configuration[field]))
                         return;
@@ -24,6 +18,15 @@ define(['edgeDirectives'], function(edgeDirectives){
                     }
                     return array;
                 }
+
+                $scope.removeField = function(field, e){
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+
+                    delete $scope.configuration[field.name];
+                };
 
                 $scope.$watch('configuration', function(newVal, oldVal){
                     if (newVal){

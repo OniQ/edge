@@ -6,14 +6,14 @@
                 {{category}}
             </div>
             <div class="col-xs-6">
-                <button class="pull-right btn btn-xs btn-danger" ng-click="removeCategory(category, $event)">
+                <button class="pull-right btn btn-xs btn-danger" ng-if="$index != 0" ng-click="removeCategory(category, $event)">
                     <i class="glyphicon glyphicon-minus"></i>
                 </button>
             </div>
             </div>
         </accordion-heading>
         <div class="col-xs-12" ng-if="components.length == 0 && $index != 0">
-            <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent(category)">
+            <button type="button" class="btn btn-success btn-xs" ng-click="addNewComponent(category)">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
         </div>
@@ -38,13 +38,13 @@
                 </button>
             </div>
             <div class="col-xs-1" ng-if="$last && $parent.$index != 0">
-                <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent(category)">
+                <button type="button" class="btn btn-success btn-xs" ng-click="addNewComponent(category)">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
     </accordion-group>
 </accordion>
-<button ng-click="addCategory()">
+<button class="btn btn-success" ng-click="addCategory()">
     <span class="glyphicon glyphicon-plus"></span>
 </button>

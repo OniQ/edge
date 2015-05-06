@@ -5,7 +5,7 @@
     </div>
     <div class="col-xs-2">
         <button ng-if="configuration && selectedCategory != 'default'" id="addBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                tooltip="Add" class="btn btn-default btn-md" ng-click="addField()">
+                tooltip="Add" class="btn btn-success btn-md" ng-click="addField()">
                         <span class="glyphicon glyphicon-plus"
                               aria-hidden="true"></span>
         </button>
@@ -18,9 +18,15 @@
                      ng-switch on="field.type">
                     <div class="config-switch" ng-switch-when="string">
                         <div class="row form-group">
-                            <label class="control-label col-xs-4">{{field.name}}:</label>
-                            <div class="col-xs-8">
-                                <input ng-change="synchConfig(field)" class="form-control" ng-model="field.value"/>
+                            <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
+                                <button class="pull-right btn btn-xs btn-danger"
+                                        ng-click="removeField(field, $event)">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                </button>
+                            </div>
+                            <label class="control-label col-xs-3">{{field.name}}:</label>
+                            <div class="col-xs-6">
+                                <input class="form-control" ng-model="field.value"/>
                             </div>
                         </div>
                     </div>
@@ -28,7 +34,7 @@
                         <div class="row form-group">
                             <label class="control-label col-xs-4">{{field.name}}:</label>
                             <div class="col-xs-8">
-                                <input ng-change="synchConfig(field)" type="checkbox" ng-model="field.value"/>
+                                <input type="checkbox" ng-model="field.value"/>
                             </div>
                         </div>
                     </div>
@@ -36,7 +42,7 @@
                         <div class="row form-group">
                             <label class="control-label col-xs-4">{{field.name}}:</label>
                             <div class="col-xs-8">
-                                <select ng-change="synchConfig(field)" kendo-drop-down-list ng-model="field.value"
+                                <select kendo-drop-down-list ng-model="field.value"
                                         k-data-source="field.options"
                                         k-data-text-field="'text'" k-data-value-field="'value'">
                                 </select>
@@ -47,7 +53,7 @@
                         <div class="row form-group">
                             <label class="control-label col-xs-4">{{field.name}}:</label>
                             <div class="col-xs-8">
-                                <input ng-change="synchConfig(field)" kendo-numeric-text-box k-min="0" k-format="'0.'"
+                                <input kendo-numeric-text-box k-min="0" k-format="'0.'"
                                        ng-model="field.value"/>
                             </div>
                         </div>
