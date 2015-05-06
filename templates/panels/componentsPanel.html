@@ -1,17 +1,26 @@
 <accordion close-others="oneAtATime">
-    <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
+    <accordion-group ng-repeat="(category, components) in categories">
         <accordion-heading>
-            {{group.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+            <div class = "row">
+            <div class="col-xs-6">
+                {{category}}
+            </div>
+            <div class="col-xs-6">
+                <button class="pull-right btn btn-xs btn-danger" ng-click="removeCategory(category, $event)">
+                    <i class="glyphicon glyphicon-minus"></i>
+                </button>
+            </div>
+            </div>
         </accordion-heading>
-        <div class="col-xs-12" ng-if="group.items.length == 0 && $index != 0">
-            <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent()">
+        <div class="col-xs-12" ng-if="components.length == 0 && $index != 0">
+            <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent(category)">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
         </div>
-        <div ng-repeat="item in group.items" class="row">
+        <div ng-repeat="component in components" class="row">
             <div class="col-xs-6">
-                <div class="btn" ng-class="{'btn-primary': selectedComponent == item, 'btn-default': selectedComponent != item}" data-drag="true"
-                     ng-click="changeConfigFile(item)"
+                <div class="btn" ng-class="{'btn-primary': selectedComponent == component, 'btn-default': selectedComponent != component}" data-drag="true"
+                     ng-click="changeConfigFile(component, category)"
                      data-jqyoui-options="{
                                     revert: 'invalid',
                                     appendTo: 'body',
@@ -20,19 +29,22 @@
                                     scroll: false
                                  }"
                      jqyoui-draggable="{animate:true}">
-                    {{item.name}}
+                    {{component.name}}
                 </div>
             </div>
             <div class="col-xs-1" ng-if="$parent.$index != 0">
-                <button type="button" class="btn btn-danger btn-xs" ng-click="removeComponent(item, group.title)">
+                <button type="button" class="btn btn-danger btn-xs" ng-click="removeComponent(category, component)">
                     <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="col-xs-1" ng-if="$last && $parent.$index != 0">
-                <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent()">
+                <button type="button" class="btn btn-warning btn-xs" ng-click="addNewComponent(category)">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
     </accordion-group>
 </accordion>
+<button ng-click="addCategory()">
+    <span class="glyphicon glyphicon-plus"></span>
+</button>

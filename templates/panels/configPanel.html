@@ -4,7 +4,7 @@
         <h3 class="configHeader">{{selectedComponent.name}}</h3>
     </div>
     <div class="col-xs-2">
-        <button ng-if="configuration && selectedComponent.category != 'default'" id="addBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+        <button ng-if="configuration && selectedCategory != 'default'" id="addBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
                 tooltip="Add" class="btn btn-default btn-md" ng-click="addField()">
                         <span class="glyphicon glyphicon-plus"
                               aria-hidden="true"></span>

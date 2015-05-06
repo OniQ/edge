@@ -10,13 +10,41 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                 $scope.oneAtATime = false;
 
-                $scope.groups = [];
-                $scope.categories = {
-                    'default': [],
-                    'custom': []
-                };
+                var edgeStorage = localStorageService.get('categories');
+                if (!edgeStorage) {
+                    localStorageService.set('categories', {'default': []});
 
-                $scope.addCategory = function(type){
+                    var defaultComponents = [];
+
+                    var chain1 = $http.get('../data/components/default/test1.json').success(function(testComponent){
+                        defaultComponents.push({
+                            config: testComponent,
+                            name: 'Test1'
+                        });
+                    });
+
+                    var chain2 = $http.get('../data/components/default/test2.json').success(function(testComponent){
+                        defaultComponents.push({
+                            config: testComponent,
+                            name: 'Test2'
+                        });
+                    });
+
+                    var promiseChains = [chain1, chain2];
+                    $q.all(promiseChains).then(function(){
+                        angular.forEach(defaultComponents, function(component){
+                            $scope.categories['default'].push(component);
+                        })
+                    });
+                }
+
+                $scope.unbind = localStorageService.bind($scope, 'categories');
+
+                if ($scope.categories == null) {
+
+                }
+
+                $scope.addCategory = function(){
                     var modalInstance = $modal.open({
                         animation: true,
                         templateUrl: 'modals/inputModal.html',
@@ -33,10 +61,6 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                     modalInstance.result.then(function(type){
                         $scope.categories[type] = [];
-                        $scope.groups.push({
-                            items: $scope.categories[type],
-                            title: type
-                        });
                     });
                 };
 
@@ -55,23 +79,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     }
                 };
 
-                var chain1 = $http.get('../data/components/default/test1.json').success(function(testComponent){
-                    $scope.categories.default.push({
-                        content: testComponent,
-                        name: 'Test1',
-                        category: 'default'
-                    });
-                });
-
-                var chain2 = $http.get('../data/components/default/test2.json').success(function(testComponent){
-                    $scope.categories.default.push({
-                        content: testComponent,
-                        name: 'Test2',
-                        category: 'default'
-                    });
-                });
-
-                $scope.addNewComponent = function(newComponentField){
+                $scope.addNewComponent = function(category){
                     var modalInstance = $modal.open({
                         animation: true,
                         templateUrl: 'modals/inputModal.html',
@@ -87,46 +95,30 @@ define(['edgeDirectives'], function(edgeDirectives){
                     });
 
                     modalInstance.result.then(function(response){
-                        $scope.customComponents[response] = {};
-                        addGroupItem(response, 'custom');
+                        $scope.categories[category].push({
+                            config: {},
+                            name: response
+                        });
                     });
                 };
 
-                function addGroupItem(prop, category) {
-                    $scope.categories[category].push({
-                        content: $scope.customComponents[prop],
-                        name: prop,
-                        category: category
-                    });
-                }
-
-                $scope.removeComponent = function(item, category){
-                    delete $scope.customComponents[item.name];
+                $scope.removeComponent = function(category, item){
                     $scope.categories[category].splice($scope.categories[category].indexOf(item), 1);
                 };
 
-                $scope.unbind = localStorageService.bind($scope, 'customComponents');
-
-                if ($scope.customComponents == null)
-                    $scope.customComponents = {};
-
-                for (var prop in $scope.customComponents) {
-                    addGroupItem(prop, 'custom');
-                }
-
-                var componentLoadTasks = [chain1, chain2];
-                $q.all(componentLoadTasks).then(function(){
-                    for (var type in $scope.categories) {
-                        $scope.groups.push({
-                            items: $scope.categories[type],
-                            title: type
-                        });
+                $scope.removeCategory = function(category, e){
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
-                });
 
-                $scope.changeConfigFile = function(selectedComponent){
+                    delete $scope.categories[category];
+                };
+
+                $scope.changeConfigFile = function(selectedComponent, category){
                     $scope.selectedComponent = selectedComponent;
-                    $scope.configuration = selectedComponent.content;
+                    $scope.configuration = selectedComponent.config;
+                    $scope.selectedCategory = category;
                 }
             }
         };
