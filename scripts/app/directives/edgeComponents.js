@@ -11,9 +11,33 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $scope.oneAtATime = false;
 
                 $scope.groups = [];
-                $scope.components = {
+                $scope.categories = {
                     'default': [],
                     'custom': []
+                };
+
+                $scope.addCategory = function(type){
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'modals/inputModal.html',
+                        controller: 'inputModalController',
+                        resolve: {
+                            data: function () {
+                                return {
+                                    title: 'Insert new category name',
+                                    label: 'Name'
+                                }
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function(type){
+                        $scope.categories[type] = [];
+                        $scope.groups.push({
+                            items: $scope.categories[type],
+                            title: type
+                        });
+                    });
                 };
 
                 $scope.addField = function(){
@@ -32,7 +56,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                 };
 
                 var chain1 = $http.get('../data/components/default/test1.json').success(function(testComponent){
-                    $scope.components.default.push({
+                    $scope.categories.default.push({
                         content: testComponent,
                         name: 'Test1',
                         category: 'default'
@@ -40,7 +64,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                 });
 
                 var chain2 = $http.get('../data/components/default/test2.json').success(function(testComponent){
-                    $scope.components.default.push({
+                    $scope.categories.default.push({
                         content: testComponent,
                         name: 'Test2',
                         category: 'default'
@@ -69,20 +93,22 @@ define(['edgeDirectives'], function(edgeDirectives){
                 };
 
                 function addGroupItem(prop, category) {
-                    $scope.components[category].push({
+                    $scope.categories[category].push({
                         content: $scope.customComponents[prop],
                         name: prop,
                         category: category
                     });
                 }
 
-
                 $scope.removeComponent = function(item, category){
                     delete $scope.customComponents[item.name];
-                    $scope.components[category].splice($scope.components[category].indexOf(item), 1);
+                    $scope.categories[category].splice($scope.categories[category].indexOf(item), 1);
                 };
 
                 $scope.unbind = localStorageService.bind($scope, 'customComponents');
+
+                if ($scope.customComponents == null)
+                    $scope.customComponents = {};
 
                 for (var prop in $scope.customComponents) {
                     addGroupItem(prop, 'custom');
@@ -90,9 +116,9 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                 var componentLoadTasks = [chain1, chain2];
                 $q.all(componentLoadTasks).then(function(){
-                    for (var type in $scope.components) {
+                    for (var type in $scope.categories) {
                         $scope.groups.push({
-                            items: $scope.components[type],
+                            items: $scope.categories[type],
                             title: type
                         });
                     }
