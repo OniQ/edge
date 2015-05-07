@@ -48,7 +48,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         resolve: {
                             data: function () {
                                 return {
-                                    title: 'Insert new category name',
+                                    title: 'New category',
                                     label: 'Name'
                                 }
                             }
@@ -83,7 +83,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         resolve: {
                             data: function () {
                                 return {
-                                    title: 'Insert new component name',
+                                    title: 'New component',
                                     label: 'Name'
                                 }
                             }
@@ -121,7 +121,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         resolve: {
                             data: function () {
                                 return {
-                                    title: 'Insert duplicated component name',
+                                    title: 'Duplicate component',
                                     label: 'Name',
                                     defaultValue: $scope.dragItem.item.name
                                 }

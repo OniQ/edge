@@ -1,23 +1,4 @@
 <div style="cursor: default">
-<button id="saveBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-        tooltip="Save" class="btn btn-default btn-sm" ng-click="synchLocalStorage()">
-                    <span class="glyphicon glyphicon-floppy-save"
-                          aria-hidden="true"></span>
-</button>
-<button id="autoSaveBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-        tooltip="Auto save" class="btn btn-default btn-sm" ng-click="$root.autoSaveComponents = !$root.autoSaveComponents">
-                    <span class="glyphicon"
-                          ng-class="{
-                            'glyphicon glyphicon-floppy-saved': $root.autoSaveComponents,
-                            'glyphicon glyphicon-floppy-remove': !$root.autoSaveComponents
-                          }"
-                          aria-hidden="true"></span>
-</button>
-<button id="duplicateBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-        tooltip="Duplicate" class="btn btn-default btn-sm" ng-click="duplicate()">
-                    <span class="glyphicon glyphicon-duplicate"
-                          aria-hidden="true"></span>
-</button>
 <button id="playBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
         tooltip="Play" class="btn btn-default btn-sm" ng-click="play()">
                     <span class="glyphicon glyphicon-play"

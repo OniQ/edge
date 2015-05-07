@@ -55,7 +55,7 @@ body{
 }
 .scrollableModal{
     max-height: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .configHeader{
     color: #31708f;

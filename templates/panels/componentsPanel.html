@@ -1,5 +1,12 @@
 <accordion close-others="oneAtATime">
-    <accordion-group ng-repeat="(category, components) in categories">
+    <accordion-group ng-repeat="(category, components) in categories" jqyoui-droppable="{
+                beforeDrop: 'beforeDrop(category)',
+                multiple: true
+             }"
+                     data-jqyoui-options="{
+
+             }"
+                     data-drop="$index != 0">
         <accordion-heading>
             <div class = "row">
             <div class="col-xs-6">
@@ -12,49 +19,40 @@
             </div>
             </div>
         </accordion-heading>
-        <div jqyoui-droppable="{
-                beforeDrop: 'beforeDrop(category)',
-                multiple: true
-             }"
-             data-jqyoui-options="{
-
-             }"
-             data-drop="true" ng-model="components">
-            <div class="col-xs-12" ng-if="components.length == 0 && $index != 0">
+        <div class="col-xs-12" ng-if="components.length == 0 && $index != 0">
+            <button type="button" class="btn btn-success btn-xs" ng-click="addNewComponent(category)">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div ng-repeat="component in components track by $index" class="row">
+            <div class="col-xs-6">
+                <div class="btn" ng-class="{'btn-primary': selectedComponent == component, 'btn-default': selectedComponent != component}"
+                     data-drag="true"
+                     ng-click="changeConfigFile(component, category)"
+                     data-jqyoui-options="{
+                                    revert: 'invalid',
+                                    appendTo: 'body',
+                                    containment: 'window',
+                                    helper: 'clone',
+                                    scroll: false,
+                                    distance: 20
+                                 }"
+                     jqyoui-draggable="{
+                        animate:true,
+                        onStart: 'startDrag(category, component)'
+                         }">
+                    {{component.name}}
+                </div>
+            </div>
+            <div class="col-xs-1" ng-if="$parent.$index != 0">
+                <button type="button" class="btn btn-danger btn-xs" ng-click="removeComponent(category, component)">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="col-xs-1" ng-if="$last && $parent.$index != 0">
                 <button type="button" class="btn btn-success btn-xs" ng-click="addNewComponent(category)">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button>
-            </div>
-            <div ng-repeat="component in components track by $index" class="row">
-                <div class="col-xs-6">
-                    <div class="btn" ng-class="{'btn-primary': selectedComponent == component, 'btn-default': selectedComponent != component}"
-                         data-drag="true"
-                         ng-model="component"
-                         ng-click="changeConfigFile(component, category)"
-                         data-jqyoui-options="{
-                                        revert: 'invalid',
-                                        appendTo: 'body',
-                                        containment: 'window',
-                                        helper: 'clone',
-                                        scroll: false
-                                     }"
-                         jqyoui-draggable="{
-                            animate:true,
-                            onStart: 'startDrag(category, component)'
-                             }">
-                        {{component.name}}
-                    </div>
-                </div>
-                <div class="col-xs-1" ng-if="$parent.$index != 0">
-                    <button type="button" class="btn btn-danger btn-xs" ng-click="removeComponent(category, component)">
-                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                    </button>
-                </div>
-                <div class="col-xs-1" ng-if="$last && $parent.$index != 0">
-                    <button type="button" class="btn btn-success btn-xs" ng-click="addNewComponent(category)">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </button>
-                </div>
             </div>
         </div>
     </accordion-group>
