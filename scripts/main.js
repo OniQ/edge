@@ -28,7 +28,7 @@ require.config({
                 'app/directives/utilDirectives', 'lib/angular-local-storage']
         },
         'edgeCore':{
-            deps: ['edgeEditor']
+            deps: ['edgeEditor', 'lib/webgl-utils']
         }
     }
 });
