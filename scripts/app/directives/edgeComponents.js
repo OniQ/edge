@@ -3,7 +3,8 @@
  */
 define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeComponents', function($http, $q, localStorageService,
-                                                        $interval, $rootScope, $modal){
+                                                        $interval, $rootScope, $modal,
+                                                        $timeout){
         return {
             templateUrl: "/edge/templates/panels/componentsPanel.html",
             controller: function($scope, $element, $attrs) {
@@ -113,6 +114,27 @@ define(['edgeDirectives'], function(edgeDirectives){
                     }
 
                     delete $scope.categories[category];
+                };
+
+                $scope.beforeDrop = function(ev, ui, item) {
+                    var deferred = $q.defer();
+                    if (confirm('Are you sure???')) {
+                        deferred.resolve();
+                    } else {
+                        deferred.reject();
+                    }
+                    return deferred.promise;
+                };
+
+                $scope.startDrag = function(event, ui, item){
+                    $scope.dragItem = item;
+                };
+
+                $scope.myCallback = function(event, ui, obj, id){
+                    $scope.dragItem.name += "_c";
+                    $timeout(function(){
+                        $scope.$apply();
+                    });
                 };
 
                 $scope.changeConfigFile = function(selectedComponent, category){
