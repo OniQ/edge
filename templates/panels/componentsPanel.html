@@ -13,10 +13,8 @@
             </div>
         </accordion-heading>
         <div jqyoui-droppable="{
-
-                beforeDrop: 'beforeDrop',
-                multiple: true,
-                onDrop: 'myCallback(category)'
+                beforeDrop: 'beforeDrop(category)',
+                multiple: true
              }"
              data-jqyoui-options="{
 
@@ -42,7 +40,7 @@
                                      }"
                          jqyoui-draggable="{
                             animate:true,
-                            onStart: 'startDrag(component)'
+                            onStart: 'startDrag(category, component)'
                              }">
                         {{component.name}}
                     </div>

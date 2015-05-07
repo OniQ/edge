@@ -38,12 +38,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         })
                     });
                 }
-
                 $scope.unbind = localStorageService.bind($scope, 'categories');
-
-                if ($scope.categories == null) {
-
-                }
 
                 $scope.addCategory = function(){
                     var modalInstance = $modal.open({
@@ -116,25 +111,38 @@ define(['edgeDirectives'], function(edgeDirectives){
                     delete $scope.categories[category];
                 };
 
-                $scope.beforeDrop = function(ev, ui, item) {
+                $scope.beforeDrop = function(ev, ui, category) {
                     var deferred = $q.defer();
-                    if (confirm('Are you sure???')) {
-                        deferred.resolve();
-                    } else {
-                        deferred.reject();
-                    }
+
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'modals/inputModal.html',
+                        controller: 'inputModalController',
+                        resolve: {
+                            data: function () {
+                                return {
+                                    title: 'Insert duplicated component name',
+                                    label: 'Name',
+                                    defaultValue: $scope.dragItem.item.name
+                                }
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function(response){
+                        var duplicatedComponent = angular.copy($scope.dragItem.item);
+                        duplicatedComponent.name = response;
+                        $scope.categories[category].push(duplicatedComponent);
+                    }).finally(deferred.reject);
+
                     return deferred.promise;
                 };
 
-                $scope.startDrag = function(event, ui, item){
-                    $scope.dragItem = item;
-                };
-
-                $scope.myCallback = function(event, ui, obj, id){
-                    $scope.dragItem.name += "_c";
-                    $timeout(function(){
-                        $scope.$apply();
-                    });
+                $scope.startDrag = function(event, ui, category, item){
+                    $scope.dragItem = {
+                        item: item,
+                        category:category
+                    }
                 };
 
                 $scope.changeConfigFile = function(selectedComponent, category){
