@@ -5,9 +5,9 @@
     <div class="modal-body scrollableModal">
         <div class="container-fluid">
             <div class="row form-group">
-                <label autofocus class="control-label col-xs-2">{{data.label}}:</label>
+                <label class="control-label col-xs-2">{{data.label}}:</label>
                 <div class="col-xs-8">
-                    <input class="form-control" ng-model="data.value" required>
+                    <input focus-me="shouldBeOpen" class="form-control" ng-model="data.value" required>
                 </div>
             </div>
         </div>
