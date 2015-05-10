@@ -1,19 +1,12 @@
 {
-  "title": "test title",
+  "name": "Template Character",
   "level": 20,
-  "a": "a",
-  "b": "b",
-  "C": "c",
-  "d": "d",
-  "f": "f",
-  "e": "e",
-  "g": "g",
-  "x": "xxx",
-  "a1": "a",
-  "b2": "b",
-  "C3": "c",
-  "d4": "d",
-  "is": true,
+  "x": 0,
+  "y": 0,
+  "width": 30,
+  "height": 30,
+  "scale": 1,
+  "control": true,
   "list": ["ok", "go"],
-  "level1": 50
+  "level": 1
 }

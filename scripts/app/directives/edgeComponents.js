@@ -60,15 +60,18 @@ define(['edgeDirectives'], function(edgeDirectives){
                     });
                 };
 
-                $scope.addField = function(){
+                $scope.addField = function(field){
                     if ($scope.configuration) {
                         var modalInstance = $modal.open({
                             animation: true,
                             templateUrl: 'modals/componentModal.html',
                             controller: 'componentModalController',
                             resolve: {
-                                configuration: function () {
-                                    return $scope.configuration;
+                                data: function () {
+                                    return {
+                                        configuration: $scope.configuration,
+                                        field: field
+                                    }
                                 }
                             }
                         });

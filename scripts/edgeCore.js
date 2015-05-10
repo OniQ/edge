@@ -20,6 +20,127 @@ function edgeCore() {
         }
     }
 
+    // Returns a random integer from 0 to range - 1.
+    function randomInt(range) {
+        return Math.floor(Math.random() * range);
+    }
+
+    function setRectangle(gl, x, y, width, height) {
+        var x1 = x;
+        var x2 = x + width;
+        var y1 = y;
+        var y2 = y + height;
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+            x1, y1,
+            x2, y1,
+            x1, y2,
+            x1, y2,
+            x2, y1,
+            x2, y2]), gl.STATIC_DRAW);
+    }
+
+    var program;
+
+    var bkgColor = {
+        r : 0.0,
+        g : 0.0,
+        b : 0.0,
+        alpha : 1.0
+    };
+
+    function run(){
+        //if (loaded) {
+            for(var i = 0; i < edge.gameObjects.length; i++) {
+                var obj = edge.gameObjects[i];
+                if(obj.appearance && obj.appearance.image) {
+                    render(obj.appearance.image, obj.x, obj.y, obj.appearance.image.width, obj.appearance.image.height);
+                }
+            }
+        //}
+        window.requestAnimationFrame(run);
+    }
+
+    function clear(){
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        initViewport();
+    }
+
+    function initViewport(){
+        gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    function initShaders(){
+        // setup GLSL program
+        var vertexShader = createShaderFromScriptElement(gl, "2d-vertex-shader");
+        var fragmentShader = createShaderFromScriptElement(gl, "2d-fragment-shader");
+        program = createProgram(gl, [vertexShader, fragmentShader]);
+        gl.useProgram(program);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.enable ( gl.BLEND ) ;
+    }
+
+    function render(image, x1, y1, x2, y2) {
+        // look up where the vertex data needs to go.
+        var positionLocation = gl.getAttribLocation(program, "a_position");
+        var texCoordLocation = gl.getAttribLocation(program, "a_texCoord");
+        // provide texture coordinates for the rectangle.
+        var texCoordBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+            0.0,  0.0,
+            1.0,  0.0,
+            0.0,  1.0,
+            0.0,  1.0,
+            1.0,  0.0,
+            1.0,  1.0]), gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(texCoordLocation);
+        gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+        // Create a texture.
+        var texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+
+        // Set the parameters so we can render any size image.
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+        // Upload the image into the texture.
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+        // lookup uniforms
+        var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+
+        // set the resolution
+        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+
+        // Create a buffer for the position of the rectangle corners.
+        var buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.enableVertexAttribArray(positionLocation);
+        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+        // Set a rectangle the same size as the image.
+        setRectangle(gl, x1, y1, x2, y2);
+
+        // Draw the rectangle.
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
+
+    this.turnOn = function(_canvas){
+        canvas = _canvas;
+        initWebGL(canvas);
+        if (!gl)
+            return;
+        initShaders();
+        run();
+        //Register events
+        document.onmousedown = handleMouseDown;
+        document.onmouseup = handleMouseUp;
+        document.onmousemove = handleMouseMove;
+    };
+
     if ( !window.requestAnimationFrame ) {
 
         window.requestAnimationFrame = ( function() {
@@ -37,113 +158,36 @@ function edgeCore() {
         } )();
 
     }
-
-    // Returns a random integer from 0 to range - 1.
-    function randomInt(range) {
-        return Math.floor(Math.random() * range);
-    }
-
-    // Fills the buffer with the values that define a rectangle.
-    function setRectangle(gl, x, y, width, height) {
-        var x1 = x;
-        var x2 = x + width;
-        var y1 = y;
-        var y2 = y + height;
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-            x1, y1,
-            x2, y1,
-            x1, y2,
-            x1, y2,
-            x2, y1,
-            x2, y2]), gl.STATIC_DRAW);
-    }
-    var colorLocation, positionLocation;
-
-    function initShader() {
-        var vertexShader = createShaderFromScript(gl, "2d-vertex-shader");
-        var fragmentShader = createShaderFromScript(gl, "2d-fragment-shader");
-        var program = createProgram(gl, [vertexShader, fragmentShader]);
-        gl.useProgram(program);
-        positionLocation = gl.getAttribLocation(program, "a_position");
-        var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
-        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-        colorLocation = gl.getUniformLocation(program, "u_color");
-        // Set a random color.
-        gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
-    }
-
-    function createBuffer(){
-        var buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-
-        gl.enableVertexAttribArray(positionLocation);
-        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-    }
-
-    var bkgColor = {
-        r : 0.0,
-        g : 0.0,
-        b : 0.0,
-        alpha : 1.0
-    };
-
-    var square;
-
-    function run(){
-        var buf = square.buffer;
-        draw(gl, square);
-        window.requestAnimationFrame(run);
-    }
-
-    function clear(){
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        initViewport();
-    }
-
-    function initViewport(){
-        gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-
-    function createSquares(){
-        // draw 50 random rectangles in random colors
-        for (var ii = 0; ii < 50; ++ii) {
-            // Setup a random rectangle
-            setRectangle(
-                gl, randomInt(300), randomInt(300), randomInt(300), randomInt(300));
-
-            // Set a random color.
-            gl.uniform4f(colorLocation, Math.random(), Math.random(), Math.random(), 1);
-
-            // Draw the rectangle.
-            gl.drawArrays(gl.TRIANGLES, 0, 6);
-        }
-    }
-
-    this.turnOn = function(_canvas){
-        canvas = _canvas;
-
-        initWebGL(canvas);
-        if (!gl)
-            return;
-
-        //initViewport();
-        initShader();
-        createBuffer();
-        createSquares();
-        //draw(gl, square);
-
-        //Register events
-        document.onmousedown = handleMouseDown;
-        document.onmouseup = handleMouseUp;
-        document.onmousemove = handleMouseMove;
-    };
     /******* Accessible Data ******/
+    this.gameObjects = [];
+
+    this.attachObject = function(obj){
+        if(obj.appearance && obj.appearance.image) {
+            obj.x = edge.mouseState.x - obj.appearance.image.width / 2;
+            obj.y = edge.mouseState.y - obj.appearance.image.height / 2;
+        }
+        //var objCopy = cloneObject(obj);
+        edge.gameObjects.push(obj);
+    };
+
     this.mouseState = {
-        isPressed: false,
+        mouseDown: false,
         x: null,
         y: null
     };
+    /******* Util functions ******/
+    function cloneObject(obj) {
+        if (obj === null || typeof obj !== 'object') {
+            return obj;
+        }
 
+        var temp = obj.constructor();
+        for (var key in obj) {
+            temp[key] = cloneObject(obj[key]);
+        }
+
+        return temp;
+    }
     /******* Events ******/
 
     function onKeyDown(ev){
@@ -171,8 +215,10 @@ function edgeCore() {
         }
     }
 
+    var lastMouseX, lastMouseY;
+
     function handleMouseDown(event) {
-        mouseDown = true;
+        edge.mouseState.mouseDown = true;
         lastMouseX = event.clientX;
         lastMouseY = event.clientY;
     }

@@ -6,9 +6,10 @@ define([
     'ngRoute'
 ], function(
 ){
-    var edge = angular.module('edge', ['ngRoute', 'edge.controllers',
-        'edge.directives', 'ui.bootstrap', 'ngDragDrop', 'kendo.directives',
-    'ui.bootstrap', 'LocalStorageModule']);
+    var edge = angular.module('edge', ['ngRoute',
+        'edge.controllers', 'edge.directives', 'edge.services',
+        'ui.bootstrap', 'ngDragDrop', 'kendo.directives',
+    'ui.bootstrap', 'LocalStorageModule', 'ngFileUpload']);
 
     edge.config(function($routeProvider, localStorageServiceProvider){
 

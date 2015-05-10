@@ -16,7 +16,8 @@ require.config({
         "dragdrop": "lib/angular-dragdrop",
         "jquery": "lib/jquery-1.11.2",
         "jquery-ui": "lib/jquery-ui",
-        "edgeDirectives": "app/modules/edgeDirectives"
+        "edgeDirectives": "app/modules/edgeDirectives",
+        "edgeServices": "app/modules/edgeServices"
     },
     shim:{
         'edge': {
@@ -25,7 +26,10 @@ require.config({
                 'ui-bootstrap', 'dragdrop', 'lib/kendo.all.min',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
                 'app/directives/edgeToolbar', 'app/directives/edgeDisplay',
-                'app/directives/utilDirectives', 'lib/angular-local-storage']
+                'app/directives/utilDirectives', 'lib/angular-local-storage',
+                'lib/ng-file-upload', 'app/services/fileUploadService',
+                'app/services/resourceService', 'app/directives/imageThumb'
+            ]
         },
         'edgeCore':{
             deps: ['edgeEditor', 'lib/webgl-utils']

@@ -4,6 +4,6 @@
 define(['edgeCtrl'], function(edgeCtrl){
     edgeCtrl.controller('mainController', ['$scope',
         function ($scope) {
-            $scope.data = "Data from scope";
+
         }]);
 });

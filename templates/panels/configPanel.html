@@ -76,6 +76,63 @@
                             </div>
                         </div>
                     </div>
+                    <div class="config-switch" ng-switch-when="object">
+                        <div ng-switch on="field.value.type">
+                            <div ng-switch-when="sprite">
+                                <div class="row form-group">
+                                    <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
+                                        <button class="pull-right btn btn-xs btn-danger"
+                                                ng-click="removeField(field, $event)">
+                                            <i class="glyphicon glyphicon-minus"></i>
+                                        </button>
+                                    </div>
+                                    <label class="control-label col-xs-4">{{field.name}}:</label>
+                                    <div class="col-xs-6">
+                                        <div ng-switch on="field.value.status">
+                                            <div ng-switch-when="loading">
+                                                <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                                                {{field.value.name}}
+                                            </div>
+                                            <div ng-switch-when="loaded">
+                                                <div image-thumb image="field.value">
+                                                    {{field.value.name}}
+                                                    <button id="chageSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                            tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(field)">
+                                                        <span class="glyphicon glyphicon-edit"
+                                                              aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div ng-switch-when="notLoaded">
+                                                <button id="loadSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                        tooltip="Load Sprite" class="btn btn-default btn-xs" ng-click="loadSprite(field.value)">
+                                                    <span class="glyphicon glyphicon-refresh"
+                                                          aria-hidden="true"></span>
+                                                </button>
+                                                {{field.value.name}}
+                                            </div>
+                                            <div ng-switch-when="failed">
+                                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                                {{field.value.name}}
+                                                <button id="addSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                        tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(field)">
+                                                    <span class="glyphicon glyphicon-edit"
+                                                          aria-hidden="true"></span>
+                                                </button>
+                                            </div>
+                                            <div ng-switch-default>
+                                                {{field.value.name}}
+                                                <button tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                        tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(field)">
+                                                    <span class="glyphicon glyphicon-edit"
+                                                          aria-hidden="true"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <div class="animate-switch" ng-switch-default>{{field.type}}</div>
                 </div>
             </div>

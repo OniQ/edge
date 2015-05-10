@@ -2,7 +2,7 @@
  * Created by OniQ on 22/04/15.
  */
 define(['edgeDirectives'], function(edgeDirectives){
-    edgeDirectives.directive('edgeConfig', function($timeout){
+    edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService){
         return {
             templateUrl: "/edge/templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
@@ -26,6 +26,19 @@ define(['edgeDirectives'], function(edgeDirectives){
                     }
 
                     delete $scope.configuration[field.name];
+                };
+
+                $scope.loadSprite = function(sprite){
+                    sprite.status = "loading";
+                    fileUploadService.download(sprite.name).then(function(file){
+                        resourceService.addResource(file.name, "sprite", file).then(function(image){
+                            sprite.status = "loaded";
+                        }, function(){
+                            sprite.status = "failed";
+                        })
+                    }, function(){
+                        sprite.status = "failed";
+                    });
                 };
 
                 $scope.$watch('configuration', function(newVal, oldVal){
