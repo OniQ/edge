@@ -2,7 +2,7 @@
  * Created by OniQ on 20/04/15.
  */
 require.config({
-    baseUrl: "/edge/scripts",
+    baseUrl: "scripts",
     map:{
         // Maps
     },
