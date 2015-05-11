@@ -9,7 +9,7 @@ define(['edgeDirectives'], function(edgeDirectives){
             },
             controller: function($scope, $element, $attrs) {
                 $timeout(function(){
-                    var image = resourceService.resources[$scope.image.name];
+                    var image = resourceService.resources["_" + $scope.image.name];
                     if (image) {
                         var imageElement = angular.element(image);
                         imageElement.addClass("thumb");

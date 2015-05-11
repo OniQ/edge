@@ -30,8 +30,8 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                 $scope.loadSprite = function(sprite){
                     sprite.status = "loading";
-                    fileUploadService.download(sprite.name).then(function(file){
-                        resourceService.addResource(file.name, "sprite", file).then(function(image){
+                    fileUploadService.download(sprite.name, "xs").then(function(file){
+                        resourceService.addResource("_" + file.name, "sprite", file).then(function(image){
                             sprite.status = "loaded";
                         }, function(){
                             sprite.status = "failed";

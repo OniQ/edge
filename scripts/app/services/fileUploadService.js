@@ -26,10 +26,14 @@ define(['edgeServices'], function(edgeServices){
             return deferred.promise;
         };
 
-        service.download = function(path){
+        service.download = function(path, thumbnailSize){
             var deferred = $q.defer();
             var oReq = new XMLHttpRequest();
-            var url = 'https://api-content.dropbox.com/1/files/auto/' + path;
+            var url;
+            if (thumbnailSize)
+                url = 'https://api-content.dropbox.com/1/thumbnails/auto/' + path;
+            else
+                url = 'https://api-content.dropbox.com/1/files/auto/' + path + "?format=png&size=" + thumbnailSize;
             oReq.open("GET", url, true);
             oReq.setRequestHeader('Authorization', 'Bearer ' + DropBoxOAuthToken);
             oReq.responseType = "arraybuffer";

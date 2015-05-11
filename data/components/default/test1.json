@@ -8,5 +8,10 @@
   "scale": 1,
   "control": true,
   "list": ["ok", "go"],
-  "level": 1
+  "level": 1,
+  "appearance": {
+    "name": "Buster Bunny.png",
+    "type": "sprite",
+    "status": "notLoaded"
+  }
 }
