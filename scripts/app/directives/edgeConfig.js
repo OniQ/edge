@@ -28,7 +28,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     delete $scope.configuration[field.name];
                 };
 
-                $scope.loadSprite = function(sprite){
+                $scope.loadThumbnail = function(sprite){
                     sprite.status = "loading";
                     fileUploadService.download(sprite.name, "xs").then(function(file){
                         resourceService.addResource("_" + file.name, "sprite", file).then(function(image){

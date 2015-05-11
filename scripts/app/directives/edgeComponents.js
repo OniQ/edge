@@ -43,7 +43,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $scope.addCategory = function(){
                     var modalInstance = $modal.open({
                         animation: true,
-                        templateUrl: 'modals/inputModal.html',
+                        templateUrl: '/edge/templates/modals/inputModal.html',
                         controller: 'inputModalController',
                         resolve: {
                             data: function () {
@@ -64,7 +64,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     if ($scope.configuration) {
                         var modalInstance = $modal.open({
                             animation: true,
-                            templateUrl: 'modals/componentModal.html',
+                            templateUrl: '/edge/templates/modals/componentModal.html',
                             controller: 'componentModalController',
                             resolve: {
                                 data: function () {
@@ -76,12 +76,15 @@ define(['edgeDirectives'], function(edgeDirectives){
                             }
                         });
                     }
+                    modalInstance.result.then(function(response){
+                        $scope.loadThumbnail($scope.configuration[response]);
+                    });
                 };
 
                 $scope.addNewComponent = function(category){
                     var modalInstance = $modal.open({
                         animation: true,
-                        templateUrl: 'modals/inputModal.html',
+                        templateUrl: '/edge/templates/modals/inputModal.html',
                         controller: 'inputModalController',
                         resolve: {
                             data: function () {
@@ -119,7 +122,7 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                     var modalInstance = $modal.open({
                         animation: true,
-                        templateUrl: 'modals/inputModal.html',
+                        templateUrl: '/edge/templates/modals/inputModal.html',
                         controller: 'inputModalController',
                         resolve: {
                             data: function () {

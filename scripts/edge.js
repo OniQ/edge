@@ -15,7 +15,7 @@ define([
 
         $routeProvider
             .when('/', {
-                templateUrl: 'main.html',
+                templateUrl: 'templates/main.html',
                 controller: 'mainController'
             })
             .otherwise({ redirectTo: "/" });

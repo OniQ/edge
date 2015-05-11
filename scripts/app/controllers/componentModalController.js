@@ -80,7 +80,7 @@ define(['edgeCtrl'], function(edgeCtrl){
                     else
                         data.configuration[model.name] = model.fieldValue;
                 }
-                $scope.$close(true);
+                $scope.$close(model.name);
             }
         }]);
 });
