@@ -4,7 +4,7 @@
 define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService){
         return {
-            templateUrl: "/edge/templates/panels/configPanel.html",
+            templateUrl: "templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
 
                 function getDropDownOptions(array){

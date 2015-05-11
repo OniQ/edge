@@ -6,7 +6,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                                                         $interval, $rootScope, $modal,
                                                         $timeout){
         return {
-            templateUrl: "/edge/templates/panels/componentsPanel.html",
+            templateUrl: "templates/panels/componentsPanel.html",
             controller: function($scope, $element, $attrs) {
 
                 $scope.oneAtATime = false;
