@@ -8,7 +8,9 @@ body{
     border: 12px solid #262626;
     float: left;
 }
-
+#canvasWrapper{
+    text-align: center;
+}
 .fullScreen{
     height: 100%;
     width: 100%;

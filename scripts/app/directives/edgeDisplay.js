@@ -8,6 +8,11 @@ define(['edgeDirectives'], function(edgeDirectives){
             controller: function($scope, $element, $attrs) {
                 $timeout(function(){
                     var canvas = $element.context;
+                    $scope.appendImage = function(obj, key, img){
+                        obj[key].image = img;
+                        obj.x = obj.x - img.width / 2;
+                        obj.y = obj.y - img.height / 2;
+                    };
                     $scope.dropComponent = function(){
                         var dropDeferred = $q.defer();
                         dropDeferred.reject();
@@ -16,15 +21,17 @@ define(['edgeDirectives'], function(edgeDirectives){
                         for (var key in obj) {
                             if (typeof obj[key] == 'object' && obj[key].type == 'sprite') {
                                 var img = resourceService.resources[obj[key].name];
-                                if(img)
-                                    obj[key].image = img;
+                                obj.x = edge.mouseState.x;
+                                obj.y = edge.mouseState.y;
+                                if(img) {
+                                    $scope.appendImage(obj, key, img);
+                                }
                                 else {
                                     var deferred = $q.defer();
                                     promiseChains.push(deferred.promise);
                                     fileUploadService.download(obj[key].name).then(function (file) {
                                         resourceService.addResource(file.name, "sprite", file).then(function (image) {
-                                            obj[key].image = image;
-                                            //edge.attachObject(obj);
+                                            $scope.appendImage(obj, key, image);
                                             deferred.resolve();
                                         }, function () {
                                             deferred.reject();

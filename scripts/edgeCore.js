@@ -162,11 +162,6 @@ function edgeCore() {
     this.gameObjects = [];
 
     this.attachObject = function(obj){
-        if(obj.appearance && obj.appearance.image) {
-            obj.x = edge.mouseState.x - obj.appearance.image.width / 2;
-            obj.y = edge.mouseState.y - obj.appearance.image.height / 2;
-        }
-        //var objCopy = cloneObject(obj);
         edge.gameObjects.push(obj);
     };
 
