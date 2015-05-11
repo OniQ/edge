@@ -4,7 +4,7 @@
 define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeToolbar', function(){
         return {
-            templateUrl: "/edge/templates/panels/toolbar.html"
+            templateUrl: "templates/panels/toolbar.html"
         };
     });
 });

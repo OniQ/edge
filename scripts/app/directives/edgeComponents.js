@@ -17,14 +17,14 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                     var defaultComponents = [];
 
-                    var chain1 = $http.get('../data/components/default/test1.json').success(function(testComponent){
+                    var chain1 = $http.get('data/components/default/test1.json').success(function(testComponent){
                         defaultComponents.push({
                             config: testComponent,
                             name: 'Test1'
                         });
                     });
 
-                    var chain2 = $http.get('../data/components/default/test2.json').success(function(testComponent){
+                    var chain2 = $http.get('data/components/default/test2.json').success(function(testComponent){
                         defaultComponents.push({
                             config: testComponent,
                             name: 'Test2'
@@ -43,7 +43,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $scope.addCategory = function(){
                     var modalInstance = $modal.open({
                         animation: true,
-                        templateUrl: '/edge/templates/modals/inputModal.html',
+                        templateUrl: 'templates/modals/inputModal.html',
                         controller: 'inputModalController',
                         resolve: {
                             data: function () {
@@ -64,7 +64,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     if ($scope.configuration) {
                         var modalInstance = $modal.open({
                             animation: true,
-                            templateUrl: '/edge/templates/modals/componentModal.html',
+                            templateUrl:'templates/modals/componentModal.html',
                             controller: 'componentModalController',
                             resolve: {
                                 data: function () {
@@ -84,7 +84,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $scope.addNewComponent = function(category){
                     var modalInstance = $modal.open({
                         animation: true,
-                        templateUrl: '/edge/templates/modals/inputModal.html',
+                        templateUrl: 'templates/modals/inputModal.html',
                         controller: 'inputModalController',
                         resolve: {
                             data: function () {
@@ -122,7 +122,7 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                     var modalInstance = $modal.open({
                         animation: true,
-                        templateUrl: '/edge/templates/modals/inputModal.html',
+                        templateUrl:'templates/modals/inputModal.html',
                         controller: 'inputModalController',
                         resolve: {
                             data: function () {
