@@ -120,62 +120,76 @@ function edgeCore() {
         return edge.pressedKeys.indexOf(key) != -1;
     }
 
+    function isDirected(obj, direction, isOnlyDirection){
+        if (isOnlyDirection == true)
+            return (obj.movementDirection | direction) == direction;
+        return obj.movementDirection & direction;
+    }
+
     function control(obj){
         if (!obj || !obj.controllable)
             return;
-        if (pressed(KEYCODES['right_arrow']) && !obj.preventRight)
+        if (pressed(KEYCODES['right_arrow'])) {
             obj.x += obj.speed || 1;
-        if (pressed(KEYCODES['left_arrow']) && !obj.preventLeft)
+            if (!isDirected(obj, RIGHT))
+                obj.movementDirection += RIGHT;
+        }
+        else if (isDirected(obj, RIGHT))
+            obj.movementDirection -= RIGHT;
+
+        if (pressed(KEYCODES['left_arrow'])) {
             obj.x -= obj.speed || 1;
-        if (pressed(KEYCODES['down_arrow']) && !obj.preventDown)
+            if (!isDirected(obj, LEFT))
+                obj.movementDirection += LEFT;
+        }
+        else if (isDirected(obj, LEFT))
+            obj.movementDirection -= LEFT;
+
+        if (pressed(KEYCODES['down_arrow'])) {
             obj.y += obj.speed || 1;
-        if (pressed(KEYCODES['up_arrow']) && !obj.preventUp)
+            if (!isDirected(obj, DOWN))
+                obj.movementDirection += DOWN;
+        }
+        else if (isDirected(obj, DOWN))
+            obj.movementDirection -= DOWN;
+
+        if (pressed(KEYCODES['up_arrow'])) {
             obj.y -= obj.speed || 1;
+            if (!isDirected(obj, UP))
+                obj.movementDirection += UP;
+        }
+        else if (isDirected(obj, UP))
+            obj.movementDirection -= UP;
     }
 
     function physics(obj){
         if (obj.physics) {
             //fall
-            //obj.y += obj.weight || 1;
-            //collision
-            for (var i = 0; i < edge.gameObjects.length; i++) {
-                var targetObj = edge.gameObjects[i];
-                if (targetObj != obj) {
-                    detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
-
-                    });
-                    preventCollisionMovement(obj, targetObj);
-                }
+            obj.y += obj.weight || 1;
+            if (!isDirected(obj, DOWN))
+                obj.movementDirection += DOWN;
+        }
+        //collision
+        for (var i = 0; i < edge.gameObjects.length; i++) {
+            var targetObj = edge.gameObjects[i];
+            if (targetObj != obj) {
+                detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
+                    if (isDirected(r1, RIGHT))
+                        r1.x -= r1.speed || 1;
+                    if (isDirected(r1, UP))
+                        r1.y += r1.speed || 1;
+                    if (isDirected(r1, LEFT))
+                        r1.x += r1.speed || 1;
+                    if (isDirected(r1, DOWN))
+                        r1.y -= r1.speed || 1;
+                }, function(){
+                    //console.log('enterCollision');
+                }, function(){
+                    //console.log('leaveCollision');
+                });
             }
         }
         control(obj);
-    }
-
-    function preventCollisionMovement(obj1, obj2){
-        if (obj1.x + obj1.width >= obj2.x
-            && obj1.x + obj1.width  <= obj2.x + obj2.width
-            && obj1.y <= obj2.y + obj2.height - 1
-            && obj1.y + obj1.height - 1 >= obj2.y
-        ) {
-            obj2.preventLeft = true;
-            obj1.preventRight = true;
-        }
-        else {
-            obj2.preventLeft = false;
-            obj1.preventRight = false;
-        }
-        if (obj1.y + obj1.height >= obj2.y
-            && obj1.y + obj1.height  <= obj2.y + obj2.height
-            && obj1.x + obj1.width - 1 >= obj2.x
-            && obj1.x <= obj2.x + obj2.width - 1
-        ) {
-            obj1.preventDown = true;
-            obj2.preventUp = true;
-        }
-        else {
-            obj1.preventDown = false;
-            obj2.preventUp = false;
-        }
     }
 
     var selectedObject;
@@ -187,19 +201,29 @@ function edgeCore() {
                 && y >= obj.y && y <= obj.y + obj.height) {
                 selectedObject = obj;
                 obj.controllable = true;
-                return;
+                //return;
             }
-            selectedObject = null;
-            obj.controllable = false;
+            else {
+                obj.controllable = false;
+            }
         }
     }
 
-    function detectCollision(rect1, rect2, onCollision) {
-        if (rect1.x < rect2.x + rect2.width &&
-            rect1.x + rect1.width > rect2.x &&
-            rect1.y < rect2.y + rect2.height &&
-            rect1.height + rect1.y > rect2.y) {
-                onCollision(rect1, rect2);
+    function detectCollision(obj1, obj2, onCollision, onCollisionEnter, onCollisionExit) {
+        if (obj1.x < obj2.x + obj2.width &&
+            obj1.x + obj1.width > obj2.x &&
+            obj1.y < obj2.y + obj2.height &&
+            obj1.height + obj1.y > obj2.y) {
+                onCollision(obj1, obj2);
+            if (obj1.collide == false){
+                onCollisionEnter();
+            }
+            obj1.collide = true;
+        }
+        else{
+            if (obj1.collide == true)
+                onCollisionExit();
+            obj1.collide = false;
         }
     }
 
@@ -262,6 +286,7 @@ function edgeCore() {
 
 
     this.attachObject = function(obj){
+        obj.movementDirection = 0;
         edge.gameObjects.push(obj);
         edge.gameObjects.sort(compareByZ);
     };
@@ -356,6 +381,11 @@ function edgeCore() {
     window.onkeypress = onKeyPress;
 }
 /************** Constants **************/
+var RIGHT = 1; // 0001
+var LEFT = 2; // 0010
+var UP = 4; // 0100
+var DOWN = 8; // 1000
+
 var KEYCODES = {
     'backspace' : 8,
     'tab' : 9,
