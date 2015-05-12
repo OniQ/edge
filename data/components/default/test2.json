@@ -1,5 +1,19 @@
 {
-  "a": "a",
-  "b": "b",
-  "C": "c"
+  "name": "Bunny",
+  "z": 2,
+  "weight": 2,
+  "scale": 1,
+  "controllable": true,
+  "list":{
+    "name":"list",
+    "type":"array",
+    "options":["1","2","3"],
+    "selected": "1"
+  },
+  "speed": 2,
+  "appearance": {
+    "name": "Babs Bunny.png",
+    "type": "sprite",
+    "status": "notLoaded"
+  }
 }

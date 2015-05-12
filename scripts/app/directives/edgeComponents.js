@@ -11,12 +11,9 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                 $scope.oneAtATime = false;
 
-                var edgeStorage = localStorageService.get('categories');
-                if (!edgeStorage) {
-                    localStorageService.set('categories', {'default': []});
-
+                $scope.loadDefault = function(){
                     var defaultComponents = [];
-
+                    $scope.categories['default'] = [];
                     var chain1 = $http.get('data/components/default/test1.json').success(function(testComponent){
                         defaultComponents.push({
                             config: testComponent,
@@ -37,8 +34,24 @@ define(['edgeDirectives'], function(edgeDirectives){
                             $scope.categories['default'].push(component);
                         })
                     });
+                };
+
+                var edgeStorage = localStorageService.get('categories');
+                if (!edgeStorage) {
+                    localStorageService.set('categories', {});
+                    $scope.loadDefault();
                 }
                 $scope.unbind = localStorageService.bind($scope, 'categories');
+
+                $scope.$watch('isDefaultComponentsHidden', function(val){
+                    if (val){
+                        delete $scope.categories['default'];
+                    }
+                    else{
+                        if ($scope.configuration && !$scope.configuration['default'])
+                            $scope.loadDefault();
+                    }
+                });
 
                 $scope.addCategory = function(){
                     var modalInstance = $modal.open({

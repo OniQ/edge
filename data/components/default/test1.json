@@ -1,19 +1,17 @@
 {
   "name": "Template Character",
-  "level": 20,
-  "x": 0,
-  "y": 0,
-  "width": 30,
-  "height": 30,
+  "z": 1,
+  "weight": 2,
   "scale": 1,
-  "control": true,
+  "controllable": true,
   "list":{
     "name":"list",
     "type":"array",
     "options":["1","2","3"],
     "selected": "1"
   },
-  "level": 1,
+  "physics": true,
+  "speed": 3,
   "appearance": {
     "name": "Buster Bunny.png",
     "type": "sprite",
