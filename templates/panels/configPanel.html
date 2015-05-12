@@ -72,8 +72,7 @@
                             </div>
                             <label class="control-label col-xs-4">{{field.name}}:</label>
                             <div class="col-xs-6">
-                                <input kendo-numeric-text-box k-min="0" k-format="'0.'"
-                                       ng-blur="synchConfig(field)" ng-model="field.value"/>
+                                <input type="number" name="numberValue" ng-blur="synchConfig(field)" ng-model="field.value">
                             </div>
                         </div>
                     </div>

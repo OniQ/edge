@@ -23,7 +23,7 @@ require.config({
         'edge': {
             deps: ['ctrl/mainController', 'ctrl/componentModalController',
                 'ctrl/inputModalController',
-                'ui-bootstrap', 'dragdrop', 'lib/kendo.all.min',
+                'ui-bootstrap', 'dragdrop', //'lib/kendo.all.min',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
                 'app/directives/edgeToolbar', 'app/directives/edgeDisplay',
                 'app/directives/utilDirectives', 'lib/angular-local-storage',

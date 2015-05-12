@@ -21,8 +21,6 @@ define(['edgeDirectives'], function(edgeDirectives){
 
                 $scope.synchConfig = function(opt){
                     var val = opt.value;
-                    if (opt.type == "number")
-                        val = parseInt(opt.value);
                     $scope.configuration[opt.name] = val;
                 };
 
