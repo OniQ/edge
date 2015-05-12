@@ -201,7 +201,7 @@ function edgeCore() {
     function checkKey(ev){
         switch(ev.keyCode){
             case KEYCODES['1']:{
-                createSquares();
+                //createSquares();
                 break;
             }
             case KEYCODES['2']:

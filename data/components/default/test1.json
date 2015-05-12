@@ -7,7 +7,12 @@
   "height": 30,
   "scale": 1,
   "control": true,
-  "list": ["ok", "go"],
+  "list":{
+    "name":"list",
+    "type":"array",
+    "options":["1","2","3"],
+    "selected": "1"
+  },
   "level": 1,
   "appearance": {
     "name": "Buster Bunny.png",

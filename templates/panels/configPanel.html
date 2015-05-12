@@ -44,24 +44,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="config-switch" ng-switch-when="array">
-                        <div class="row form-group">
-                            <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
-                                <button class="pull-right btn btn-xs btn-danger"
-                                        ng-click="removeField(field, $event)">
-                                    <i class="glyphicon glyphicon-minus"></i>
-                                </button>
-                            </div>
-                            <label class="control-label col-xs-4">{{field.name}}:</label>
-                            <div class="col-xs-6">
-                                <select kendo-drop-down-list ng-model="field.value"
-                                        k-data-source="field.options"
-                                        k-data-text-field="'text'" k-data-value-field="'value'"
-                                        ng-blur="synchConfig(field)">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     <div class="config-switch" ng-switch-when="number">
                         <div class="row form-group">
                             <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
@@ -129,6 +111,22 @@
                                                 </button>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-switch-when="array">
+                                <div class="row form-group">
+                                    <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
+                                        <button class="pull-right btn btn-xs btn-danger"
+                                                ng-click="removeField(field, $event)">
+                                            <i class="glyphicon glyphicon-minus"></i>
+                                        </button>
+                                    </div>
+                                    <label class="control-label col-xs-4">{{field.name}}:</label>
+                                    <div class="col-xs-6">
+                                        <select ng-blur="synchConfig(field)" ng-model="field.value.selected">
+                                            <option ng-repeat="option in field.value.options">{{option}}</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

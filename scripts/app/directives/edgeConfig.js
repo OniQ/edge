@@ -51,24 +51,11 @@ define(['edgeDirectives'], function(edgeDirectives){
                         $scope.fields = [];
 
                         for (field in $scope.configuration){
-                            if (angular.isArray($scope.configuration[field])){
-                                $scope.fields.push({
-                                    name: field,
-                                    type: 'array',
-                                    options: getDropDownOptions($scope.configuration[field]),
-                                    value: $scope.configuration[field]
-                                });
-                                var lastField = $scope.fields[$scope.fields.length-1];
-                                lastField.value = $scope.configuration[field][0].value;
-                                $scope.configuration[lastField.name] = lastField.value;
-                            }
-                            else {
-                                $scope.fields.push({
-                                    name: field,
-                                    type: typeof($scope.configuration[field]),
-                                    value: $scope.configuration[field]
-                                });
-                            }
+                            $scope.fields.push({
+                                name: field,
+                                type: typeof($scope.configuration[field]),
+                                value: $scope.configuration[field]
+                            });
                         }
 
                         var columnsCount = Math.ceil($scope.fields.length / 4.0);

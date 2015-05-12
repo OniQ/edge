@@ -50,8 +50,14 @@ define(['edgeCtrl'], function(edgeCtrl){
 
             $scope.add = function(model){
                 if (data.configuration) {
-                    if (model.type === 'list')
-                        data.configuration[model.name] = model.values;
+                    if (model.type === 'list') {
+                        data.configuration[model.name] = {
+                            name: model.name,
+                            type: 'array',
+                            options: model.values,
+                            selected: model.values[0]
+                        };
+                    }
                     else if (model.type === 'sprite'){
                         if (model.files && model.files.length){
                             var file = model.files[0];
