@@ -19,6 +19,13 @@ define(['edgeDirectives'], function(edgeDirectives){
                     return array;
                 }
 
+                $scope.synchConfig = function(opt){
+                    var val = opt.value;
+                    if (opt.type == "number")
+                        val = parseInt(opt.value);
+                    $scope.configuration[opt.name] = val;
+                };
+
                 $scope.removeField = function(field, e){
                     if (e) {
                         e.preventDefault();

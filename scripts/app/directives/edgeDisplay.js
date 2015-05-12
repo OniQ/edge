@@ -13,6 +13,22 @@ define(['edgeDirectives'], function(edgeDirectives){
                         obj.x = obj.x - img.width / 2;
                         obj.y = obj.y - img.height / 2;
                     };
+
+                    $scope.getResourceTask = function(obj, key){
+                        var deferred = $q.defer();
+                        fileUploadService.download(obj[key].name).then(function (file) {
+                            resourceService.addResource(file.name, "sprite", file).then(function (image) {
+                                $scope.appendImage(obj, key, image);
+                                deferred.resolve();
+                            }, function () {
+                                deferred.reject();
+                            })
+                        }, function () {
+                            deferred.reject();
+                        });
+                        return deferred.promise;
+                    };
+
                     $scope.dropComponent = function(){
                         var dropDeferred = $q.defer();
                         dropDeferred.reject();
@@ -27,18 +43,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                                     $scope.appendImage(obj, key, img);
                                 }
                                 else {
-                                    var deferred = $q.defer();
-                                    promiseChains.push(deferred.promise);
-                                    fileUploadService.download(obj[key].name).then(function (file) {
-                                        resourceService.addResource(file.name, "sprite", file).then(function (image) {
-                                            $scope.appendImage(obj, key, image);
-                                            deferred.resolve();
-                                        }, function () {
-                                            deferred.reject();
-                                        })
-                                    }, function () {
-                                        deferred.reject();
-                                    });
+                                    promiseChains.push($scope.getResourceTask(obj, key));
                                 }
                             }
                         }

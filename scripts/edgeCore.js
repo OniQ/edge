@@ -116,12 +116,19 @@ function edgeCore() {
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
 
+    function physics(obj){
+        if (obj.physics){
+            obj.y += obj.weight || 1;
+        }
+    }
+
     function run(){
         //if (loaded) {
         for(var i = 0; i < edge.gameObjects.length; i++) {
             var obj = edge.gameObjects[i];
             if(obj.appearance && obj.appearance.image) {
                 render(obj.appearance.image, obj.x, obj.y, obj.appearance.image.width, obj.appearance.image.height);
+                physics(obj);
             }
         }
         //}
