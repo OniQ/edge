@@ -48,7 +48,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         delete $scope.categories['default'];
                     }
                     else{
-                        if ($scope.configuration && !$scope.configuration['default'])
+                        if ($scope.categories && !$scope.categories['default'])
                             $scope.loadDefault();
                     }
                 });
