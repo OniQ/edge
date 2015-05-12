@@ -48,18 +48,6 @@ function edgeCore() {
         alpha : 1.0
     };
 
-    function run(){
-        //if (loaded) {
-            for(var i = 0; i < edge.gameObjects.length; i++) {
-                var obj = edge.gameObjects[i];
-                if(obj.appearance && obj.appearance.image) {
-                    render(obj.appearance.image, obj.x, obj.y, obj.appearance.image.width, obj.appearance.image.height);
-                }
-            }
-        //}
-        window.requestAnimationFrame(run);
-    }
-
     function clear(){
         gl.clear(gl.COLOR_BUFFER_BIT);
         initViewport();
@@ -126,6 +114,18 @@ function edgeCore() {
 
         // Draw the rectangle.
         gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
+
+    function run(){
+        //if (loaded) {
+        for(var i = 0; i < edge.gameObjects.length; i++) {
+            var obj = edge.gameObjects[i];
+            if(obj.appearance && obj.appearance.image) {
+                render(obj.appearance.image, obj.x, obj.y, obj.appearance.image.width, obj.appearance.image.height);
+            }
+        }
+        //}
+        window.requestAnimationFrame(run);
     }
 
     this.turnOn = function(_canvas){
