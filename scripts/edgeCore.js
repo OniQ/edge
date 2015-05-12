@@ -168,8 +168,20 @@ function edgeCore() {
     /******* Accessible Data ******/
     this.gameObjects = [];
 
+    function compareByZ(a,b) {
+        if (!a.z)
+            return 1;
+        if (a.z < b.z)
+            return -1;
+        if (a.z > b.z)
+            return 1;
+        return 0;
+    }
+
+
     this.attachObject = function(obj){
         edge.gameObjects.push(obj);
+        edge.gameObjects.sort(compareByZ);
     };
 
     this.mouseState = {
