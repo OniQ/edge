@@ -123,30 +123,47 @@ function edgeCore() {
     function control(obj){
         if (!obj || !obj.controllable)
             return;
-        if (pressed(KEYCODES['right_arrow']))
+        if (pressed(KEYCODES['right_arrow']) && !obj.preventRight)
             obj.x += obj.speed || 1;
-        if (pressed(KEYCODES['left_arrow']))
+        if (pressed(KEYCODES['left_arrow']) && !obj.preventLeft)
             obj.x -= obj.speed || 1;
-        if (pressed(KEYCODES['down_arrow']))
+        if (pressed(KEYCODES['down_arrow']) && !obj.preventDown)
             obj.y += obj.speed || 1;
-        if (pressed(KEYCODES['up_arrow']))
+        if (pressed(KEYCODES['up_arrow']) && !obj.preventUp)
             obj.y -= obj.speed || 1;
     }
 
     function physics(obj){
         if (obj.physics) {
             //fall
-            obj.y += obj.weight || 1;
+            //obj.y += obj.weight || 1;
             //collision
             for (var i = 0; i < edge.gameObjects.length; i++) {
-                if (edge.gameObjects[i] != obj) {
-                    detectCollision(obj, edge.gameObjects[i], function () {
+                var targetObj = edge.gameObjects[i];
+                if (targetObj != obj) {
+                    detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
 
                     })
+                    preventCollisionMovement(obj, targetObj);
                 }
             }
         }
         control(obj);
+    }
+
+    function preventCollisionMovement(obj1, obj2){
+        if (obj1.x + obj1.width > obj2.x
+            && obj1.x + obj1.width  < obj2.x + obj2.width
+            && obj1.y < obj2.y + obj2.height
+            && obj1.y + obj1.height > obj2.y
+        ) {
+            obj1.preventRight = true;
+            obj2.preventLeft = true;
+        }
+        else {
+            obj1.preventRight = false;
+            obj2.preventLeft = false;
+        }
     }
 
     var selectedObject;
@@ -170,7 +187,7 @@ function edgeCore() {
             rect1.x + rect1.width > rect2.x &&
             rect1.y < rect2.y + rect2.height &&
             rect1.height + rect1.y > rect2.y) {
-                onCollision();
+                onCollision(rect1, rect2);
         }
     }
 
