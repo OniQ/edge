@@ -12,6 +12,8 @@ define(['edgeDirectives'], function(edgeDirectives){
                         obj[key].image = img;
                         obj.x = obj.x - img.width / 2;
                         obj.y = obj.y - img.height / 2;
+                        obj.width = obj.width || img.width;
+                        obj.height = obj.height || img.height;
                     };
 
                     $scope.getResourceTask = function(obj, key){

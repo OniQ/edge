@@ -3,7 +3,7 @@
     </div>
     <div class="row" id="middleApp">
         <div class="col-xs-9" id="displayWrapper" ng-class="{'h100': isResizable}">
-            <canvas class="middleComponent" width="{{canvasWidth}}" height="{{canvasHeight}}"
+            <canvas ng-focus="displayFocused = true" class="middleComponent" width="{{canvasWidth}}" height="{{canvasHeight}}"
                     id="displayWindow" edge-display ng-class="{'fullScreen': isResizable}"
                     jqyoui-droppable="{
                         beforeDrop: 'dropComponent()',

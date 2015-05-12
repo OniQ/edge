@@ -117,8 +117,41 @@ function edgeCore() {
     }
 
     function physics(obj){
-        if (obj.physics){
+        if (obj.physics) {
+            //fall
             obj.y += obj.weight || 1;
+            //collision
+            for (var i = 0; i < edge.gameObjects.length; i++) {
+                if (edge.gameObjects[i] != obj) {
+                    detectCollision(obj, edge.gameObjects[i], function () {
+
+                    })
+                }
+            }
+        }
+    }
+
+    var controllableObject;
+
+    function setSelectedObject(x, y){
+        for(var i = 0; i < edge.gameObjects.length; i++) {
+            var obj = edge.gameObjects[i];
+            if (x >= obj.x && x <= obj.x + obj.width
+                && y >= obj.y && y <= obj.y + obj.height) {
+                controllableObject = obj;
+                edge.mouseState.selectedObject = obj.name;
+                return;
+            }
+            controllableObject = null;
+        }
+    }
+
+    function detectCollision(rect1, rect2, onCollision) {
+        if (rect1.x < rect2.x + rect2.width &&
+            rect1.x + rect1.width > rect2.x &&
+            rect1.y < rect2.y + rect2.height &&
+            rect1.height + rect1.y > rect2.y) {
+                onCollision();
         }
     }
 
@@ -127,7 +160,7 @@ function edgeCore() {
         for(var i = 0; i < edge.gameObjects.length; i++) {
             var obj = edge.gameObjects[i];
             if(obj.appearance && obj.appearance.image) {
-                render(obj.appearance.image, obj.x, obj.y, obj.appearance.image.width, obj.appearance.image.height);
+                render(obj.appearance.image, obj.x, obj.y, obj.width, obj.height);
                 physics(obj);
             }
         }
@@ -187,7 +220,8 @@ function edgeCore() {
     this.mouseState = {
         mouseDown: false,
         x: null,
-        y: null
+        y: null,
+        selectedObject: null
     };
     /******* Util functions ******/
     function cloneObject(obj) {
@@ -212,6 +246,17 @@ function edgeCore() {
 
     function checkKey(ev){
         switch(ev.keyCode){
+            case KEYCODES['right_arrow']:
+            case KEYCODES['left_arrow']:
+            case KEYCODES['up_arrow']:
+            case KEYCODES['down_arrow']:
+                if (controllableObject) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                }
+                break;
+        }
+        switch(ev.keyCode){
             case KEYCODES['1']:{
                 //createSquares();
                 break;
@@ -219,13 +264,29 @@ function edgeCore() {
             case KEYCODES['2']:
             {
                 bkgColor = {
-                    r : 0.3,
-                    g : 0.2,
-                    b : 0.7,
-                    alpha : 1.0
+                    r: 0.3,
+                    g: 0.2,
+                    b: 0.7,
+                    alpha: 1.0
                 };
                 break;
             }
+            case KEYCODES['right_arrow']:
+                if (controllableObject)
+                    controllableObject.x += controllableObject.speed || 1;
+                break;
+            case KEYCODES['left_arrow']:
+                if (controllableObject)
+                    controllableObject.x -= controllableObject.speed || 1;
+                break;
+            case KEYCODES['up_arrow']:
+                if (controllableObject)
+                    controllableObject.y -= controllableObject.speed || 1;
+                break;
+            case KEYCODES['down_arrow']:
+                if (controllableObject)
+                    controllableObject.y += controllableObject.speed || 1;
+                break;
         }
     }
 
@@ -233,8 +294,7 @@ function edgeCore() {
 
     function handleMouseDown(event) {
         edge.mouseState.mouseDown = true;
-        lastMouseX = event.clientX;
-        lastMouseY = event.clientY;
+        setSelectedObject(edge.mouseState.x, edge.mouseState.y);
     }
 
     function handleMouseUp(event) {
