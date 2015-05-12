@@ -13,9 +13,8 @@
             <div class="row form-group">
                 <label class="control-label col-xs-2">Type:</label>
                 <div class="col-xs-8">
-                    <select kendo-drop-down-list ng-model="model.type"
-                            k-data-source="types"
-                            k-data-text-field="'text'" k-data-value-field="'value'">
+                    <select ng-model="model.type">
+                        <option ng-repeat="type in types">{{type}}</option>
                     </select>
                 </div>
             </div>
@@ -61,8 +60,8 @@
                     <div class="row form-group">
                         <label class="control-label col-xs-2">Value:</label>
                         <div class="col-xs-8">
-                            <input kendo-numeric-text-box k-min="0" k-format="'0.'"
-                                   k-ng-model="model.fieldValue"/>
+                            <input type="number"
+                                   ng-model="model.fieldValue"/>
                         </div>
                     </div>
                 </div>

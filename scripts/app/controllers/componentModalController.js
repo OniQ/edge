@@ -6,26 +6,7 @@ define(['edgeCtrl'], function(edgeCtrl){
     edgeCtrl.controller('componentModalController', ['$scope', 'data', 'fileUploadService', 'resourceService',
         function ($scope, data, fileUploadService, resourceService) {
             $scope.types = [
-                {
-                    text: 'list',
-                    value: 'list'
-                },
-                {
-                    text: 'boolean',
-                    value: 'boolean'
-                },
-                {
-                    text: 'number',
-                    value: 'number'
-                },
-                {
-                    text: 'string',
-                    value: 'string'
-                },
-                {
-                    text: 'sprite',
-                    value: 'sprite'
-                }
+                'list', 'boolean', 'number',  'string', 'sprite'
             ];
 
             $scope.model = {
