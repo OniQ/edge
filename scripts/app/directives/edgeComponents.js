@@ -77,7 +77,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         });
                     }
                     modalInstance.result.then(function(response){
-                        if ($scope.configuration[response].type == 'sprite')
+                        if (angular.isObject($scope.configuration[response]) && $scope.configuration[response].type == 'sprite')
                             $scope.loadThumbnail($scope.configuration[response]);
                     });
                 };
