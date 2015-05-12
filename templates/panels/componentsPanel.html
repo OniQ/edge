@@ -3,20 +3,20 @@
                 beforeDrop: 'beforeDrop(category)',
                 multiple: true
              }"
-             data-drop="$index != 0">
+             data-drop="category != 'default'">
         <accordion-heading>
             <div class = "row">
             <div class="col-xs-6">
                 {{category}}
             </div>
             <div class="col-xs-6">
-                <button class="pull-right btn btn-xs btn-danger" ng-if="$index != 0" ng-click="removeCategory(category, $event)">
+                <button class="pull-right btn btn-xs btn-danger" ng-if="category != 'default'" ng-click="removeCategory(category, $event)">
                     <i class="glyphicon glyphicon-minus"></i>
                 </button>
             </div>
             </div>
         </accordion-heading>
-        <div class="col-xs-12" ng-if="components.length == 0 && $index != 0">
+        <div class="col-xs-12" ng-if="components.length == 0 && category != 'default'">
             <button type="button" class="btn btn-success btn-xs" ng-click="addNewComponent(category)">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </button>
@@ -41,12 +41,12 @@
                     {{component.name}}
                 </div>
             </div>
-            <div class="col-xs-1" ng-if="$parent.$index != 0">
+            <div class="col-xs-1" ng-if="category != 'default'">
                 <button type="button" class="btn btn-danger btn-xs" ng-click="removeComponent(category, component)">
                     <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                 </button>
             </div>
-            <div class="col-xs-1" ng-if="$last && $parent.$index != 0">
+            <div class="col-xs-1" ng-if="$last && category != 'default'">
                 <button type="button" class="btn btn-success btn-xs" ng-click="addNewComponent(category)">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button>
