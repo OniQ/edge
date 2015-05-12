@@ -37,11 +37,11 @@ define(['edgeDirectives'], function(edgeDirectives){
                 };
 
                 var edgeStorage = localStorageService.get('categories');
-                if (!edgeStorage) {
+                if (!edgeStorage)
                     localStorageService.set('categories', {});
-                    $scope.loadDefault();
-                }
                 $scope.unbind = localStorageService.bind($scope, 'categories');
+                if (!edgeStorage)
+                    $scope.loadDefault();
 
                 $scope.$watch('isDefaultComponentsHidden', function(val){
                     if (val){
