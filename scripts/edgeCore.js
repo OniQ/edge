@@ -116,6 +116,23 @@ function edgeCore() {
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
 
+    function pressed(key){
+        return edge.pressedKeys.indexOf(key) != -1;
+    }
+
+    function control(obj){
+        if (!obj || !obj.controllable)
+            return;
+        if (pressed(KEYCODES['right_arrow']))
+            obj.x += obj.speed || 1;
+        if (pressed(KEYCODES['left_arrow']))
+            obj.x -= obj.speed || 1;
+        if (pressed(KEYCODES['down_arrow']))
+            obj.y += obj.speed || 1;
+        if (pressed(KEYCODES['up_arrow']))
+            obj.y -= obj.speed || 1;
+    }
+
     function physics(obj){
         if (obj.physics) {
             //fall
@@ -129,20 +146,22 @@ function edgeCore() {
                 }
             }
         }
+        control(obj);
     }
 
-    var controllableObject;
+    var selectedObject;
 
     function setSelectedObject(x, y){
         for(var i = 0; i < edge.gameObjects.length; i++) {
             var obj = edge.gameObjects[i];
             if (x >= obj.x && x <= obj.x + obj.width
                 && y >= obj.y && y <= obj.y + obj.height) {
-                controllableObject = obj;
-                edge.mouseState.selectedObject = obj.name;
+                selectedObject = obj;
+                obj.controllable = true;
                 return;
             }
-            controllableObject = null;
+            selectedObject = null;
+            obj.controllable = false;
         }
     }
 
@@ -200,6 +219,7 @@ function edgeCore() {
     }
     /******* Accessible Data ******/
     this.gameObjects = [];
+    this.pressedKeys = [];
 
     function compareByZ(a,b) {
         if (!a.z)
@@ -220,8 +240,7 @@ function edgeCore() {
     this.mouseState = {
         mouseDown: false,
         x: null,
-        y: null,
-        selectedObject: null
+        y: null
     };
     /******* Util functions ******/
     function cloneObject(obj) {
@@ -238,6 +257,14 @@ function edgeCore() {
     }
     /******* Events ******/
 
+    function onKeyUp(ev){
+        edge.pressedKeys.splice(edge.pressedKeys.indexOf(ev.keyCode), 1);
+    }
+
+    function onKeyPress(ev){
+        edge.pressedKeys.push(ev.keyCode);
+    }
+
     function onKeyDown(ev){
         checkKey(ev);
         if (edgeEditor)
@@ -250,10 +277,12 @@ function edgeCore() {
             case KEYCODES['left_arrow']:
             case KEYCODES['up_arrow']:
             case KEYCODES['down_arrow']:
-                if (controllableObject) {
+                if (selectedObject) {
                     ev.preventDefault();
-                    ev.stopPropagation();
+                    //ev.stopPropagation();
                 }
+                if (!pressed(ev.keyCode))
+                    edge.pressedKeys.push(ev.keyCode);
                 break;
         }
         switch(ev.keyCode){
@@ -271,22 +300,6 @@ function edgeCore() {
                 };
                 break;
             }
-            case KEYCODES['right_arrow']:
-                if (controllableObject)
-                    controllableObject.x += controllableObject.speed || 1;
-                break;
-            case KEYCODES['left_arrow']:
-                if (controllableObject)
-                    controllableObject.x -= controllableObject.speed || 1;
-                break;
-            case KEYCODES['up_arrow']:
-                if (controllableObject)
-                    controllableObject.y -= controllableObject.speed || 1;
-                break;
-            case KEYCODES['down_arrow']:
-                if (controllableObject)
-                    controllableObject.y += controllableObject.speed || 1;
-                break;
         }
     }
 
@@ -310,6 +323,8 @@ function edgeCore() {
     }
 
     window.onkeydown = onKeyDown;
+    window.onkeyup = onKeyUp;
+    window.onkeypress = onKeyPress;
 }
 /************** Constants **************/
 var KEYCODES = {
