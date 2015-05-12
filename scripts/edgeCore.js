@@ -143,7 +143,7 @@ function edgeCore() {
                 if (targetObj != obj) {
                     detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
 
-                    })
+                    });
                     preventCollisionMovement(obj, targetObj);
                 }
             }
@@ -152,17 +152,29 @@ function edgeCore() {
     }
 
     function preventCollisionMovement(obj1, obj2){
-        if (obj1.x + obj1.width > obj2.x
-            && obj1.x + obj1.width  < obj2.x + obj2.width
-            && obj1.y < obj2.y + obj2.height
-            && obj1.y + obj1.height > obj2.y
+        if (obj1.x + obj1.width >= obj2.x
+            && obj1.x + obj1.width  <= obj2.x + obj2.width
+            && obj1.y <= obj2.y + obj2.height - 1
+            && obj1.y + obj1.height - 1 >= obj2.y
         ) {
-            obj1.preventRight = true;
             obj2.preventLeft = true;
+            obj1.preventRight = true;
         }
         else {
-            obj1.preventRight = false;
             obj2.preventLeft = false;
+            obj1.preventRight = false;
+        }
+        if (obj1.y + obj1.height >= obj2.y
+            && obj1.y + obj1.height  <= obj2.y + obj2.height
+            && obj1.x + obj1.width - 1 >= obj2.x
+            && obj1.x <= obj2.x + obj2.width - 1
+        ) {
+            obj1.preventDown = true;
+            obj2.preventUp = true;
+        }
+        else {
+            obj1.preventDown = false;
+            obj2.preventUp = false;
         }
     }
 
