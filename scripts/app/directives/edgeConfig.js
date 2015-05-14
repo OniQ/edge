@@ -60,14 +60,15 @@ define(['edgeDirectives'], function(edgeDirectives){
                                     return {
                                         src: image.src,
                                         height: image.height,
-                                        width: image.width
+                                        width: image.width,
+                                        collisionBoxes: $scope.configuration["collisionBoxes"]
                                     }
                                 }
                             }
                         });
 
-                        modalInstance.result.then(function(type){
-
+                        modalInstance.result.then(function(collisionBoxes){
+                            $scope.configuration["collisionBoxes"] = collisionBoxes;
                         });
                     }, function(){
                         $scope.openingCollisionModal = false;

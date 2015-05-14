@@ -94,13 +94,6 @@ function edgeCore() {
         ty1 = ty1/parseFloat(image.height);
         tx2 = tx2/parseFloat(image.width);
         ty2 = ty2/parseFloat(image.height);
-        var full = [
-            0.0,  0.0,
-            1.0,  0.0,
-            0.0,  1.0,
-            0.0,  1.0,
-            1.0,  0.0,
-            1.0,  1.0];
         var textureMap = [
             tx1,  ty1,
             tx2,  ty1,
@@ -195,17 +188,18 @@ function edgeCore() {
     function physics(obj){
         if (obj.physics) {
             //fall
-            obj.y += obj.speed || 1;
-            if (!isDirected(obj, DOWN))
-                obj.movementDirection += DOWN;
+            //obj.y += obj.speed || 1;
+            //if (!isDirected(obj, DOWN))
+            //    obj.movementDirection += DOWN;
         }
         //collision
         if (obj.solid) {
             for (var i = 0; i < edge.gameObjects.length; i++) {
                 var targetObj = edge.gameObjects[i];
                 if (targetObj != obj) {
-                    detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
+                    detectCollision(obj, targetObj, function (r1, r2, o) {
                         if (r2.solid) {
+                            //preventStuck(r1, o);
                             if (isDirected(r1, RIGHT))
                                 r1.x -= r1.speed || 1;
                             if (isDirected(r1, UP))
@@ -242,13 +236,72 @@ function edgeCore() {
         }
     }
 
+    //function preventStuck(obj, o){
+    //    if (obj.physics) {
+    //        if (o[0].x1 - obj.speed < o[1].x1 &&
+    //            o[0].x2 - obj.speed > o[1].x1 && ((o[0].y1 > o[1].y1 && o[0].y1 < o[1].y2)
+    //            || (o[0].y2 > o[1].y1 && o[0].y1 < o[1].y2))) {
+    //            obj.x--;
+    //        }
+    //        if (o[0].y2 - obj.speed < o[1].y2 &&
+    //            o[0].y2 - obj.speed > o[1].y1 && ( (o[0].x1 > o[1].x1 && o[0].x1 < o[1].x2)
+    //            || (o[0].x2 < o[1].x2 && o[0].x2 > o[1].x1))) {
+    //            obj.y--;
+    //        }
+    //        if (o[0].x2 + obj.speed > o[1].x2 &&
+    //            o[0].x1 + obj.speed < o[1].x2 && ((o[0].y2 > o[1].y2 && o[0].y2 < o[1].y1)
+    //            || (o[0].y1 > o[1].y2 && o[0].y2 < o[1].y1))) {
+    //            obj.x++;
+    //        }
+    //        if (o[0].y1 + obj.speed > o[1].y1 &&
+    //            o[0].y1 + obj.speed < o[1].y2 && ( (o[0].x2 > o[1].x2 && o[0].x2 < o[1].x1)
+    //            || (o[0].x1 < o[1].x1 && o[0].x1 > o[1].x2))) {
+    //            obj.y++;
+    //        }
+    //    }
+    //}
+
+    function fillBounds(obj, o){
+        if (obj.collisionBoxes && obj.collisionBoxes[obj.animation] && obj.collisionBoxes[obj.animation]){
+            var x, y;
+            var collisionBox = obj.collisionBoxes[obj.animation];
+            x = obj.animation * obj.width;
+            y = 0;
+            while(x >= obj.appearance.image.width){
+                x -= obj.appearance.image.width;
+                y += obj.height;
+            }
+
+            var x1 = obj.x + collisionBox.left - x;
+            var y1 = obj.y + collisionBox.top - y;
+
+            o.push({
+                x1: x1,
+                y1: y1,
+                x2: x1 + collisionBox.width,
+                y2: y1 + collisionBox.height
+            });
+        }
+        else{
+            o.push({
+                x1: obj.x,
+                y1: obj.y,
+                x2: obj.x + obj.width,
+                y2: obj.y + obj.height
+            });
+        }
+    }
+
     function detectCollision(obj1, obj2, onCollision, onCollisionEnter, onCollisionExit) {
-        if (obj1.x <= obj2.x + obj2.width &&
-            obj1.x + obj1.width >= obj2.x &&
-            obj1.y <= obj2.y + obj2.height &&
-            obj1.height + obj1.y >= obj2.y) {
-                onCollision(obj1, obj2);
-            if (obj1.collide == false){
+        var o = [];
+        fillBounds(obj1, o);
+        fillBounds(obj2, o);
+        if (o[0].x1 <= o[1].x2 &&
+            o[0].x2 >= o[1].x1 &&
+            o[0].y1 <= o[1].y2 &&
+            o[0].y2 >= o[1].y1) {
+            onCollision(obj1, obj2, o);
+            if (obj1.collide == false) {
                 onCollisionEnter();
             }
             obj1.collide = obj2;

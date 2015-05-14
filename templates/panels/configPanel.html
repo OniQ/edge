@@ -98,6 +98,7 @@
                                                     <span class="glyphicon glyphicon-refresh"
                                                           aria-hidden="true"></span>
                                                 </button>
+                                                {{field.value.name}}
                                                 <button class="setCollisionBoxBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
                                                         tooltip="Set sprite collision box" ng-hide="openingCollisionModal"
                                                         class="btn btn-default btn-xs" ng-click="setCollisionBox(field.value)">
@@ -105,7 +106,6 @@
                                                           aria-hidden="true"></span>
                                                 </button>
                                                 <div class="throbber" ng-show="openingCollisionModal"></div>
-                                                {{field.value.name}}
                                             </div>
                                             <div ng-switch-when="failed">
                                                 <span class="glyphicon glyphicon-remove-circle"></span>
