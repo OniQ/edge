@@ -129,6 +129,8 @@ function edgeCore() {
     function control(obj){
         if (!obj || !obj.controllable)
             return;
+        //if (obj.collide)
+        //    return;
         if (pressed(KEYCODES['right_arrow'])) {
             obj.x += obj.speed || 1;
             if (!isDirected(obj, RIGHT))
@@ -165,31 +167,32 @@ function edgeCore() {
     function physics(obj){
         if (obj.physics) {
             //fall
-            obj.y += obj.weight || 1;
+            obj.y += obj.speed || 1;
             if (!isDirected(obj, DOWN))
                 obj.movementDirection += DOWN;
         }
         //collision
-        for (var i = 0; i < edge.gameObjects.length; i++) {
-            var targetObj = edge.gameObjects[i];
-            if (targetObj != obj) {
-                detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
-                    if (isDirected(r1, RIGHT))
-                        r1.x -= r1.speed || 1;
-                    if (isDirected(r1, UP))
-                        r1.y += r1.speed || 1;
-                    if (isDirected(r1, LEFT))
-                        r1.x += r1.speed || 1;
-                    if (isDirected(r1, DOWN))
-                        r1.y -= r1.speed || 1;
-                }, function(){
-                    //console.log('enterCollision');
-                }, function(){
-                    //console.log('leaveCollision');
-                });
+        if (obj.solid) {
+            for (var i = 0; i < edge.gameObjects.length; i++) {
+                var targetObj = edge.gameObjects[i];
+                if (targetObj != obj) {
+                    detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
+                        if (isDirected(r1, RIGHT))
+                            r1.x -= r1.speed || 1;
+                        if (isDirected(r1, UP))
+                            r1.y += r1.speed || 1;
+                        if (isDirected(r1, LEFT))
+                            r1.x += r1.speed || 1;
+                        if (isDirected(r1, DOWN))
+                            r1.y -= r1.speed || 1;
+                    }, function () {
+                        //console.log('enterCollision');
+                    }, function () {
+                        //console.log('leaveCollision');
+                    });
+                }
             }
         }
-        control(obj);
     }
 
     var selectedObject;
@@ -210,33 +213,39 @@ function edgeCore() {
     }
 
     function detectCollision(obj1, obj2, onCollision, onCollisionEnter, onCollisionExit) {
-        if (obj1.x < obj2.x + obj2.width &&
-            obj1.x + obj1.width > obj2.x &&
-            obj1.y < obj2.y + obj2.height &&
-            obj1.height + obj1.y > obj2.y) {
+        if (obj1.x <= obj2.x + obj2.width &&
+            obj1.x + obj1.width >= obj2.x &&
+            obj1.y <= obj2.y + obj2.height &&
+            obj1.height + obj1.y >= obj2.y) {
                 onCollision(obj1, obj2);
             if (obj1.collide == false){
                 onCollisionEnter();
             }
-            obj1.collide = true;
+            obj1.collide = obj2;
         }
         else{
-            if (obj1.collide == true)
+            if (obj1.collide)
                 onCollisionExit();
             obj1.collide = false;
         }
     }
 
-    function run(){
-        //if (loaded) {
+    function forEachObjectAction(action){
         for(var i = 0; i < edge.gameObjects.length; i++) {
-            var obj = edge.gameObjects[i];
-            if(obj.appearance && obj.appearance.image) {
-                render(obj.appearance.image, obj.x, obj.y, obj.width, obj.height);
-                physics(obj);
-            }
+                var obj = edge.gameObjects[i];
+                action(obj);
         }
-        //}
+    }
+
+    function run(){
+        forEachObjectAction(
+            function(obj){
+                if(obj.appearance && obj.appearance.image) {
+                    render(obj.appearance.image, obj.x, obj.y, obj.width, obj.height);
+                    control(obj);
+                    physics(obj);
+                }
+            });
         window.requestAnimationFrame(run);
     }
 
