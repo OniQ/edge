@@ -2,7 +2,7 @@
  * Created by OniQ on 22/04/15.
  */
 define(['edgeDirectives'], function(edgeDirectives){
-    edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService){
+    edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService, $interval, $timeout){
         return {
             templateUrl: "templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
@@ -46,15 +46,19 @@ define(['edgeDirectives'], function(edgeDirectives){
                     });
                 };
 
-                $scope.$watch('configuration', function(newVal, oldVal){
-                    if (newVal){
+                document.addEventListener("edgeObjectSelected", function(e) {
+                    $scope.configuration = e.detail;
+                });
+
+                function processConfig(config){
+                    if (config) {
                         $scope.fields = [];
 
-                        for (field in $scope.configuration){
+                        for (field in config) {
                             $scope.fields.push({
                                 name: field,
-                                type: typeof($scope.configuration[field]),
-                                value: $scope.configuration[field]
+                                type: typeof(config[field]),
+                                value: config[field]
                             });
                         }
 
@@ -62,11 +66,15 @@ define(['edgeDirectives'], function(edgeDirectives){
                         var minimum = Math.min(4, columnsCount);
                         $scope.colClass = 'col-xs-' + 12 / minimum;
                         $scope.columns = [];
-                        var size = $scope.fields.length/columnsCount;
+                        var size = $scope.fields.length / columnsCount;
                         while ($scope.fields.length > 0)
                             $scope.columns.push($scope.fields.splice(0, size));
                     }
-                }, true);
+                }
+
+                $scope.$watch('configuration', function(newVal, oldVal){
+                    processConfig(newVal);
+                });
             }
         };
     });

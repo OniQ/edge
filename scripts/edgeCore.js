@@ -4,8 +4,12 @@
 var edge = new edgeCore();
 
 function edgeCore() {
+
     var gl = null;
     var canvas = null;
+    var program;
+    this.selectedObject = null;
+
     function initWebGL(canvas) {
         try {
             // Try to grab the standard context. If it fails, fallback to experimental.
@@ -25,7 +29,7 @@ function edgeCore() {
         return Math.floor(Math.random() * range);
     }
 
-    function setRectangle(gl, x, y, width, height) {
+    function setRectangle(x, y, width, height) {
         var x1 = x;
         var x2 = x + width;
         var y1 = y;
@@ -38,8 +42,6 @@ function edgeCore() {
             x2, y1,
             x2, y2]), gl.STATIC_DRAW);
     }
-
-    var program;
 
     var bkgColor = {
         r : 0.0,
@@ -110,7 +112,7 @@ function edgeCore() {
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
         // Set a rectangle the same size as the image.
-        setRectangle(gl, x1, y1, x2, y2);
+        setRectangle(x1, y1, x2, y2);
 
         // Draw the rectangle.
         gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -177,14 +179,16 @@ function edgeCore() {
                 var targetObj = edge.gameObjects[i];
                 if (targetObj != obj) {
                     detectCollision(obj, edge.gameObjects[i], function (r1, r2) {
-                        if (isDirected(r1, RIGHT))
-                            r1.x -= r1.speed || 1;
-                        if (isDirected(r1, UP))
-                            r1.y += r1.speed || 1;
-                        if (isDirected(r1, LEFT))
-                            r1.x += r1.speed || 1;
-                        if (isDirected(r1, DOWN))
-                            r1.y -= r1.speed || 1;
+                        if (r2.solid) {
+                            if (isDirected(r1, RIGHT))
+                                r1.x -= r1.speed || 1;
+                            if (isDirected(r1, UP))
+                                r1.y += r1.speed || 1;
+                            if (isDirected(r1, LEFT))
+                                r1.x += r1.speed || 1;
+                            if (isDirected(r1, DOWN))
+                                r1.y -= r1.speed || 1;
+                        }
                     }, function () {
                         //console.log('enterCollision');
                     }, function () {
@@ -195,15 +199,15 @@ function edgeCore() {
         }
     }
 
-    var selectedObject;
-
     function setSelectedObject(x, y){
         for(var i = 0; i < edge.gameObjects.length; i++) {
             var obj = edge.gameObjects[i];
             if (x >= obj.x && x <= obj.x + obj.width
                 && y >= obj.y && y <= obj.y + obj.height) {
-                selectedObject = obj;
+                edge.selectedObject = obj;
                 obj.controllable = true;
+                var event = new CustomEvent("edgeObjectSelected", { "detail": obj });
+                document.dispatchEvent(event);
                 //return;
             }
             else {
@@ -293,12 +297,17 @@ function edgeCore() {
         return 0;
     }
 
-
     this.attachObject = function(obj){
         obj.movementDirection = 0;
         edge.gameObjects.push(obj);
         edge.gameObjects.sort(compareByZ);
     };
+
+    function removeObject(obj){
+        var index = edge.gameObjects.indexOf(obj);
+        if (index != -1)
+            edge.gameObjects.splice(index, 1);
+    }
 
     this.mouseState = {
         mouseDown: false,
@@ -340,7 +349,8 @@ function edgeCore() {
             case KEYCODES['left_arrow']:
             case KEYCODES['up_arrow']:
             case KEYCODES['down_arrow']:
-                if (selectedObject) {
+            case KEYCODES['backspace']:
+                if (edge.selectedObject) {
                     ev.preventDefault();
                     //ev.stopPropagation();
                 }
@@ -363,6 +373,9 @@ function edgeCore() {
                 };
                 break;
             }
+            case KEYCODES['backspace']:
+                removeObject(edge.selectedObject);
+                break;
         }
     }
 
