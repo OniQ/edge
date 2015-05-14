@@ -2,7 +2,7 @@
  * Created by OniQ on 22/04/15.
  */
 define(['edgeDirectives'], function(edgeDirectives){
-    edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService, $interval, $timeout){
+    edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService, $interval, $timeout, $modal){
         return {
             templateUrl: "templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
@@ -34,7 +34,6 @@ define(['edgeDirectives'], function(edgeDirectives){
                 };
 
                 $scope.loadThumbnail = function(sprite){
-                    sprite.status = "loading";
                     fileUploadService.download(sprite.name, "xs").then(function(file){
                         resourceService.addResource("_" + file.name, "sprite", file).then(function(image){
                             sprite.status = "loaded";
@@ -43,6 +42,35 @@ define(['edgeDirectives'], function(edgeDirectives){
                         })
                     }, function(){
                         sprite.status = "failed";
+                    });
+                };
+
+                $scope.setCollisionBox = function(value){
+                    $scope.openingCollisionModal = true;
+                    resourceService.getResource(value.name, "sprite").then(function(image){
+                        scrollTo(0,0);
+                        $scope.openingCollisionModal = false;
+                        var modalInstance = $modal.open({
+                            animation: true,
+                            templateUrl: 'templates/modals/areaSelectModal.html',
+                            controller: 'areaSelectModalController',
+                            //size: 'lg',
+                            resolve: {
+                                data: function () {
+                                    return {
+                                        src: image.src,
+                                        height: image.height,
+                                        width: image.width
+                                    }
+                                }
+                            }
+                        });
+
+                        modalInstance.result.then(function(type){
+
+                        });
+                    }, function(){
+                        $scope.openingCollisionModal = false;
                     });
                 };
 

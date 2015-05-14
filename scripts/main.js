@@ -22,8 +22,8 @@ require.config({
     shim:{
         'edge': {
             deps: ['ctrl/mainController', 'ctrl/componentModalController',
-                'ctrl/inputModalController',
-                'ui-bootstrap', 'dragdrop', //'lib/kendo.all.min',
+                'ctrl/inputModalController', 'ctrl/areaSelectModalController',
+                'ui-bootstrap', 'dragdrop', 'lib/area-select',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
                 'app/directives/edgeToolbar', 'app/directives/edgeDisplay',
                 'app/directives/utilDirectives', 'lib/angular-local-storage',
