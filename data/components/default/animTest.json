@@ -1,0 +1,13 @@
+{
+  "name": "Bunny",
+  "z": 2,
+  "solid": true,
+  "width": 80,
+  "height": 80,
+  "speed": 2,
+  "appearance": {
+    "name": "bunnySprites.png",
+    "type": "sprite",
+    "status": "notLoaded"
+  }
+}

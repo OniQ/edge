@@ -28,7 +28,14 @@ define(['edgeDirectives'], function(edgeDirectives){
                         });
                     });
 
-                    var promiseChains = [chain1, chain2];
+                    var chain3 = $http.get('data/components/default/animTest.json').success(function(testComponent){
+                        defaultComponents.push({
+                            config: testComponent,
+                            name: 'Animation Test'
+                        });
+                    });
+
+                    var promiseChains = [chain1, chain2, chain3];
                     $q.all(promiseChains).then(function(){
                         angular.forEach(defaultComponents, function(component){
                             $scope.categories['default'].push(component);

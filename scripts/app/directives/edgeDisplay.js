@@ -10,10 +10,10 @@ define(['edgeDirectives'], function(edgeDirectives){
                     var canvas = $element.context;
                     $scope.appendImage = function(obj, key, img){
                         obj[key].image = img;
-                        obj.x = obj.x - img.width / 2;
-                        obj.y = obj.y - img.height / 2;
                         obj.width = obj.width || img.width;
                         obj.height = obj.height || img.height;
+                        obj.x = obj.x - obj.width / 2;
+                        obj.y = obj.y - obj.height / 2;
                     };
 
                     $scope.getResourceTask = function(obj, key){

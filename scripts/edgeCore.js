@@ -69,20 +69,46 @@ function edgeCore() {
         gl.enable ( gl.BLEND ) ;
     }
 
-    function render(image, x1, y1, x2, y2) {
+    function render(obj) {
+        var image = obj.appearance.image;
+        var x1 = obj.x;
+        var y1 = obj.y;
+        var x2 = obj.width;
+        var y2 = obj.height;
         // look up where the vertex data needs to go.
         var positionLocation = gl.getAttribLocation(program, "a_position");
         var texCoordLocation = gl.getAttribLocation(program, "a_texCoord");
         // provide texture coordinates for the rectangle.
         var texCoordBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        var tx1, tx2, ty1, ty2;
+        tx1 = obj.animation * obj.width;
+        ty1 = 0;
+        while(tx1 >= image.width){
+            tx1 -= image.width;
+            ty1 += obj.height;
+        }
+        tx2 = tx1 + obj.width;
+        ty2 = ty1 + obj.height;
+        tx1 = tx1/parseFloat(image.width);
+        ty1 = ty1/parseFloat(image.height);
+        tx2 = tx2/parseFloat(image.width);
+        ty2 = ty2/parseFloat(image.height);
+        var full = [
             0.0,  0.0,
             1.0,  0.0,
             0.0,  1.0,
             0.0,  1.0,
             1.0,  0.0,
-            1.0,  1.0]), gl.STATIC_DRAW);
+            1.0,  1.0];
+        var textureMap = [
+            tx1,  ty1,
+            tx2,  ty1,
+            tx1,  ty2,
+            tx1,  ty2,
+            tx2,  ty1,
+            tx2,  ty2];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureMap), gl.STATIC_DRAW);
         gl.enableVertexAttribArray(texCoordLocation);
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
 
@@ -235,6 +261,10 @@ function edgeCore() {
     }
 
     function forEachObjectAction(action){
+        if (edge.gameObjects.length == 0) {
+            clear();
+            return;
+        }
         for(var i = 0; i < edge.gameObjects.length; i++) {
                 var obj = edge.gameObjects[i];
                 action(obj);
@@ -245,7 +275,7 @@ function edgeCore() {
         forEachObjectAction(
             function(obj){
                 if(obj.appearance && obj.appearance.image) {
-                    render(obj.appearance.image, obj.x, obj.y, obj.width, obj.height);
+                    render(obj);
                     control(obj);
                     physics(obj);
                 }
@@ -299,6 +329,7 @@ function edgeCore() {
 
     this.attachObject = function(obj){
         obj.movementDirection = 0;
+        obj.animation = 0;
         edge.gameObjects.push(obj);
         edge.gameObjects.sort(compareByZ);
     };
@@ -360,7 +391,7 @@ function edgeCore() {
         }
         switch(ev.keyCode){
             case KEYCODES['1']:{
-                //createSquares();
+                clear();
                 break;
             }
             case KEYCODES['2']:
@@ -373,6 +404,16 @@ function edgeCore() {
                 };
                 break;
             }
+            case KEYCODES['4']:
+                var mod = edge.selectedObject.appearance.image.width/edge.selectedObject.width*edge.selectedObject.appearance.image.height/edge.selectedObject.height;
+                edge.selectedObject.animation = (edge.selectedObject.animation - 1) % mod;
+                if (edge.selectedObject.animation < 0)
+                    edge.selectedObject.animation += mod;
+                break;
+            case KEYCODES['5']:
+                var mod = edge.selectedObject.appearance.image.width/edge.selectedObject.width*edge.selectedObject.appearance.image.height/edge.selectedObject.height;
+                edge.selectedObject.animation = (edge.selectedObject.animation + 1) % mod;
+                break;
             case KEYCODES['backspace']:
                 removeObject(edge.selectedObject);
                 break;
