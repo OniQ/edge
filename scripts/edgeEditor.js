@@ -7,9 +7,34 @@ function edgeEditor(){
 
     this.processKeyDown = function(ev){
         switch(ev.keyCode){
-            case KEYCODES['3']:
+            case KEYCODES['w']:
             {
-                console.log('editor key pressed');
+                edge.cy += edge.camSpeed;
+                break;
+            }
+            case KEYCODES['d']:
+            {
+                edge.cx -= edge.camSpeed;
+                break;
+            }
+            case KEYCODES['s']:
+            {
+                edge.cy -= edge.camSpeed;
+                break;
+            }
+            case KEYCODES['a']:
+            {
+                edge.cx += edge.camSpeed;
+                break;
+            }
+            case KEYCODES['1']:
+            {
+                edge.camSpeed--;
+                break;
+            }
+            case KEYCODES['2']:
+            {
+                edge.camSpeed++;
                 break;
             }
         }

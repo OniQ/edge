@@ -32,14 +32,14 @@
                     {{name}}:<input class="configInput" type="number" name="numberValue" ng-model="config">
                 </div>
             </div>
-            <div class="config-switch" ng-switch-when="object">
-                <div ng-switch on="config.type">
-                    <div ng-switch-default="" style="margin-right: 15px;">
-                        <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
-                        <div style="display: inline">
-                            {{name}}: {{config}}
-                        </div>
-                    </div>
+            <div ng-switch-when="object">
+                <div ng-class="{'config-switch': config.type}" ng-switch on="config.type">
+                    <!--<div ng-switch-default="" style="margin-right: 15px;">-->
+                        <!--<div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>-->
+                        <!--<div style="display: inline">-->
+                            <!--{{name}}: {{config}}-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div ng-switch-when="sprite" style="margin-right: 15px;">
                             <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
                             <div style="display: inline">

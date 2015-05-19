@@ -9,7 +9,9 @@ function edgeCore() {
     var canvas = null;
     var program;
     this.selectedObject = null;
-
+    this.cx = 0;
+    this.cy = 0;
+    this.camSpeed = 3;
     function initWebGL(canvas) {
         try {
             // Try to grab the standard context. If it fails, fallback to experimental.
@@ -56,7 +58,7 @@ function edgeCore() {
     }
 
     function initViewport(){
-        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.viewport(0+edge.cx, 0+edge.cy, canvas.width, canvas.height);
     }
 
     function initShaders(){
@@ -333,6 +335,7 @@ function edgeCore() {
                     physics(obj);
                 }
             });
+        initViewport();
         window.requestAnimationFrame(run);
     }
 
