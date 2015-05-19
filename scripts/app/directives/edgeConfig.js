@@ -67,8 +67,8 @@ define(['edgeDirectives'], function(edgeDirectives){
                             }
                         });
 
-                        modalInstance.result.then(function(collisionBoxes){
-                            $scope.configuration["collisionBoxes"] = collisionBoxes;
+                        modalInstance.result.then(function(collisionBox){
+                            $scope.configuration["collisionBox"] = collisionBox;
                         });
                     }, function(){
                         $scope.openingCollisionModal = false;

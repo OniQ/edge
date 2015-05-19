@@ -7,17 +7,18 @@ define(['edgeCtrl'], function(edgeCtrl){
             $scope.spriteSrc = data.src;
             $scope.width = data.width + "px";
             $scope.height = data.height + "px";
-            $scope.collisionBoxes = angular.copy(data.collisionBoxes) || [];
-            $scope.removeLast = function(index){
-                $scope.collisionBoxes.splice(index, 1);
-            };
+            $scope.collisionBox = angular.copy(data.collisionBox);
+            //$scope.removeLast = function(index){
+            //    $scope.collisionBoxes.splice(index, 1);
+            //};
             $scope.pushCoords = function(){
                 $timeout(function() {
-                    $scope.collisionBoxes.push($scope.coords.select)
+                    //$scope.collisionBoxes.push($scope.coords.select)
+                    $scope.collisionBox = $scope.coords.select;
                 });
             };
             $scope.submit = function(){
-                $scope.$close($scope.collisionBoxes);
+                $scope.$close($scope.collisionBox);
             }
         }]);
 });

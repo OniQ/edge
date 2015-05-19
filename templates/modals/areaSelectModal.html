@@ -11,18 +11,19 @@
                     </div>
                 </div>
             </div>
-            <div class="inline collisionList" ng-style="{ 'height' : height}">
-                <div ng-repeat="box in collisionBoxes track by $index">
-                    <div>
-                        {{$index}}: [{{box.left}}, {{box.top}}, {{box.width}}, {{box.height}}]
-                    <button type="button" class="btn btn-xs btn-danger"
-                            ng-if="$last"
-                            ng-click="removeLast($index)">
-                        <i class="glyphicon glyphicon-minus"></i>
-                    </button>
-                        </div>
-                </div>
-            </div>
+            {{collisionBox}}
+            <!--<div class="inline collisionList" ng-style="{ 'height' : height}">-->
+                <!--<div ng-repeat="box in collisionBoxes track by $index">-->
+                    <!--<div>-->
+                        <!--{{$index}}: [{{box.left}}, {{box.top}}, {{box.width}}, {{box.height}}]-->
+                    <!--<button type="button" class="btn btn-xs btn-danger"-->
+                            <!--ng-if="$last"-->
+                            <!--ng-click="removeLast($index)">-->
+                        <!--<i class="glyphicon glyphicon-minus"></i>-->
+                    <!--</button>-->
+                        <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">

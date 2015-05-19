@@ -262,24 +262,24 @@ function edgeCore() {
     //}
 
     function fillBounds(obj, o){
-        if (obj.collisionBoxes && obj.collisionBoxes[obj.animation] && obj.collisionBoxes[obj.animation]){
-            var x, y;
-            var collisionBox = obj.collisionBoxes[obj.animation];
-            x = obj.animation * obj.width;
-            y = 0;
-            while(x >= obj.appearance.image.width){
-                x -= obj.appearance.image.width;
-                y += obj.height;
-            }
-
-            var x1 = obj.x + collisionBox.left - x;
-            var y1 = obj.y + collisionBox.top - y;
+        if (obj.collisionBox){
+            //var x, y;
+            var collisionBox = obj.collisionBox;
+            //x = obj.animation * obj.width;
+            //y = 0;
+            //while(x >= obj.appearance.image.width){
+            //    x -= obj.appearance.image.width;
+            //    y += obj.height;
+            //}
+            //
+            //var x1 = obj.x + collisionBox.left - x;
+            //var y1 = obj.y + collisionBox.top - y;
 
             o.push({
-                x1: x1,
-                y1: y1,
-                x2: x1 + collisionBox.width,
-                y2: y1 + collisionBox.height
+                x1: obj.x + collisionBox.left,
+                y1: obj.y + collisionBox.top,
+                x2: obj.x + collisionBox.left + collisionBox.width,
+                y2: obj.y + collisionBox.top + collisionBox.height
             });
         }
         else{
