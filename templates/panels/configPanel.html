@@ -17,19 +17,19 @@
             <div class="config-switch" ng-switch-when="string">
                 <div style="display: inline">
                     <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
-                    {{name}}:<input class="configInput" ng-model="config"/>
+                    {{name}}:<input ng-change="synchConfig(name, config)" class="configInput" ng-model="config"/>
                 </div>
             </div>
             <div class="config-switch" ng-switch-when="boolean">
                 <div style="display: inline">
                     <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
-                    {{name}}:<input type="checkbox" class="configInput" ng-model="config"/>
+                    {{name}}:<input ng-change="synchConfig(name, config)" type="checkbox" class="configInput" ng-model="config"/>
                 </div>
             </div>
             <div class="config-switch" ng-switch-when="number">
                 <div style="display: inline">
                     <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
-                    {{name}}:<input class="configInput" type="number" name="numberValue" ng-model="config">
+                    {{name}}:<input ng-change="synchConfig(name, config)" class="configInput" type="number" name="numberValue" ng-model="config">
                 </div>
             </div>
             <div ng-switch-when="object">

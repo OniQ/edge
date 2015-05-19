@@ -12,6 +12,8 @@ function edgeCore() {
     this.cx = 0;
     this.cy = 0;
     this.camSpeed = 3;
+    this.frameCounter = 0;
+
     function initWebGL(canvas) {
         try {
             // Try to grab the standard context. If it fails, fallback to experimental.
@@ -154,8 +156,11 @@ function edgeCore() {
             return;
         //if (obj.collide)
         //    return;
+
         if (pressed(KEYCODES['right_arrow'])) {
-            obj.x += obj.speed || 1;
+            obj.x += obj.speed;
+            if (obj.fallSpeed && obj.jumping === false)
+                obj.y -= obj.fallSpeed;
             if (!isDirected(obj, RIGHT))
                 obj.movementDirection += RIGHT;
         }
@@ -163,23 +168,32 @@ function edgeCore() {
             obj.movementDirection -= RIGHT;
 
         if (pressed(KEYCODES['left_arrow'])) {
-            obj.x -= obj.speed || 1;
+            obj.x -= obj.speed;
+            if (obj.fallSpeed && obj.jumping === false)
+                obj.y -= obj.fallSpeed;
             if (!isDirected(obj, LEFT))
                 obj.movementDirection += LEFT;
         }
         else if (isDirected(obj, LEFT))
             obj.movementDirection -= LEFT;
 
-        if (pressed(KEYCODES['down_arrow'])) {
-            obj.y += obj.speed || 1;
-            if (!isDirected(obj, DOWN))
-                obj.movementDirection += DOWN;
-        }
-        else if (isDirected(obj, DOWN))
-            obj.movementDirection -= DOWN;
+        //if (pressed(KEYCODES['down_arrow'])) {
+        //    obj.y += obj.speed;
+        //    if (!isDirected(obj, DOWN))
+        //        obj.movementDirection += DOWN;
+        //}
+        //else if (isDirected(obj, DOWN))
+        //    obj.movementDirection -= DOWN;
 
-        if (pressed(KEYCODES['up_arrow'])) {
-            obj.y -= obj.speed || 1;
+        if (pressed(KEYCODES['up_arrow'])  && obj.jumping === false) {
+            obj.jumping = 13;
+        }
+
+        if (obj.jumping){
+            if (obj.fallSpeed)
+                obj.y -= obj.fallSpeed;
+            obj.y -= obj.fallSpeed + 3;
+            obj.jumping--;
             if (!isDirected(obj, UP))
                 obj.movementDirection += UP;
         }
@@ -190,10 +204,10 @@ function edgeCore() {
     function physics(obj){
         if (obj.physics) {
             //fall
-            //obj.y += obj.speed || 1;
-            //if (!isDirected(obj, DOWN))
-            //    obj.movementDirection += DOWN;
+            obj.y += obj.fallSpeed;
         }
+        else
+            obj.fallSpeed = 0;
         //collision
         if (obj.solid) {
             for (var i = 0; i < edge.gameObjects.length; i++) {
@@ -203,13 +217,16 @@ function edgeCore() {
                         if (r2.solid) {
                             //preventStuck(r1, o);
                             if (isDirected(r1, RIGHT))
-                                r1.x -= r1.speed || 1;
+                                r1.x -= r1.speed;
                             if (isDirected(r1, UP))
-                                r1.y += r1.speed || 1;
+                                r1.y += r1.speed;
                             if (isDirected(r1, LEFT))
-                                r1.x += r1.speed || 1;
+                                r1.x += r1.speed;
                             if (isDirected(r1, DOWN))
-                                r1.y -= r1.speed || 1;
+                                r1.y -= r1.speed;
+                            if (r1.fallSpeed)
+                                r1.y -= r1.fallSpeed;
+                            obj.jumping = false;
                         }
                     }, function () {
                         //console.log('enterCollision');
@@ -336,6 +353,7 @@ function edgeCore() {
                 }
             });
         initViewport();
+        edge.frameCounter++;
         window.requestAnimationFrame(run);
     }
 
@@ -383,9 +401,18 @@ function edgeCore() {
         return 0;
     }
 
-    this.attachObject = function(obj){
+    function initObject(obj){
         obj.movementDirection = 0;
         obj.animation = 0;
+        obj.currentSpeed = 0;
+        if (!obj.speed)
+            obj.speed = 1;
+        if (!obj.fallSpeed)
+            obj.fallSpeed = obj.speed;
+    }
+
+    this.attachObject = function(obj){
+        initObject(obj);
         edge.gameObjects.push(obj);
         edge.gameObjects.sort(compareByZ);
     };

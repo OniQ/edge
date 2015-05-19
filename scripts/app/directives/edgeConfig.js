@@ -19,9 +19,8 @@ define(['edgeDirectives'], function(edgeDirectives){
                     return array;
                 }
 
-                $scope.synchConfig = function(opt){
-                    var val = opt.value;
-                    $scope.configuration[opt.name] = val;
+                $scope.synchConfig = function(name, val){
+                    $scope.configuration[name] = val;
                 };
 
                 $scope.removeField = function(name, e){
