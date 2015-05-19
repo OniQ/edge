@@ -14,9 +14,9 @@ define(['edgeCtrl'], function(edgeCtrl){
                 type: 'string'
             };
 
-            if (data.field) {
+            if (data.field.name) {
                 $scope.model.name = data.field.name;
-                $scope.model.type = data.field.value.type;
+                $scope.model.type = data.field.type;
                 $scope.editMode = true;
             }
 

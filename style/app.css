@@ -112,3 +112,11 @@ body{
     overflow: auto;
     width: 185px;
 }
+.config-switch{
+    width: 380px;
+    height: 40px;
+}
+.config-switch  .configInput{
+    margin-left: 15px;
+    margin-right: 15px;
+}

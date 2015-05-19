@@ -80,7 +80,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     });
                 };
 
-                $scope.addField = function(field){
+                $scope.addField = function(name, type){
                     if ($scope.configuration) {
                         var modalInstance = $modal.open({
                             animation: true,
@@ -90,7 +90,10 @@ define(['edgeDirectives'], function(edgeDirectives){
                                 data: function () {
                                     return {
                                         configuration: $scope.configuration,
-                                        field: field
+                                        field: {
+                                            name: name,
+                                            type: type
+                                        }
                                     }
                                 }
                             }

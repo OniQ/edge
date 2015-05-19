@@ -18,9 +18,9 @@
                     </select>
                 </div>
             </div>
-            <div class="config-switch-container"
+            <div class="component-switch-container"
                  ng-switch on="model.type">
-                <div class="config-switch" ng-switch-when="list">
+                <div class="component-switch" ng-switch-when="list">
                     <div ng-repeat="val in model.values track by $index">
                         <div class="row form-group">
                             <label class="control-label col-xs-2">Option:</label>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="config-switch" ng-switch-when="string">
+                <div class="component-switch" ng-switch-when="string">
                     <div class="row form-group">
                         <label class="control-label col-xs-2">Value:</label>
                         <div class="col-xs-8">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="config-switch" ng-switch-when="boolean">
+                <div class="component-switch" ng-switch-when="boolean">
                     <div class="row form-group">
                         <label class="control-label col-xs-2">Value:</label>
                         <div class="col-xs-8">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="config-switch" ng-switch-when="number">
+                <div class="component-switch" ng-switch-when="number">
                     <div class="row form-group">
                         <label class="control-label col-xs-2">Value:</label>
                         <div class="col-xs-8">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="config-switch" ng-switch-when="sprite">
+                <div class="component-switch" ng-switch-when="sprite">
                     <div class="row form-group">
                         <label class="control-label col-xs-2">Value:</label>
                         <input type="file" ngf-change="upload($files)" ngf-multiple='false' ngf-select='' ng-model='model.files' accept="image/*" name='file' required>

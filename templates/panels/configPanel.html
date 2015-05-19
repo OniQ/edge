@@ -1,153 +1,124 @@
 <div class="well well-lg container-fluid" ng-class="{'scrollableConfig': isScrollableConfig}">
     <div class="row">
-    <div class="col-xs-4">
-        <h3 class="configHeader">{{selectedComponent.name}}</h3>
-    </div>
-    <div class="col-xs-2">
-        <button ng-if="configuration && selectedCategory != 'default'" id="addBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                tooltip="Add" class="btn btn-success btn-md" ng-click="addField()">
-                        <span class="glyphicon glyphicon-plus"
-                              aria-hidden="true"></span>
-        </button>
-    </div>
+        <div class="col-xs-4">
+            <h3 class="configHeader">{{selectedComponent.name}}</h3>
         </div>
-    <div ng-repeat="column in columns">
-        <div ng-class="colClass">
-            <div ng-repeat="field in column">
-                <div class="config-switch-container"
-                     ng-switch on="field.type">
-                    <div class="config-switch" ng-switch-when="string">
-                        <div class="row form-group">
-                            <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
-                                <button class="pull-right btn btn-xs btn-danger"
-                                        ng-click="removeField(field, $event)">
-                                    <i class="glyphicon glyphicon-minus"></i>
-                                </button>
-                            </div>
-                            <label class="control-label col-xs-4">{{field.name}}:</label>
-                            <div class="col-xs-6">
-                                <input ng-blur="synchConfig(field)" class="form-control" ng-model="field.value"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="config-switch" ng-switch-when="boolean">
-                        <div class="row form-group">
-                            <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
-                                <button class="pull-right btn btn-xs btn-danger"
-                                        ng-click="removeField(field, $event)">
-                                    <i class="glyphicon glyphicon-minus"></i>
-                                </button>
-                            </div>
-                            <label class="control-label col-xs-4">{{field.name}}:</label>
-                            <div class="col-xs-6">
-                                <input ng-blur="synchConfig(field)" type="checkbox" ng-model="field.value"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="config-switch" ng-switch-when="number">
-                        <div class="row form-group">
-                            <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
-                                <button class="pull-right btn btn-xs btn-danger"
-                                        ng-click="removeField(field, $event)">
-                                    <i class="glyphicon glyphicon-minus"></i>
-                                </button>
-                            </div>
-                            <label class="control-label col-xs-4">{{field.name}}:</label>
-                            <div class="col-xs-6">
-                                <input type="number" name="numberValue" ng-blur="synchConfig(field)" ng-model="field.value">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="config-switch" ng-switch-when="object">
-                        <div ng-switch on="field.value.type">
-                            <div ng-switch-when="sprite">
-                                <div class="row form-group">
-                                    <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
-                                        <button class="pull-right btn btn-xs btn-danger"
-                                                ng-click="removeField(field, $event)">
-                                            <i class="glyphicon glyphicon-minus"></i>
-                                        </button>
-                                    </div>
-                                    <label class="control-label col-xs-4">{{field.name}}:</label>
-                                    <div class="col-xs-6">
-                                        <div ng-switch on="field.value.status">
-                                            <div ng-switch-when="loading">
-                                                <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
-                                                {{field.value.name}}
-                                            </div>
-                                            <div ng-switch-when="loaded">
-                                                <div image-thumb image="field.value">
-                                                    {{field.value.name}}
-                                                    <button id="chageSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                                                            tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(field)">
-                                                        <span class="glyphicon glyphicon-edit"
-                                                              aria-hidden="true"></span>
-                                                    </button>
-                                                    <button class="setCollisionBoxBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                                                            tooltip="Set sprite collision box" ng-hide="openingCollisionModal"
-                                                            class="btn btn-default btn-xs" ng-click="setCollisionBox(field.value)">
-                                                    <span class="glyphicon glyphicon-screenshot"
-                                                          aria-hidden="true"></span>
-                                                    </button>
-                                                    <div class="throbber" ng-show="openingCollisionModal"></div>
-                                                </div>
-                                            </div>
-                                            <div ng-switch-when="notLoaded">
-                                                <button id="loadSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                                                        tooltip="Load Sprite" class="btn btn-default btn-xs" ng-click="loadThumbnail(field.value)">
-                                                    <span class="glyphicon glyphicon-refresh"
-                                                          aria-hidden="true"></span>
-                                                </button>
-                                                {{field.value.name}}
-                                                <button class="setCollisionBoxBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                                                        tooltip="Set sprite collision box" ng-hide="openingCollisionModal"
-                                                        class="btn btn-default btn-xs" ng-click="setCollisionBox(field.value)">
-                                                    <span class="glyphicon glyphicon-screenshot"
-                                                          aria-hidden="true"></span>
-                                                </button>
-                                                <div class="throbber" ng-show="openingCollisionModal"></div>
-                                            </div>
-                                            <div ng-switch-when="failed">
-                                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                                {{field.value.name}}
-                                                <button id="addSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                                                        tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(field)">
-                                                    <span class="glyphicon glyphicon-edit"
-                                                          aria-hidden="true"></span>
-                                                </button>
-                                            </div>
-                                            <div ng-switch-default>
-                                                {{field.value.name}}
-                                                <button tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
-                                                        tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(field)">
-                                                    <span class="glyphicon glyphicon-edit"
-                                                          aria-hidden="true"></span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div ng-switch-when="array">
-                                <div class="row form-group">
-                                    <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
-                                        <button class="pull-right btn btn-xs btn-danger"
-                                                ng-click="removeField(field, $event)">
-                                            <i class="glyphicon glyphicon-minus"></i>
-                                        </button>
-                                    </div>
-                                    <label class="control-label col-xs-4">{{field.name}}:</label>
-                                    <div class="col-xs-6">
-                                        <select ng-blur="synchConfig(field)" ng-model="field.value.selected">
-                                            <option ng-repeat="option in field.value.options">{{option}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="animate-switch" ng-switch-default>{{field.type}}</div>
+        <div class="col-xs-2">
+            <button ng-if="configuration && selectedCategory != 'default'" id="addBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                    tooltip="Add" class="btn btn-success btn-md" ng-click="addField()">
+                            <span class="glyphicon glyphicon-plus"
+                                  aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+    <div ng-repeat="(name, config) in configuration">
+        <div style="float:left;" class="config-switch-container"
+             ng-switch on="getType(config)">
+            <div class="config-switch" ng-switch-when="string">
+                <div style="display: inline">
+                    <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
+                    {{name}}:<input class="configInput" ng-model="config"/>
                 </div>
             </div>
+            <div class="config-switch" ng-switch-when="boolean">
+                <div style="display: inline">
+                    <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
+                    {{name}}:<input type="checkbox" class="configInput" ng-model="config"/>
+                </div>
+            </div>
+            <div class="config-switch" ng-switch-when="number">
+                <div style="display: inline">
+                    <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
+                    {{name}}:<input class="configInput" type="number" name="numberValue" ng-model="config">
+                </div>
+            </div>
+            <div class="config-switch" ng-switch-when="object">
+                <div ng-switch on="config.type">
+                    <div ng-switch-default="" style="margin-right: 15px;">
+                        <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
+                        <div style="display: inline">
+                            {{name}}: {{config}}
+                        </div>
+                    </div>
+                    <div ng-switch-when="sprite" style="margin-right: 15px;">
+                            <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
+                            <div style="display: inline">
+                                {{name}}:<div style="display: inline;" ng-switch on="config.status">
+                                    <div style="display: inline;" ng-switch-when="loading">
+                                        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                                        {{config.name}}
+                                    </div>
+                                    <div style="display: inline;" ng-switch-when="loaded">
+                                        <div style="display: inline;" image-thumb image="config">
+                                            {{config.name}}
+                                            <button id="chageSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                    tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
+                                                <span class="glyphicon glyphicon-edit"
+                                                      aria-hidden="true"></span>
+                                            </button>
+                                            <button class="setCollisionBoxBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                    tooltip="Set sprite collision box" ng-hide="openingCollisionModal"
+                                                    class="btn btn-default btn-xs" ng-click="setCollisionBox(config)">
+                                            <span class="glyphicon glyphicon-screenshot"
+                                                  aria-hidden="true"></span>
+                                            </button>
+                                            <div style="display: inline;" class="throbber" ng-show="openingCollisionModal"></div>
+                                        </div>
+                                    </div>
+                                    <div style="display: inline;" ng-switch-when="notLoaded">
+                                        <button id="loadSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                tooltip="Load Sprite" class="btn btn-default btn-xs" ng-click="loadThumbnail(config)">
+                                            <span class="glyphicon glyphicon-refresh"
+                                                  aria-hidden="true"></span>
+                                        </button>
+                                        {{config.name}}
+                                        <button class="setCollisionBoxBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                tooltip="Set sprite collision box" ng-hide="openingCollisionModal"
+                                                class="btn btn-default btn-xs" ng-click="setCollisionBox(config)">
+                                            <span class="glyphicon glyphicon-screenshot"
+                                                  aria-hidden="true"></span>
+                                        </button>
+                                        <div style="display: inline;" class="throbber" ng-show="openingCollisionModal"></div>
+                                    </div>
+                                    <div style="display: inline;" ng-switch-when="failed">
+                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                        {{config.name}}
+                                        <button id="addSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
+                                            <span class="glyphicon glyphicon-edit"
+                                                  aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div style="display: inline;" ng-switch-default>
+                                        {{config.name}}
+                                        <button tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                                tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
+                                            <span class="glyphicon glyphicon-edit"
+                                                  aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-when="array">
+                        <div class="row form-group">
+                            <div class="col-xs-1" ng-if="configuration && selectedCategory != 'default'">
+                                <button class="pull-right btn btn-xs btn-danger"
+                                        ng-click="removeField(name, $event)">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                </button>
+                            </div>
+                            <div style="display: inline" class="control-label col-xs-4">{{name}}:</div>
+                            <div class="col-xs-6">
+                                <select  ng-model="config.selected">
+                                    <option ng-repeat="option in config.options">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="animate-switch" ng-switch-default>{{config.type}}</div>
         </div>
     </div>
 </div>

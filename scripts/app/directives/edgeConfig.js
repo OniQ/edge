@@ -24,16 +24,17 @@ define(['edgeDirectives'], function(edgeDirectives){
                     $scope.configuration[opt.name] = val;
                 };
 
-                $scope.removeField = function(field, e){
+                $scope.removeField = function(name, e){
                     if (e) {
                         e.preventDefault();
                         e.stopPropagation();
                     }
 
-                    delete $scope.configuration[field.name];
+                    delete $scope.configuration[name];
                 };
 
                 $scope.loadThumbnail = function(sprite){
+                    sprite.status = "loading";
                     fileUploadService.download(sprite.name, "xs").then(function(file){
                         resourceService.addResource("_" + file.name, "sprite", file).then(function(image){
                             sprite.status = "loaded";
@@ -61,7 +62,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                                         src: image.src,
                                         height: image.height,
                                         width: image.width,
-                                        collisionBoxes: $scope.configuration["collisionBoxes"]
+                                        collisionBox: $scope.configuration["collisionBox"]
                                     }
                                 }
                             }
@@ -79,31 +80,10 @@ define(['edgeDirectives'], function(edgeDirectives){
                     $scope.configuration = e.detail;
                 });
 
-                function processConfig(config){
-                    if (config) {
-                        $scope.fields = [];
-
-                        for (field in config) {
-                            $scope.fields.push({
-                                name: field,
-                                type: typeof(config[field]),
-                                value: config[field]
-                            });
-                        }
-
-                        var columnsCount = Math.ceil($scope.fields.length / 4.0);
-                        var minimum = Math.min(4, columnsCount);
-                        $scope.colClass = 'col-xs-' + 12 / minimum;
-                        $scope.columns = [];
-                        var size = $scope.fields.length / columnsCount;
-                        while ($scope.fields.length > 0)
-                            $scope.columns.push($scope.fields.splice(0, size));
-                    }
+                $scope.getType = function(config){
+                    var type = typeof(config);
+                    return type;
                 }
-
-                $scope.$watch('configuration', function(newVal, oldVal){
-                    processConfig(newVal);
-                });
             }
         };
     });
