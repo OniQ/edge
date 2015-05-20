@@ -9,6 +9,7 @@ function edgeCore() {
     var canvas = null;
     var program;
     this.selectedObject = null;
+    this.resources = {};
     this.cx = 0;
     this.cy = 0;
     this.camSpeed = 3;
@@ -74,7 +75,7 @@ function edgeCore() {
     }
 
     function render(obj) {
-        var image = obj.appearance.image;
+        var image = getResource(obj.appearance.name);
         var x1 = obj.x;
         var y1 = obj.y;
         var x2 = obj.width;
@@ -346,7 +347,7 @@ function edgeCore() {
     function run(){
         forEachObjectAction(
             function(obj){
-                if(obj.appearance && obj.appearance.image) {
+                if(obj.appearance) {
                     render(obj);
                     control(obj);
                     physics(obj);
@@ -357,8 +358,10 @@ function edgeCore() {
         window.requestAnimationFrame(run);
     }
 
-    this.turnOn = function(_canvas){
+    this.turnOn = function(_canvas, build){
         canvas = _canvas;
+        if (build)
+            downloadGameObjects(build);
         initWebGL(canvas);
         if (!gl)
             return;
@@ -411,6 +414,18 @@ function edgeCore() {
             obj.fallSpeed = obj.speed;
     }
 
+    this.addResource = function(name, resource){
+        edge.resources[name] = resource;
+    };
+
+     function getResource(name){
+        if (!edge.resources[name]) {
+            var resource = null;
+            edge.resources[name] = resource;
+        }
+        return edge.resources[name];
+    };
+
     this.attachObject = function(obj){
         initObject(obj);
         edge.gameObjects.push(obj);
@@ -441,6 +456,32 @@ function edgeCore() {
 
         return temp;
     }
+
+    var DropBoxOAuthToken = "xsSYI8iCaMIAAAAAAAAJf40D4ejKgIMzI9fB5Eo6z1F6zxipAcx_fxIPYYDKCEJb";
+
+    function downloadGameObjects(path){
+        var oReq = new XMLHttpRequest();
+        var url = 'https://api-content.dropbox.com/1/files/auto/' + path;
+        oReq.open("GET", url, true);
+        oReq.setRequestHeader('Authorization', 'Bearer ' + DropBoxOAuthToken);
+        oReq.responseType = "arraybuffer";
+        oReq.onreadystatechange = function()
+        {
+            if (oReq.readyState == 4 && oReq.status == 200)
+            {
+                var header = oReq.getResponseHeader("x-dropbox-metadata");
+                var metaData = JSON.parse(header);
+                var arrayBufferView = new Uint8Array( oReq.response );
+                var blob = new Blob([arrayBufferView], {type: metaData.mime_type});
+                var fileReader = new FileReader();
+                fileReader.readAsText(blob);
+                fileReader.onload = function(e) {
+                    edge.gameObjects = JSON.parse(e.target.result);
+                };
+            }
+        };
+        oReq.send();
+    };
     /******* Events ******/
 
     function onKeyUp(ev){

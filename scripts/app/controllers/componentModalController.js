@@ -30,7 +30,7 @@ define(['edgeCtrl'], function(edgeCtrl){
             };
 
             $scope.addSprite = function(file, configName){
-                fileUploadService.upload(file).then(function(){
+                fileUploadService.upload(file.name, file).then(function(){
                     data.configuration[configName].status = "loaded";
                 }, function(){
                     data.configuration[configName].status = "failed";

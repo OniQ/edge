@@ -23,9 +23,9 @@ define(['edgeServices'], function(edgeServices){
 
         service.addResource = function(name, type, data){
             var deferred = $q.defer();
+            var fileReader = new FileReader();
             switch (type){
                 case 'sprite':
-                    var fileReader = new FileReader();
                     fileReader.readAsDataURL(data);
                     fileReader.onload = function(e) {
                         var image = new Image();

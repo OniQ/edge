@@ -7,10 +7,10 @@ define(['edgeServices'], function(edgeServices){
 
         var DropBoxOAuthToken = "xsSYI8iCaMIAAAAAAAAJf40D4ejKgIMzI9fB5Eo6z1F6zxipAcx_fxIPYYDKCEJb";
 
-        service.upload = function(file){
+        service.upload = function(path, file){
             var deferred = $q.defer();
             var oReq = new XMLHttpRequest();
-            var url = 'https://api-content.dropbox.com/1/files_put/auto/' + file.name;
+            var url = 'https://api-content.dropbox.com/1/files_put/auto/' + path;
             oReq.responseType = "arraybuffer";
             oReq.open("PUT", url, true);
             oReq.setRequestHeader('Authorization', 'Bearer ' + DropBoxOAuthToken);

@@ -9,7 +9,8 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $timeout(function(){
                     var canvas = $element.context;
                     $scope.appendImage = function(obj, key, img){
-                        obj[key].image = img;
+                        //obj[key].image = img;
+                        edge.addResource(obj[key].name, img);
                         obj.width = obj.width || img.width;
                         obj.height = obj.height || img.height;
                         obj.x = obj.x - obj.width / 2;
@@ -55,7 +56,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         });
                         return dropDeferred.promise;
                     };
-                    edge.turnOn(canvas);
+                    edge.turnOn(canvas, $scope.gameToLoad);
                     $interval(function(){
                         $rootScope.mouseState = edge.mouseState;
                     }, 100);
