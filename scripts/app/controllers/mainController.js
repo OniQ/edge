@@ -2,9 +2,31 @@
  * Created by OniQ on 20/04/15.
  */
 define(['edgeCtrl'], function(edgeCtrl){
-    edgeCtrl.controller('mainController', ['$scope', 'fileUploadService', '$modal',
-        function ($scope, fileUploadService, $modal) {
+    edgeCtrl.controller('mainController', ['$scope', 'fileUploadService', '$modal', 'localStorageService',
+        function ($scope, fileUploadService, $modal, localStorageService) {
             //$scope.gameToLoad = "testBuild.json";
+
+            $scope.loadGame = function(){
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: 'templates/modals/inputModal.html',
+                    controller: 'inputModalController',
+                    resolve: {
+                        data: function () {
+                            return {
+                                title: 'Load game',
+                                label: 'Select build',
+                                type: "list",
+                                options: localStorageService.get("builds")
+                            }
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function(build){
+                    edge.turnOn(null, build + '.json');
+                });
+            };
 
             $scope.buildGame = function(){
                 for (var i = 0; i < edge.gameObjects.length; i++) {
@@ -32,7 +54,11 @@ define(['edgeCtrl'], function(edgeCtrl){
                 });
 
                 modalInstance.result.then(function(path){
-                    fileUploadService.upload(path, blob);
+                    fileUploadService.upload(path + '.json', blob);
+                    var builds = localStorageService.get("builds") || [];
+                    if (builds.indexOf(path) == -1)
+                        builds.push(path);
+                    localStorageService.set("builds", builds);
                 });
 
             }

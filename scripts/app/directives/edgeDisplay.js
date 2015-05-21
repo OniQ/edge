@@ -56,7 +56,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         });
                         return dropDeferred.promise;
                     };
-                    edge.turnOn(canvas, $scope.gameToLoad);
+                    edge.turnOn(canvas);
                     $interval(function(){
                         $rootScope.mouseState = edge.mouseState;
                     }, 100);

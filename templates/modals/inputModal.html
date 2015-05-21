@@ -6,8 +6,16 @@
         <div class="container-fluid">
             <div class="row form-group">
                 <label class="control-label col-xs-2">{{data.label}}:</label>
-                <div class="col-xs-8">
-                    <input focus-me="shouldBeOpen" class="form-control" ng-model="data.value" required>
+                <div ng-switch="data.type">
+                    {{data.options}}
+                    <div ng-switch-when="list" class="col-xs-8">
+                        <select ng-model="data.value" required>
+                            <option ng-repeat="option in data.options">{{option}}</option>
+                        </select>
+                    </div>
+                    <div ng-switch-default="" class="col-xs-8">
+                        <input focus-me="shouldBeOpen" class="form-control" ng-model="data.value" required>
+                    </div>
                 </div>
             </div>
         </div>

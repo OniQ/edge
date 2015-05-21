@@ -76,6 +76,8 @@ function edgeCore() {
 
     function render(obj) {
         var image = getResource(obj.appearance.name);
+        if (!image)
+            return;
         var x1 = obj.x;
         var y1 = obj.y;
         var x2 = obj.width;
@@ -359,7 +361,8 @@ function edgeCore() {
     }
 
     this.turnOn = function(_canvas, build){
-        canvas = _canvas;
+        if (_canvas)
+            canvas = _canvas;
         if (build)
             downloadGameObjects(build);
         initWebGL(canvas);
