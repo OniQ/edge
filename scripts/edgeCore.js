@@ -448,16 +448,16 @@ function edgeCore() {
         return edge.resources[name];
     };
 
-    function getFunction(name){
-        if (!edge.functions[name]) {
-            download(name, function(e) {
+    function getFunction(fn){
+        if (!edge.functions[fn.name]) {
+            download(fn.name + '.txt', function(e) {
                 var theInstructions = e.target.result;
                 var action = new Function (theInstructions);
-                edge.functions[name] = action;
+                edge.functions[fn.name] = action;
             }, "text");
-            edge.functions[name] = "loading";
+            edge.functions[fn.name] = "loading";
         }
-        return edge.functions[name];
+        return edge.functions[fn.name];
     }
 
     this.attachObject = function(obj){
