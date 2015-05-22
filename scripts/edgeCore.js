@@ -76,7 +76,7 @@ function edgeCore() {
 
     function render(obj) {
         var image = getResource(obj.appearance.name);
-        if (!image)
+        if (!image || image === "loading")
             return;
         var x1 = obj.x;
         var y1 = obj.y;
@@ -364,7 +364,9 @@ function edgeCore() {
         if (_canvas)
             canvas = _canvas;
         if (build)
-            downloadGameObjects(build);
+            download(build, function(e) {
+                edge.gameObjects = JSON.parse(e.target.result);
+            }, "text");
         initWebGL(canvas);
         if (!gl)
             return;
@@ -423,8 +425,12 @@ function edgeCore() {
 
      function getResource(name){
         if (!edge.resources[name]) {
-            var resource = null;
-            edge.resources[name] = resource;
+            download(name, function(e) {
+                var image = new Image();
+                image.src = e.target.result;
+                edge.resources[name] = image;
+            }, "data");
+            edge.resources[name] = "loading";
         }
         return edge.resources[name];
     };
@@ -459,10 +465,10 @@ function edgeCore() {
 
         return temp;
     }
-
+    /******* DROPBOX *******/
     var DropBoxOAuthToken = "xsSYI8iCaMIAAAAAAAAJf40D4ejKgIMzI9fB5Eo6z1F6zxipAcx_fxIPYYDKCEJb";
 
-    function downloadGameObjects(path){
+    function download(path, onload, type){
         var oReq = new XMLHttpRequest();
         var url = 'https://api-content.dropbox.com/1/files/auto/' + path;
         oReq.open("GET", url, true);
@@ -477,10 +483,15 @@ function edgeCore() {
                 var arrayBufferView = new Uint8Array( oReq.response );
                 var blob = new Blob([arrayBufferView], {type: metaData.mime_type});
                 var fileReader = new FileReader();
-                fileReader.readAsText(blob);
-                fileReader.onload = function(e) {
-                    edge.gameObjects = JSON.parse(e.target.result);
-                };
+                switch(type){
+                    case "text":
+                        fileReader.readAsText(blob);
+                        break;
+                    case "data":
+                        fileReader.readAsDataURL(blob);
+                        break;
+                }
+                fileReader.onload = onload;
             }
         };
         oReq.send();
