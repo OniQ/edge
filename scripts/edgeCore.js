@@ -449,6 +449,8 @@ function edgeCore() {
     };
 
     function getFunction(fn){
+        if (!fn)
+        return;
         if (!edge.functions[fn.name]) {
             download(fn.name + '.txt', function(e) {
                 var theInstructions = e.target.result;
