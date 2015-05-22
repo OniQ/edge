@@ -40,6 +40,17 @@
                             <!--{{name}}: {{config}}-->
                         <!--</div>-->
                     <!--</div>-->
+                    <div ng-switch-when="function" style="margin-right: 15px;">
+                        <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
+                        <div style="display: inline">
+                            <span style="color: #0066cc">{{config.name}}</span>
+                            <button id="editFunctionBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                    tooltip="Edit function" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
+                                            <span class="glyphicon glyphicon-edit"
+                                                  aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
                     <div ng-switch-when="sprite" style="margin-right: 15px;">
                             <div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
                             <div style="display: inline">

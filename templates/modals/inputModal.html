@@ -12,8 +12,11 @@
                             <option ng-repeat="option in data.options">{{option}}</option>
                         </select>
                     </div>
+                    <div ng-switch-when="text" class="col-xs-8">
+                        <textarea focus-me="shouldBeOpen" class="form-control" ng-model="data.value" required/>
+                    </div>
                     <div ng-switch-default="" class="col-xs-8">
-                        <input focus-me="shouldBeOpen" class="form-control" ng-model="data.value" required>
+                        <input focus-me="shouldBeOpen" class="form-control" ng-model="data.value" required/>
                     </div>
                 </div>
             </div>

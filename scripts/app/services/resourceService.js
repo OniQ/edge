@@ -14,9 +14,21 @@ define(['edgeServices'], function(edgeServices){
                 deferred.resolve(resource);
             else
                 fileUploadService.download(name).then(function(file){
-                    service.addResource(file.name, type, file).then(function (image) {
-                        deferred.resolve(image);
-                    }), deferred.reject;
+                    switch (type){
+                        case "sprite":
+                            service.addResource(file.name, type, file).then(function (image) {
+                                deferred.resolve(image);
+                            }), deferred.reject;
+                            break;
+                        case "function":
+                            var fileReader = new FileReader();
+                            fileReader.readAsText(file);
+                            fileReader.onload = function(e) {
+                                service.resources[name] = e.target.result;
+                                deferred.resolve(service.resources[name]);
+                            };
+                    }
+
                 }, deferred.reject);
             return deferred.promise;
         };
@@ -34,6 +46,9 @@ define(['edgeServices'], function(edgeServices){
                         deferred.resolve(image);
                     };
                     break;
+                case 'function':
+                    service.resources[name] = data;
+                    deferred.resolve(service.resources[name]);
             }
             return deferred.promise;
         };

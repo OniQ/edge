@@ -4,7 +4,7 @@
 define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeComponents', function($http, $q, localStorageService,
                                                         $interval, $rootScope, $modal,
-                                                        $timeout){
+                                                        $timeout, resourceService){
         return {
             templateUrl: "templates/panels/componentsPanel.html",
             controller: function($scope, $element, $attrs) {
@@ -80,29 +80,47 @@ define(['edgeDirectives'], function(edgeDirectives){
                     });
                 };
 
-                $scope.addField = function(name, type){
-                    if ($scope.configuration) {
-                        var modalInstance = $modal.open({
-                            animation: true,
-                            templateUrl:'templates/modals/componentModal.html',
-                            controller: 'componentModalController',
-                            resolve: {
-                                data: function () {
-                                    return {
-                                        configuration: $scope.configuration,
-                                        field: {
-                                            name: name,
-                                            type: type
-                                        }
+                 function openComponentModal(name, type, fnName, code){
+                    var modalInstance = $modal.open({
+                        animation: true,
+                        templateUrl: 'templates/modals/componentModal.html',
+                        controller: 'componentModalController',
+                        resolve: {
+                            data: function () {
+                                return {
+                                    configuration: $scope.configuration,
+                                    field: {
+                                        name: name,
+                                        type: type,
+                                        fnName: fnName,
+                                        fnCode: code
                                     }
                                 }
                             }
-                        });
-                    }
-                    modalInstance.result.then(function(response){
+                        }
+                    });
+                    modalInstance.result.then(function (response) {
                         if (angular.isObject($scope.configuration[response]) && $scope.configuration[response].type == 'sprite')
                             $scope.loadThumbnail($scope.configuration[response]);
                     });
+                }
+
+                $scope.addField = function(name, type){
+                    if ($scope.configuration) {
+                        var fnName, fnCode;
+                        if (type == "function") {
+                            fnName = $scope.configuration[name].name;
+                            fnCode = resourceService.getResource(fnName + '.txt', "function");
+                        }
+                        if (fnCode)
+                            fnCode.then(function (code) {
+                                var fn = new Function(code);
+                                fn();
+                                openComponentModal(name, type, fnName, code);
+                            });
+                        else
+                            openComponentModal(name, type);
+                    }
                 };
 
                 $scope.addNewComponent = function(category){

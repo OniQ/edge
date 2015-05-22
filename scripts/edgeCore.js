@@ -10,6 +10,7 @@ function edgeCore() {
     var program;
     this.selectedObject = null;
     this.resources = {};
+    this.functions = {};
     this.cx = 0;
     this.cy = 0;
     this.camSpeed = 3;
@@ -230,11 +231,20 @@ function edgeCore() {
                             if (r1.fallSpeed)
                                 r1.y -= r1.fallSpeed;
                             obj.jumping = false;
+                            var onCollision = getFunction(obj.onCollisionEnter);
+                            if (isFunction(onCollision))
+                                onCollision(r1, r2);
                         }
                     }, function () {
                         //console.log('enterCollision');
+                        var onCollisionEnter = getFunction(obj.onCollisionEnter);
+                        if (isFunction(onCollisionEnter))
+                            onCollisionEnter(r1, r2);
                     }, function () {
                         //console.log('leaveCollision');
+                        var onCollisionExit = getFunction(obj.onCollisionEnter);
+                        if (isFunction(onCollisionExit))
+                            onCollisionExit(r1, r2);
                     });
                 }
             }
@@ -354,6 +364,9 @@ function edgeCore() {
                     control(obj);
                     physics(obj);
                 }
+                var behavior = getFunction(obj.behavior);
+                if (isFunction(behavior))
+                    behavior();
             });
         initViewport();
         edge.frameCounter++;
@@ -435,6 +448,18 @@ function edgeCore() {
         return edge.resources[name];
     };
 
+    function getFunction(name){
+        if (!edge.functions[name]) {
+            download(name, function(e) {
+                var theInstructions = e.target.result;
+                var action = new Function (theInstructions);
+                edge.functions[name] = action;
+            }, "text");
+            edge.functions[name] = "loading";
+        }
+        return edge.functions[name];
+    }
+
     this.attachObject = function(obj){
         initObject(obj);
         edge.gameObjects.push(obj);
@@ -465,10 +490,16 @@ function edgeCore() {
 
         return temp;
     }
+    function isFunction(functionToCheck) {
+        var getType = {};
+        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    }
     /******* DROPBOX *******/
     var DropBoxOAuthToken = "xsSYI8iCaMIAAAAAAAAJf40D4ejKgIMzI9fB5Eo6z1F6zxipAcx_fxIPYYDKCEJb";
 
     function download(path, onload, type){
+        if (!path)
+            return;
         var oReq = new XMLHttpRequest();
         var url = 'https://api-content.dropbox.com/1/files/auto/' + path;
         oReq.open("GET", url, true);
@@ -488,6 +519,7 @@ function edgeCore() {
                         fileReader.readAsText(blob);
                         break;
                     case "data":
+                    default:
                         fileReader.readAsDataURL(blob);
                         break;
                 }
@@ -557,8 +589,6 @@ function edgeCore() {
                 break;
         }
     }
-
-    var lastMouseX, lastMouseY;
 
     function handleMouseDown(event) {
         edge.mouseState.mouseDown = true;

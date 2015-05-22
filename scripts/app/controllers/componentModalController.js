@@ -6,7 +6,7 @@ define(['edgeCtrl'], function(edgeCtrl){
     edgeCtrl.controller('componentModalController', ['$scope', 'data', 'fileUploadService', 'resourceService',
         function ($scope, data, fileUploadService, resourceService) {
             $scope.types = [
-                'list', 'boolean', 'number',  'string', 'sprite'
+                'list', 'boolean', 'number',  'string', 'sprite', 'function'
             ];
 
             $scope.model = {
@@ -14,10 +14,13 @@ define(['edgeCtrl'], function(edgeCtrl){
                 type: 'string'
             };
 
-            if (data.field.name) {
+            if (data.field) {
                 $scope.model.name = data.field.name;
                 $scope.model.type = data.field.type;
-                $scope.editMode = true;
+                $scope.model.fnName = data.field.fnName;
+                $scope.model.fieldValue = data.field.fnCode;
+                if ($scope.model.name)
+                    $scope.editMode = true;
             }
 
             $scope.upload = function (files) {
@@ -27,6 +30,17 @@ define(['edgeCtrl'], function(edgeCtrl){
                 //        fileUploadService.upload(file);
                 //    }
                 //}
+            };
+
+            $scope.addFunction = function(model){
+                var blob = new Blob([model.fieldValue], {type: "octet/stream"});
+                fileUploadService.upload(model.fnName + '.txt', blob);
+                resourceService.addResource(model.fnName + '.txt', "function", model.fieldValue);
+                data.configuration[model.name] = {
+                    name: model.fnName,
+                    type: 'function',
+                    code: model.fieldValue
+                };
             };
 
             $scope.addSprite = function(file, configName){
@@ -63,6 +77,9 @@ define(['edgeCtrl'], function(edgeCtrl){
                             var file = model.files[0];
                             $scope.addSprite(file, model.name);
                         }
+                    }
+                    else if (model.type === 'function'){
+                        $scope.addFunction(model)
                     }
                     else
                         data.configuration[model.name] = model.fieldValue;
