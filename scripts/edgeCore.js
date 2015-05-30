@@ -577,13 +577,13 @@ function edgeCore() {
                 break;
             }
             case KEYCODES['4']:
-                var mod = edge.selectedObject.appearance.image.width/edge.selectedObject.width*edge.selectedObject.appearance.image.height/edge.selectedObject.height;
+                var mod = 16;
                 edge.selectedObject.animation = (edge.selectedObject.animation - 1) % mod;
                 if (edge.selectedObject.animation < 0)
                     edge.selectedObject.animation += mod;
                 break;
             case KEYCODES['5']:
-                var mod = edge.selectedObject.appearance.image.width/edge.selectedObject.width*edge.selectedObject.appearance.image.height/edge.selectedObject.height;
+                var mod = 16;
                 edge.selectedObject.animation = (edge.selectedObject.animation + 1) % mod;
                 break;
             case KEYCODES['backspace']:

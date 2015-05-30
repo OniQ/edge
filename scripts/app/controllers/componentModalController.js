@@ -3,8 +3,8 @@
  */
 define(['edgeCtrl'], function(edgeCtrl){
 
-    edgeCtrl.controller('componentModalController', ['$scope', 'data', 'fileUploadService', 'resourceService',
-        function ($scope, data, fileUploadService, resourceService) {
+    edgeCtrl.controller('componentModalController', ['$scope', 'data', 'fileUploadService', 'resourceService', 'functionService',
+        function ($scope, data, fileUploadService, resourceService, functionService) {
             $scope.types = [
                 'list', 'boolean', 'number',  'string', 'sprite', 'function'
             ];
@@ -13,6 +13,8 @@ define(['edgeCtrl'], function(edgeCtrl){
                 values : [''],
                 type: 'string'
             };
+
+            $scope.addFunction = functionService.addFunction;
 
             if (data.field) {
                 $scope.model.name = data.field.name;
@@ -30,17 +32,6 @@ define(['edgeCtrl'], function(edgeCtrl){
                 //        fileUploadService.upload(file);
                 //    }
                 //}
-            };
-
-            $scope.addFunction = function(model){
-                var blob = new Blob([model.fieldValue], {type: "octet/stream"});
-                fileUploadService.upload(model.fnName + '.txt', blob);
-                resourceService.addResource(model.fnName + '.txt', "function", model.fieldValue);
-                data.configuration[model.name] = {
-                    name: model.fnName,
-                    type: 'function',
-                    code: model.fieldValue
-                };
             };
 
             $scope.addSprite = function(file, configName){
@@ -79,7 +70,7 @@ define(['edgeCtrl'], function(edgeCtrl){
                         }
                     }
                     else if (model.type === 'function'){
-                        $scope.addFunction(model)
+                        $scope.addFunction(data.configuration, model.name, model.fnName, model.fieldValue)
                     }
                     else
                         data.configuration[model.name] = model.fieldValue;

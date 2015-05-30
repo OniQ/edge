@@ -12,7 +12,6 @@ define([
     'ui.bootstrap', 'LocalStorageModule', 'ngFileUpload']);
 
     edge.config(function($routeProvider, localStorageServiceProvider){
-
         $routeProvider
             .when('/', {
                 templateUrl: 'templates/main.html',
@@ -24,7 +23,7 @@ define([
             .setPrefix('edge');
     });
 
-    edge.run(function($rootScope){
+    edge.run(function($rootScope, $timeout){
         $rootScope.isResizable = false;
         $rootScope.canvasWidth = 640;
         $rootScope.canvasHeight = 480;

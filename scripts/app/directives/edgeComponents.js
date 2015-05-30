@@ -111,11 +111,13 @@ define(['edgeDirectives'], function(edgeDirectives){
                         if (type == "function") {
                             fnName = $scope.configuration[name].name;
                             fnCode = resourceService.getResource(fnName + '.txt', "function");
+                            $scope.configuration[name].status = "loading";
                         }
                         if (fnCode)
                             fnCode.then(function (code) {
-                                var fn = new Function(code);
-                                fn();
+                                //var fn = new Function(code);
+                                //fn();
+                                $scope.configuration[name].status = "loaded";
                                 openComponentModal(name, type, fnName, code);
                             });
                         else

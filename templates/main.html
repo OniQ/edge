@@ -2,7 +2,7 @@
     <div id="toolBar" edge-toolbar>
     </div>
     <div class="row" id="middleApp">
-        <div class="col-xs-9" id="displayWrapper" ng-class="{'h100': isResizable}">
+        <div class="col-xs-8" id="displayWrapper" ng-class="{'h100': isResizable}">
             <canvas ng-focus="displayFocused = true" class="middleComponent" width="{{canvasWidth}}" height="{{canvasHeight}}"
                     id="displayWindow" edge-display ng-class="{'fullScreen': isResizable}"
                     jqyoui-droppable="{
@@ -15,6 +15,21 @@
             <div class="middleComponent" id="componentsPanel" class="col-xs-3">
                 <div edge-components></div>
             </div>
+        </div>
+        <div ng-show="showBlockly">
+            sdtfyguhijokl
+        </div>
+        <div class="col-xs-4" style="position: fixed; left: 900px;">
+            <div id="blocklyDiv" style="height: 480px; width: 500px;"></div>
+            <xml id="toolbox" style="display: none">
+                <block type="controls_if"></block>
+                <block type="controls_repeat_ext"></block>
+                <block type="logic_compare"></block>
+                <block type="math_number"></block>
+                <block type="math_arithmetic"></block>
+                <block type="text"></block>
+                <block type="text_print"></block>
+            </xml>
         </div>
     </div>
     <div id="configPanel" collapse="isConfigPanelCollapsed">

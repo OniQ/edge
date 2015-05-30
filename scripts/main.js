@@ -28,11 +28,22 @@ require.config({
                 'app/directives/edgeToolbar', 'app/directives/edgeDisplay',
                 'app/directives/utilDirectives', 'lib/angular-local-storage',
                 'lib/ng-file-upload', 'app/services/fileUploadService',
-                'app/services/resourceService', 'app/directives/imageThumb'
+                'app/services/resourceService', 'app/directives/imageThumb',
+                'lib/blockly_compressed', 'lib/blocks_compressed', 'lib/en',
+                'lib/javascript_compressed', 'app/services/functionService'
             ]
         },
         'edgeCore':{
             deps: ['edgeEditor', 'lib/webgl-utils']
+        },
+        'lib/blocks_compressed':{
+            deps: ['lib/blockly_compressed']
+        },
+        'lib/en':{
+            deps: ['lib/blocks_compressed', 'lib/blockly_compressed']
+        },
+        'lib/javascript_compressed':{
+            deps: ['lib/blocks_compressed', 'lib/blockly_compressed']
         }
     }
 });

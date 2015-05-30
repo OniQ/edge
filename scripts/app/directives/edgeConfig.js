@@ -2,21 +2,16 @@
  * Created by OniQ on 22/04/15.
  */
 define(['edgeDirectives'], function(edgeDirectives){
-    edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService, $interval, $timeout, $modal){
+    edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService, $interval, $timeout, $modal,
+                                                    $rootScope, functionService){
         return {
             templateUrl: "templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
 
-                function getDropDownOptions(array){
-                    if (!angular.isArray($scope.configuration[field]))
-                        return;
-                    for (var i = 0; i < array.length; i++){
-                        array[i] = {
-                            text: array[i],
-                            value: array[i]
-                        }
-                    }
-                    return array;
+                $scope.setFunction = function(name, fn){
+                    var code = Blockly.JavaScript.workspaceToCode($rootScope.workspace);
+                    fn.code = code;
+                    functionService.addFunction($scope.configuration, name, fn.name, fn.code);
                 }
 
                 $scope.synchConfig = function(name, val){
@@ -30,6 +25,10 @@ define(['edgeDirectives'], function(edgeDirectives){
                     }
 
                     delete $scope.configuration[name];
+                };
+
+                $scope.toggleBlockly = function(config){
+                    $rootScope.showBlockly = true;
                 };
 
                 $scope.loadThumbnail = function(sprite){
