@@ -49,13 +49,6 @@ function edgeCore() {
             x2, y2]), gl.STATIC_DRAW);
     }
 
-    var bkgColor = {
-        r : 0.0,
-        g : 0.0,
-        b : 0.0,
-        alpha : 1.0
-    };
-
     function clear(){
         gl.clear(gl.COLOR_BUFFER_BIT);
         initViewport();
@@ -76,7 +69,7 @@ function edgeCore() {
     }
 
     function render(obj) {
-        var image = getResource(obj.appearance.name);
+        var image = getResource(obj.appearance.name, "image");
         if (!image || image === "loading")
             return;
         var x1 = obj.x;
@@ -231,17 +224,17 @@ function edgeCore() {
                             if (r1.fallSpeed)
                                 r1.y -= r1.fallSpeed;
                             obj.jumping = false;
-                            var onCollision = getFunction(obj.onCollisionEnter);
+                            var onCollision = getFunction(obj.onCollision);
                             if (isFunction(onCollision))
                                 onCollision(r1, r2);
                         }
-                    }, function () {
-                        //console.log('enterCollision');
+                    }, function (r1, r2) {
+                        console.log('enterCollision');
                         var onCollisionEnter = getFunction(obj.onCollisionEnter);
                         if (isFunction(onCollisionEnter))
                             onCollisionEnter(r1, r2);
-                    }, function () {
-                        //console.log('leaveCollision');
+                    }, function (r1, r2) {
+                        console.log('leaveCollision');
                         var onCollisionExit = getFunction(obj.onCollisionEnter);
                         if (isFunction(onCollisionExit))
                             onCollisionExit(r1, r2);
@@ -334,13 +327,13 @@ function edgeCore() {
             o[0].y2 >= o[1].y1) {
             onCollision(obj1, obj2, o);
             if (obj1.collide == false) {
-                onCollisionEnter();
+                onCollisionEnter(obj1, obj2);
             }
             obj1.collide = obj2;
         }
         else{
             if (obj1.collide)
-                onCollisionExit();
+                onCollisionExit(obj1, obj2);
             obj1.collide = false;
         }
     }
@@ -371,6 +364,18 @@ function edgeCore() {
         initViewport();
         edge.frameCounter++;
         window.requestAnimationFrame(run);
+    }
+
+    this.playAudio = function(obj, name){
+        if(!obj)
+            return;
+        var audioProp = obj[name];
+        if (audioProp && audioProp.type === "audio") {
+            var audio = getResource(audioProp.name, "audio");
+            if (!audio || audio === "loading")
+                return;
+            audio.play();
+        }
     }
 
     this.turnOn = function(_canvas, build){
@@ -436,12 +441,20 @@ function edgeCore() {
         edge.resources[name] = resource;
     };
 
-     function getResource(name){
+     function getResource(name, type){
         if (!edge.resources[name]) {
             download(name, function(e) {
-                var image = new Image();
-                image.src = e.target.result;
-                edge.resources[name] = image;
+                var resource;
+                switch (type){
+                    case "image":
+                        resource = new Image();
+                        break;
+                    case "audio":
+                        resource = new Audio();
+                        break;
+                }
+                resource.src = e.target.result;
+                edge.resources[name] = resource;
             }, "data");
             edge.resources[name] = "loading";
         }
@@ -454,7 +467,7 @@ function edgeCore() {
         if (!edge.functions[fn.name]) {
             download(fn.name + '.txt', function(e) {
                 var theInstructions = e.target.result;
-                var action = new Function (theInstructions);
+                var action = new Function ('obj1, obj2', theInstructions);
                 edge.functions[fn.name] = action;
             }, "text");
             edge.functions[fn.name] = "loading";
@@ -568,12 +581,6 @@ function edgeCore() {
             }
             case KEYCODES['2']:
             {
-                bkgColor = {
-                    r: 0.3,
-                    g: 0.2,
-                    b: 0.7,
-                    alpha: 1.0
-                };
                 break;
             }
             case KEYCODES['4']:

@@ -72,7 +72,7 @@ define(['edgeCtrl'], function(edgeCtrl){
                 }
 
                 $scope.blocklyStyle = {
-                    'position': 'fixed',
+                    'position': 'absolute',
                     'left': width + "px"
                 };
             }

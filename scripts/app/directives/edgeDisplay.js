@@ -17,11 +17,12 @@ define(['edgeDirectives'], function(edgeDirectives){
                         obj.y = obj.y - obj.height / 2;
                     };
 
-                    $scope.getResourceTask = function(obj, key){
+                    $scope.getResourceTask = function(obj, key, type){
                         var deferred = $q.defer();
                         fileUploadService.download(obj[key].name).then(function (file) {
-                            resourceService.addResource(file.name, "sprite", file).then(function (image) {
-                                $scope.appendImage(obj, key, image);
+                            resourceService.addResource(file.name, type, file).then(function (resource) {
+                                if (type == "sprite")
+                                    $scope.appendImage(obj, key, resource);
                                 deferred.resolve();
                             }, function () {
                                 deferred.reject();
@@ -38,15 +39,27 @@ define(['edgeDirectives'], function(edgeDirectives){
                         var obj = angular.copy($scope.dragItem.item.config);
                         var promiseChains = [];
                         for (var key in obj) {
-                            if (typeof obj[key] == 'object' && obj[key].type == 'sprite') {
-                                var img = resourceService.resources[obj[key].name];
-                                obj.x = edge.mouseState.x;
-                                obj.y = edge.mouseState.y;
-                                if(img) {
-                                    $scope.appendImage(obj, key, img);
+                            if (typeof obj[key] == 'object' ) {
+                                if (obj[key].type == 'sprite') {
+                                    var img = resourceService.resources[obj[key].name];
+                                    obj.x = edge.mouseState.x;
+                                    obj.y = edge.mouseState.y;
+                                    if (img) {
+                                        $scope.appendImage(obj, key, img);
+                                    }
+                                    else {
+                                        promiseChains.push($scope.getResourceTask(obj, key, "sprite"));
+                                    }
                                 }
-                                else {
-                                    promiseChains.push($scope.getResourceTask(obj, key));
+                                else if (obj[key].type == 'sprite'){
+                                    var resource = resourceService.resources[obj[key].name];
+
+                                    if (resource) {
+                                        edge.addResource(obj[key].name, resource);
+                                    }
+                                    else {
+                                        promiseChains.push($scope.getResourceTask(obj, key, obj[key].type));
+                                    }
                                 }
                             }
                         }
