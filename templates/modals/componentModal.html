@@ -86,6 +86,13 @@
                         <img ng-show="model.files[0] != null" ngf-src="model.files[0]">
                     </div>
                 </div>
+                <div class="component-switch" ng-switch-when="audio">
+                    <div class="row form-group">
+                        <label class="control-label col-xs-2">Value:</label>
+                        <input style="padding-bottom: 10px" type="file" ngf-change="upload($files)" ngf-multiple='false' ngf-select='' ng-model='model.files' accept="audio/*" name='file' required>
+                        <div id="audioPreview"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

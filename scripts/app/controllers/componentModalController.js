@@ -6,7 +6,7 @@ define(['edgeCtrl'], function(edgeCtrl){
     edgeCtrl.controller('componentModalController', ['$scope', 'data', 'fileUploadService', 'resourceService', 'functionService',
         function ($scope, data, fileUploadService, resourceService, functionService) {
             $scope.types = [
-                'list', 'boolean', 'number',  'string', 'sprite', 'function'
+                'list', 'boolean', 'number',  'string', 'sprite', 'audio', 'function'
             ];
 
             $scope.model = {
@@ -26,15 +26,29 @@ define(['edgeCtrl'], function(edgeCtrl){
             }
 
             $scope.upload = function (files) {
-                //if (files && files.length) {
-                //    for (var i = 0; i < files.length; i++) {
-                //        var file = files[i];
-                //        fileUploadService.upload(file);
-                //    }
-                //}
+                if (files && files.length) {
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        var audio = new Audio();
+                        var reader  = new FileReader();
+
+                        reader.onloadend = function () {
+                            audio.src = reader.result;
+                            audio.controls = true;
+                            var audioElement = angular.element("#audioPreview");
+                            angular.element(audioElement[0]).replaceWith(audio);
+                        }
+
+                        if (file) {
+                            reader.readAsDataURL(file);
+                        } else {
+                            audio.src = "";
+                        }
+                    }
+                }
             };
 
-            $scope.addSprite = function(file, configName){
+            $scope.addFile = function(file, configName, type){
                 fileUploadService.upload(file.name, file).then(function(){
                     data.configuration[configName].status = "loaded";
                 }, function(){
@@ -42,12 +56,12 @@ define(['edgeCtrl'], function(edgeCtrl){
                     throw new Error("File " + configName + " was not stored!");
                 });
 
-                resourceService.addResource(file.name, "sprite", file).then(function(image){
+                resourceService.addResource(file.name, type, file).then(function(image){
 
                 });
 
                 data.configuration[configName] = {
-                    "type": "sprite",
+                    "type": type,
                     "name": file.name,
                     "status": "loading"
                 };
@@ -63,10 +77,10 @@ define(['edgeCtrl'], function(edgeCtrl){
                             selected: model.values[0]
                         };
                     }
-                    else if (model.type === 'sprite'){
+                    else if (model.type === 'sprite' || model.type === 'audio'){
                         if (model.files && model.files.length){
                             var file = model.files[0];
-                            $scope.addSprite(file, model.name);
+                            $scope.addFile(file, model.name, model.type);
                         }
                     }
                     else if (model.type === 'function'){

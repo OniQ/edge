@@ -46,6 +46,15 @@ define(['edgeServices'], function(edgeServices){
                         deferred.resolve(image);
                     };
                     break;
+                case 'audio':
+                    fileReader.readAsDataURL(data);
+                    fileReader.onload = function(e) {
+                        var audio = new Audio();
+                        audio.src = e.target.result;
+                        service.resources[name] = audio;
+                        deferred.resolve(audio);
+                    };
+                    break;
                 case 'function':
                     service.resources[name] = data;
                     deferred.resolve(service.resources[name]);

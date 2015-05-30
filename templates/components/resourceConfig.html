@@ -1,0 +1,58 @@
+<div style="display: inline;" ng-include="'templates/components/fieldRemoveButton.html'"></div>
+    <div style="display: inline">
+        {{name}}:<div style="display: inline;" ng-switch on="config.status">
+        <div style="display: inline;" ng-switch-when="loading">
+            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+            {{config.name}}
+        </div>
+        <div style="display: inline;" ng-switch-when="loaded">
+            <div style="display: inline;" image-thumb file="config">
+                {{config.name}}
+                <button id="chageSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                        tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
+                        <span class="glyphicon glyphicon-edit"
+                              aria-hidden="true"></span>
+                </button>
+                <button ng-if="config.type === 'sprite'" class="setCollisionBoxBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                        tooltip="Set sprite collision box" ng-hide="openingCollisionModal"
+                        class="btn btn-default btn-xs" ng-click="setCollisionBox(config)">
+                    <span class="glyphicon glyphicon-screenshot"
+                          aria-hidden="true"></span>
+                </button>
+                <div style="display: inline;" class="throbber" ng-show="openingCollisionModal"></div>
+            </div>
+        </div>
+        <div style="display: inline;" ng-switch-when="notLoaded">
+            <button id="loadSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                    tooltip="Load Sprite" class="btn btn-default btn-xs" ng-click="loadThumbnail(config)">
+                    <span class="glyphicon glyphicon-refresh"
+                          aria-hidden="true"></span>
+            </button>
+            {{config.name}}
+            <button ng-if="config.type === 'sprite'" class="setCollisionBoxBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                    tooltip="Set sprite collision box" ng-hide="openingCollisionModal"
+                    class="btn btn-default btn-xs" ng-click="setCollisionBox(config)">
+                    <span class="glyphicon glyphicon-screenshot"
+                          aria-hidden="true"></span>
+            </button>
+            <div style="display: inline;" class="throbber" ng-show="openingCollisionModal"></div>
+        </div>
+        <div style="display: inline;" ng-switch-when="failed">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+            {{config.name}}
+            <button id="addSpriteBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                    tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
+                    <span class="glyphicon glyphicon-edit"
+                          aria-hidden="true"></span>
+            </button>
+        </div>
+        <div style="display: inline;" ng-switch-default>
+            {{config.name}}
+            <button tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                    tooltip="Change Sprite" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
+                    <span class="glyphicon glyphicon-edit"
+                          aria-hidden="true"></span>
+            </button>
+        </div>
+        </div>
+    </div>

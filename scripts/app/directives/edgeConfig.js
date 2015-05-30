@@ -31,16 +31,17 @@ define(['edgeDirectives'], function(edgeDirectives){
                     $rootScope.showBlockly = true;
                 };
 
-                $scope.loadThumbnail = function(sprite){
-                    sprite.status = "loading";
-                    fileUploadService.download(sprite.name, "xs").then(function(file){
-                        resourceService.addResource("_" + file.name, "sprite", file).then(function(image){
-                            sprite.status = "loaded";
+                $scope.loadThumbnail = function(resource){
+                    resource.status = "loading";
+                    var thumbSize = resource.type === "sprite" ? "xs" : null;
+                    fileUploadService.download(resource.name, thumbSize).then(function(file){
+                        resourceService.addResource("_" + file.name, resource.type, file).then(function(image){
+                            resource.status = "loaded";
                         }, function(){
-                            sprite.status = "failed";
+                            resource.status = "failed";
                         })
                     }, function(){
-                        sprite.status = "failed";
+                        resource.status = "failed";
                     });
                 };
 

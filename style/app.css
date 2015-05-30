@@ -68,6 +68,9 @@ body{
     width: 32px;
     height: 32px;
 }
+.audioPreview{
+    width: 40px;
+}
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
     -ms-animation: spin .7s infinite linear;

@@ -3,11 +3,9 @@
  */
 define(['edgeCtrl'], function(edgeCtrl){
     edgeCtrl.controller('mainController', ['$scope', 'fileUploadService', '$modal', 'localStorageService', '$rootScope',
-        function ($scope, fileUploadService, $modal, localStorageService, $rootScope) {
+        '$timeout', '$interval',
+        function ($scope, fileUploadService, $modal, localStorageService, $rootScope, $timeout, $interval) {
             //$scope.gameToLoad = "testBuild.json";
-
-            $rootScope.workspace = Blockly.inject('blocklyDiv',
-                {toolbox: document.getElementById('toolbox')});
 
             $scope.loadGame = function(){
                 var modalInstance = $modal.open({
@@ -65,5 +63,30 @@ define(['edgeCtrl'], function(edgeCtrl){
                 });
 
             }
+
+            function setBlocklyStyle(){
+                var result = document.getElementsByClassName("middleComponent");
+                var width = 35;
+                for (var i = 0; i < result.length; i++){
+                    width += angular.element(result[i]).width();
+                }
+
+                $scope.blocklyStyle = {
+                    'position': 'fixed',
+                    'left': width + "px"
+                };
+            }
+
+            $timeout(function(){
+                setBlocklyStyle();
+                $interval(setBlocklyStyle, 500);
+                if ($scope.blocklyStyle) {
+                    $timeout(function () {
+                        $rootScope.workspace = Blockly.inject('blocklyDiv',
+                            {toolbox: document.getElementById('toolbox')});
+                    });
+                }
+            });
+
         }]);
 });

@@ -5,18 +5,28 @@ define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('imageThumb', function($timeout, resourceService){
         return {
             scope: {
-                image: "="
+                file: "="
             },
             controller: function($scope, $element, $attrs) {
                 $timeout(function(){
-                    var image = resourceService.resources["_" + $scope.image.name];
-                    if (image) {
-                        var imageElement = angular.element(image);
-                        imageElement.addClass("thumb");
-                        $element.prepend(imageElement);
+                    var file = resourceService.resources["_" + $scope.file.name];
+                    if (file) {
+                        switch($scope.file.type){
+                            case "sprite":
+                                var imageElement = angular.element(file);
+                                imageElement.addClass("thumb");
+                                $element.prepend(imageElement);
+                                break;
+                            case "audio":
+                                file.controls = true;
+                                var imageElement = angular.element(file);
+                                imageElement.addClass("audioPreview");
+                                $element.prepend(imageElement);
+                                break;
+                        }
                     }
                     else
-                        $scope.image.status = "notLoaded";
+                        $scope.file.status = "notLoaded";
                 });
             }
         };
