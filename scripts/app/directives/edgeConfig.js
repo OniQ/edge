@@ -37,6 +37,8 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $scope.loadBlocklyWorkspace = function(name, config){
                     Blockly.mainWorkspace.clear();
                     var xmlText = localStorage["block_" + config.name];
+                    if (!xmlText)
+                        return;
                     var xml = Blockly.Xml.textToDom(xmlText);
                     if(xml)
                         Blockly.Xml.domToWorkspace( Blockly.mainWorkspace, xml );

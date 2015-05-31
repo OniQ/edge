@@ -229,12 +229,12 @@ function edgeCore() {
                                 onCollision(r1, r2);
                         }
                     }, function (r1, r2) {
-                        console.log('enterCollision');
+                        //console.log('enterCollision');
                         var onCollisionEnter = getFunction(obj.onCollisionEnter);
                         if (isFunction(onCollisionEnter))
                             onCollisionEnter(r1, r2);
                     }, function (r1, r2) {
-                        console.log('leaveCollision');
+                        //console.log('leaveCollision');
                         var onCollisionExit = getFunction(obj.onCollisionEnter);
                         if (isFunction(onCollisionExit))
                             onCollisionExit(r1, r2);
@@ -357,9 +357,9 @@ function edgeCore() {
                     control(obj);
                     physics(obj);
                 }
-                var behavior = getFunction(obj.behavior);
-                if (isFunction(behavior))
-                    behavior();
+                var behaviour = getFunction(obj.behaviour);
+                if (isFunction(behaviour))
+                    behaviour(obj);
             });
         initViewport();
         edge.frameCounter++;
@@ -376,6 +376,12 @@ function edgeCore() {
                 return;
             audio.play();
         }
+    }
+
+    this.removeObject = function(obj){
+        var index = edge.gameObjects.indexOf(obj);
+        if (index != -1)
+            edge.gameObjects.splice(index, 1);
     }
 
     this.turnOn = function(_canvas, build){
@@ -480,12 +486,6 @@ function edgeCore() {
         edge.gameObjects.push(obj);
         edge.gameObjects.sort(compareByZ);
     };
-
-    function removeObject(obj){
-        var index = edge.gameObjects.indexOf(obj);
-        if (index != -1)
-            edge.gameObjects.splice(index, 1);
-    }
 
     this.mouseState = {
         mouseDown: false,
@@ -598,7 +598,9 @@ function edgeCore() {
                 }
                 break;
             case KEYCODES['backspace']:
-                removeObject(edge.selectedObject);
+                if (edge.selectedObject) {
+                    edge.removeObject(edge.selectedObject);
+                }
                 break;
         }
     }

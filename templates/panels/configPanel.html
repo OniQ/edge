@@ -42,6 +42,7 @@
                             </div>
                         </div>
                         <div style="display: inline">
+                            {{name}}:
                             <span style="cursor: pointer; color: #0066cc" ng-click="loadBlocklyWorkspace(name, config)">{{config.name}}</span>
                             <button ng-disabled="config.status == 'loading'" id="editFunctionBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
                                                   tooltip="Edit function" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
