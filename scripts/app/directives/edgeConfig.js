@@ -89,7 +89,9 @@ define(['edgeDirectives'], function(edgeDirectives){
                 };
 
                 document.addEventListener("edgeObjectSelected", function(e) {
-                    $scope.configuration = e.detail;
+                    var modals = document.getElementsByClassName("modal-body");
+                    if (modals.length == 0)
+                        $scope.configuration = e.detail;
                 });
 
                 $scope.getType = function(config){

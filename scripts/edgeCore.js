@@ -245,6 +245,8 @@ function edgeCore() {
     }
 
     function setSelectedObject(x, y){
+        if (!x || !y)
+            return;
         for(var i = 0; i < edge.gameObjects.length; i++) {
             var obj = edge.gameObjects[i];
             if (x >= obj.x && x <= obj.x + obj.width
@@ -437,6 +439,8 @@ function edgeCore() {
         obj.movementDirection = 0;
         obj.animation = 0;
         obj.currentSpeed = 0;
+        if (!obj.z)
+            obj.z = 0;
         if (!obj.speed)
             obj.speed = 1;
         if (!obj.fallSpeed)
@@ -565,7 +569,6 @@ function edgeCore() {
             case KEYCODES['left_arrow']:
             case KEYCODES['up_arrow']:
             case KEYCODES['down_arrow']:
-            case KEYCODES['backspace']:
                 if (edge.selectedObject) {
                     ev.preventDefault();
                     //ev.stopPropagation();
@@ -597,7 +600,7 @@ function edgeCore() {
                     edge.selectedObject.animation = (edge.selectedObject.animation + 1) % mod;
                 }
                 break;
-            case KEYCODES['backspace']:
+            case KEYCODES['r']:
                 if (edge.selectedObject) {
                     edge.removeObject(edge.selectedObject);
                 }
@@ -620,6 +623,14 @@ function edgeCore() {
         var rect = canvas.getBoundingClientRect();
         edge.mouseState.x = newX - rect.left - canvas.clientLeft;
         edge.mouseState.y = newY - rect.top - canvas.clientTop;
+        if (edge.mouseState.x > canvas.width + canvas.clientLeft) {
+            edge.mouseState.x = null;
+            edge.selectedObject = null;
+        }
+        if (edge.mouseState.y > canvas.height + canvas.clientTop ) {
+            edge.mouseState.y = null;
+            edge.selectedObject = null;
+        }
     }
 
     window.onkeydown = onKeyDown;
