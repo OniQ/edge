@@ -77,7 +77,15 @@ define(['edgeCtrl'], function(edgeCtrl){
                 };
             }
 
+            function setComponentsHeight(){
+                var result = document.getElementsByClassName("middleComponent");
+                $scope.componentsStyle = {
+                    'height': angular.element(result[0]).height()
+                };
+            }
+
             $timeout(function(){
+                setComponentsHeight();
                 setBlocklyStyle();
                 $interval(setBlocklyStyle, 500);
                 if ($scope.blocklyStyle) {

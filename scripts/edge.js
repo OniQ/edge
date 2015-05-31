@@ -21,6 +21,23 @@ define([
 
         localStorageServiceProvider
             .setPrefix('edge');
+
+        Blockly.Blocks['playaudio'] = {
+            init: function () {
+                this.setColour(210);
+                this.appendDummyInput()
+                    .appendField("Play Audio");
+                this.appendValueInput("NAME")
+                    .setCheck("String");
+                this.setTooltip('Enter objects audio field name');
+            }
+        }
+
+        Blockly.JavaScript['playaudio'] = function(block) {
+            var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+            var code = "edge.playAudio(obj1, " + value_name + ")";
+            return code;
+        };
     });
 
     edge.run(function($rootScope, $timeout){

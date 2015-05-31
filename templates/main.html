@@ -12,7 +12,7 @@
                     data-drop="true">
                 Unable to initialize WebGL. Your browser may not support it.
             </canvas>
-            <div class="middleComponent" id="componentsPanel" class="col-xs-3">
+            <div class="middleComponent" id="componentsPanel" ng-style="componentsStyle" class="col-xs-3">
                 <div edge-components></div>
             </div>
         </div>
@@ -20,6 +20,7 @@
             <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
             <xml id="toolbox" style="display: none">
                 <block type="controls_if"></block>
+                <block type="playaudio"></block>
                 <block type="controls_repeat_ext"></block>
                 <block type="logic_compare"></block>
                 <block type="math_number"></block>

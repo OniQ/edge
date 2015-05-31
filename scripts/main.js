@@ -30,7 +30,8 @@ require.config({
                 'lib/ng-file-upload', 'app/services/fileUploadService',
                 'app/services/resourceService', 'app/directives/imageThumb',
                 'lib/blockly_compressed', 'lib/blocks_compressed', 'lib/en',
-                'lib/javascript_compressed', 'app/services/functionService'
+                'lib/javascript_compressed', 'app/services/functionService',
+                'lib/blocklyStorage'
             ]
         },
         'edgeCore':{
@@ -43,6 +44,9 @@ require.config({
             deps: ['lib/blocks_compressed', 'lib/blockly_compressed']
         },
         'lib/javascript_compressed':{
+            deps: ['lib/blocks_compressed', 'lib/blockly_compressed']
+        },
+        'lib/blocklyStorage':{
             deps: ['lib/blocks_compressed', 'lib/blockly_compressed']
         }
     }

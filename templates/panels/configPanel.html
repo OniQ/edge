@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div style="display: inline">
-                            <span style="cursor: pointer; color: #0066cc" ng-click="toggleBlockly(config)">{{config.name}}</span>
+                            <span style="cursor: pointer; color: #0066cc" ng-click="loadBlocklyWorkspace(name, config)">{{config.name}}</span>
                             <button ng-disabled="config.status == 'loading'" id="editFunctionBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
                                                   tooltip="Edit function" class="btn btn-warning btn-xs" ng-click="addField(name, config.type)">
                                             <span class="glyphicon glyphicon-edit"
@@ -51,6 +51,11 @@
                             <button ng-disabled="config.status == 'loading'" id="generateFunctionBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
                                     tooltip="Generate function" class="btn btn-warning btn-xs" ng-click="setFunction(name, config)">
                                             <span class="glyphicon glyphicon-blackboard"
+                                                  aria-hidden="true"></span>
+                            </button>
+                            <button ng-disabled="config.status == 'loading'" id="loadBlocklyFunctionBtn" tooltip-placement='right' style='display: inline-block' tooltip-popup-delay='300'
+                                    tooltip="Load stored block" class="btn btn-warning btn-xs" ng-click="loadBlocklyWorkspace(name, config)">
+                                            <span class="glyphicon glyphicon-import"
                                                   aria-hidden="true"></span>
                             </button>
 

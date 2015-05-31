@@ -3,14 +3,21 @@
  */
 define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeConfig', function(fileUploadService, resourceService, $interval, $timeout, $modal,
-                                                    $rootScope, functionService){
+                                                    $rootScope, functionService, localStorageService){
         return {
             templateUrl: "templates/panels/configPanel.html",
             controller: function($scope, $element, $attrs) {
 
+                var workspace = localStorageService.get('workspace');
+                if (!workspace)
+                    localStorageService.set('workspace', {});
+                $scope.unbind = localStorageService.bind($scope, 'workspace');
+
                 $scope.setFunction = function(name, fn){
                     var code = Blockly.JavaScript.workspaceToCode($rootScope.workspace);
                     fn.code = code;
+                    var xml = Blockly.Xml.workspaceToDom( Blockly.mainWorkspace );
+                    localStorage.setItem("block_" + fn.name ,Blockly.Xml.domToText( xml ));
                     functionService.addFunction($scope.configuration, name, fn.name, fn.code);
                 }
 
@@ -27,8 +34,11 @@ define(['edgeDirectives'], function(edgeDirectives){
                     delete $scope.configuration[name];
                 };
 
-                $scope.toggleBlockly = function(config){
-                    $rootScope.showBlockly = true;
+                $scope.loadBlocklyWorkspace = function(name, config){
+                    var xmlText = localStorage["block_" + config.name];
+                    var xml = Blockly.Xml.textToDom(xmlText);
+                    if(xml)
+                        Blockly.Xml.domToWorkspace( Blockly.mainWorkspace, xml );
                 };
 
                 $scope.loadThumbnail = function(resource){
