@@ -19,7 +19,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     var xml = Blockly.Xml.workspaceToDom( Blockly.mainWorkspace );
                     localStorage.setItem("block_" + fn.name ,Blockly.Xml.domToText( xml ));
                     functionService.addFunction($scope.configuration, name, fn.name, fn.code);
-                }
+                };
 
                 $scope.synchConfig = function(name, val){
                     $scope.configuration[name] = val;
@@ -35,6 +35,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                 };
 
                 $scope.loadBlocklyWorkspace = function(name, config){
+                    Blockly.mainWorkspace.clear();
                     var xmlText = localStorage["block_" + config.name];
                     var xml = Blockly.Xml.textToDom(xmlText);
                     if(xml)

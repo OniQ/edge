@@ -25,6 +25,7 @@ define([
         Blockly.Blocks['playaudio'] = {
             init: function () {
                 this.setColour(210);
+                this.setPreviousStatement(true);
                 this.appendDummyInput()
                     .appendField("Play Audio");
                 this.appendValueInput("NAME")
