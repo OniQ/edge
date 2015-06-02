@@ -13,11 +13,15 @@ define([
 
     edge.config(function($routeProvider, localStorageServiceProvider){
         $routeProvider
-            .when('/', {
-                templateUrl: 'templates/main.html',
-                controller: 'mainController'
+            .when('/app1', {
+                templateUrl: 'templates/main1.html',
+                controller: 'mainController1'
             })
-            .otherwise({ redirectTo: "/" });
+            .when('/app2', {
+                templateUrl: 'templates/main2.html',
+                controller: 'mainController2'
+            })
+            .otherwise({ redirectTo: "/app1" });
 
         localStorageServiceProvider
             .setPrefix('edge');

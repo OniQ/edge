@@ -21,7 +21,7 @@ require.config({
     },
     shim:{
         'edge': {
-            deps: ['ctrl/mainController', 'ctrl/componentModalController',
+            deps: ['ctrl/main1Controller', 'ctrl/main2Controller', 'ctrl/componentModalController',
                 'ctrl/inputModalController', 'ctrl/areaSelectModalController',
                 'ui-bootstrap', 'dragdrop', 'lib/area-select',
                 'app/directives/edgeComponents', 'app/directives/edgeConfig',
@@ -31,7 +31,7 @@ require.config({
                 'app/services/resourceService', 'app/directives/imageThumb',
                 'lib/blockly_compressed', 'lib/blocks_compressed', 'lib/en',
                 'lib/javascript_compressed', 'app/services/functionService',
-                'lib/blocklyStorage'
+                'lib/blocklyStorage', 'lib/sizeof.compressed', 'lib/ace'
             ]
         },
         'edgeCore':{

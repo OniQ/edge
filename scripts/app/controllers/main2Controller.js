@@ -2,7 +2,7 @@
  * Created by OniQ on 20/04/15.
  */
 define(['edgeCtrl'], function(edgeCtrl){
-    edgeCtrl.controller('mainController', ['$scope', 'fileUploadService', '$modal', 'localStorageService', '$rootScope',
+    edgeCtrl.controller('mainController2', ['$scope', 'fileUploadService', '$modal', 'localStorageService', '$rootScope',
         '$timeout', '$interval',
         function ($scope, fileUploadService, $modal, localStorageService, $rootScope, $timeout, $interval) {
             //$scope.gameToLoad = "testBuild.json";

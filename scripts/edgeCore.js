@@ -352,6 +352,7 @@ function edgeCore() {
     }
 
     function run(){
+        edge.gameObjects.sort(compareByZ);
         forEachObjectAction(
             function(obj){
                 if(obj.appearance) {
@@ -364,7 +365,6 @@ function edgeCore() {
                     behaviour(obj);
             });
         initViewport();
-        edge.frameCounter++;
         window.requestAnimationFrame(run);
     }
 
@@ -464,6 +464,8 @@ function edgeCore() {
                         break;
                 }
                 resource.src = e.target.result;
+                var sizeInfo = sizeof(resource.src);
+                console.log(name + ":" + sizeInfo);
                 edge.resources[name] = resource;
             }, "data");
             edge.resources[name] = "loading";
@@ -488,7 +490,6 @@ function edgeCore() {
     this.attachObject = function(obj){
         initObject(obj);
         edge.gameObjects.push(obj);
-        edge.gameObjects.sort(compareByZ);
     };
 
     this.mouseState = {
