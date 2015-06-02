@@ -69,6 +69,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                         });
                         return dropDeferred.promise;
                     };
+                    edge.editorEnabled = true;
                     edge.turnOn(canvas);
                     $interval(function(){
                         $rootScope.mouseState = edge.mouseState;

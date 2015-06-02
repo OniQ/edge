@@ -8,6 +8,8 @@ function edgeCore() {
     var gl = null;
     var canvas = null;
     var program;
+    var consoleFunction;
+    this.firstRun = false;
     this.selectedObject = null;
     this.resources = {};
     this.functions = {};
@@ -15,6 +17,8 @@ function edgeCore() {
     this.cy = 0;
     this.camSpeed = 3;
     this.frameCounter = 0;
+    this.editorEnabled = false;
+    this.functionParameters = {};
 
     function initWebGL(canvas) {
         try {
@@ -352,6 +356,12 @@ function edgeCore() {
     }
 
     function run(){
+        if (edge.firstRun == true){
+            consoleFunction();
+            edge.firstRun = false;
+        }
+        if (consoleFunction)
+            consoleFunction();
         forEachObjectAction(
             function(obj){
                 if(obj.appearance) {
@@ -364,6 +374,7 @@ function edgeCore() {
                     behaviour(obj);
             });
         initViewport();
+        edge.frameCounter++;
         window.requestAnimationFrame(run);
     }
 
@@ -391,14 +402,19 @@ function edgeCore() {
 
     this.executeFunction = function(code){
         var action = new Function (code);
-        action();
+        consoleFunction = action;
+        edge.firstRun = true;
+    };
+
+    this.stopFunction = function(){
+        consoleFunction = null;
     };
 
     this.removeObject = function(obj){
         var index = edge.gameObjects.indexOf(obj);
         if (index != -1)
             edge.gameObjects.splice(index, 1);
-    }
+    };
 
     this.turnOn = function(_canvas, build){
         if (_canvas)
@@ -577,9 +593,11 @@ function edgeCore() {
     }
 
     function onKeyDown(ev){
-        checkKey(ev);
-        if (edgeEditor)
-            edgeEditor.processKeyDown(ev);
+        if (edge.editorEnabled) {
+            checkKey(ev);
+            if (edgeEditor)
+                edgeEditor.processKeyDown(ev);
+        }
     }
 
     function checkKey(ev){
