@@ -352,7 +352,6 @@ function edgeCore() {
     }
 
     function run(){
-        edge.gameObjects.sort(compareByZ);
         forEachObjectAction(
             function(obj){
                 if(obj.appearance) {
@@ -378,7 +377,22 @@ function edgeCore() {
                 return;
             audio.play();
         }
-    }
+    };
+
+    this.getByField = function(field, val){
+        var objList = [];
+        for (var i = 0; i < edge.gameObjects.length; i++){
+            var obj = edge.gameObjects[i];
+            if (obj[field] == val)
+                objList.push(obj)
+        }
+        return objList;
+    };
+
+    this.executeFunction = function(code){
+        var action = new Function (code);
+        action();
+    };
 
     this.removeObject = function(obj){
         var index = edge.gameObjects.indexOf(obj);
@@ -389,10 +403,14 @@ function edgeCore() {
     this.turnOn = function(_canvas, build){
         if (_canvas)
             canvas = _canvas;
-        if (build)
-            download(build, function(e) {
+        if (typeof(build) == "string") {
+            download(build, function (e) {
                 edge.gameObjects = JSON.parse(e.target.result);
             }, "text");
+        }
+        else if (typeof(build) == "object"){
+            edge.gameObjects = build;
+        }
         initWebGL(canvas);
         if (!gl)
             return;
@@ -464,8 +482,8 @@ function edgeCore() {
                         break;
                 }
                 resource.src = e.target.result;
-                var sizeInfo = sizeof(resource.src);
-                console.log(name + ":" + sizeInfo);
+                //var sizeInfo = sizeof(resource.src);
+                //console.log(name + ":" + sizeInfo);
                 edge.resources[name] = resource;
             }, "data");
             edge.resources[name] = "loading";
