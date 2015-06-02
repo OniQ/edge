@@ -67,7 +67,7 @@ define(['edgeCtrl'], function(edgeCtrl){
                     "    case 1: fn.rocket.x -= fn.rocket.speed;\n" +
                     "         break;\n" +
                     "    case 2: fn.rocket.y += fn.rocket.speed;\n" +
-                    "         break;" +
+                    "         break;\n" +
                     "    case 3: fn.rocket.x += fn.rocket.speed;\n" +
                     "         break;\n" +
                     "}\n" +
