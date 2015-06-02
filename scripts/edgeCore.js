@@ -9,6 +9,11 @@ function edgeCore() {
     var canvas = null;
     var program;
     var consoleFunction;
+    this.engineInfo = {
+        mouseDown: false,
+        x: null,
+        y: null
+    };
     this.firstRun = false;
     this.selectedObject = null;
     this.resources = {};
@@ -106,22 +111,31 @@ function edgeCore() {
             tx1,  ty2,
             tx2,  ty1,
             tx2,  ty2];
+
+
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureMap), gl.STATIC_DRAW);
         gl.enableVertexAttribArray(texCoordLocation);
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
 
-        // Create a texture.
-        var texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
+        var hasTexture = obj._texture;
+        if (!hasTexture) {
+            // Create a texture.
+            var texture = gl.createTexture();
+            obj._texture = texture;
+        }
 
-        // Set the parameters so we can render any size image.
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.bindTexture(gl.TEXTURE_2D, obj._texture);
 
-        // Upload the image into the texture.
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+        if (!hasTexture) {
+            // Set the parameters so we can render any size image.
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+            // Upload the image into the texture.
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+        }
 
         // lookup uniforms
         var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
@@ -365,6 +379,7 @@ function edgeCore() {
         forEachObjectAction(
             function(obj){
                 if(obj.appearance) {
+                    //if (!obj.rendered)
                     render(obj);
                     control(obj);
                     physics(obj);
@@ -487,22 +502,24 @@ function edgeCore() {
 
      function getResource(name, type){
         if (!edge.resources[name]) {
-            download(name, function(e) {
-                var resource;
-                switch (type){
-                    case "image":
-                        resource = new Image();
-                        break;
-                    case "audio":
-                        resource = new Audio();
-                        break;
-                }
-                resource.src = e.target.result;
-                //var sizeInfo = sizeof(resource.src);
-                //console.log(name + ":" + sizeInfo);
-                edge.resources[name] = resource;
-            }, "data");
-            edge.resources[name] = "loading";
+            if (edge.resources[name] != "loading") {
+                download(name, function (e) {
+                    var resource;
+                    switch (type) {
+                        case "image":
+                            resource = new Image();
+                            break;
+                        case "audio":
+                            resource = new Audio();
+                            break;
+                    }
+                    resource.src = e.target.result;
+                    //var sizeInfo = sizeof(resource.src);
+                    //console.log(name + ":" + sizeInfo);
+                    edge.resources[name] = resource;
+                }, "data");
+                edge.resources[name] = "loading";
+            }
         }
         return edge.resources[name];
     };
@@ -524,13 +541,9 @@ function edgeCore() {
     this.attachObject = function(obj){
         initObject(obj);
         edge.gameObjects.push(obj);
+        edge.gameObjects.sort(compareByZ);
     };
 
-    this.mouseState = {
-        mouseDown: false,
-        x: null,
-        y: null
-    };
     /******* Util functions ******/
     function cloneObject(obj) {
         if (obj === null || typeof obj !== 'object') {
@@ -646,26 +659,26 @@ function edgeCore() {
     }
 
     function handleMouseDown(event) {
-        edge.mouseState.mouseDown = true;
-        setSelectedObject(edge.mouseState.x, edge.mouseState.y);
+        edge.engineInfo.mouseDown = true;
+        setSelectedObject(edge.engineInfo.x, edge.engineInfo.y);
     }
 
     function handleMouseUp(event) {
-        edge.mouseState.mouseDown = false;
+        edge.engineInfo.mouseDown = false;
     }
 
     function handleMouseMove(event) {
         var newX = event.clientX;
         var newY = event.clientY;
         var rect = canvas.getBoundingClientRect();
-        edge.mouseState.x = newX - rect.left - canvas.clientLeft;
-        edge.mouseState.y = newY - rect.top - canvas.clientTop;
-        if (edge.mouseState.x > canvas.width + canvas.clientLeft) {
-            edge.mouseState.x = null;
+        edge.engineInfo.x = newX - rect.left - canvas.clientLeft;
+        edge.engineInfo.y = newY - rect.top - canvas.clientTop;
+        if (edge.engineInfo.x > canvas.width + canvas.clientLeft) {
+            edge.engineInfo.x = null;
             edge.selectedObject = null;
         }
-        if (edge.mouseState.y > canvas.height + canvas.clientTop ) {
-            edge.mouseState.y = null;
+        if (edge.engineInfo.y > canvas.height + canvas.clientTop ) {
+            edge.engineInfo.y = null;
             edge.selectedObject = null;
         }
     }

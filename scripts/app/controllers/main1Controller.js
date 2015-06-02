@@ -120,5 +120,9 @@ define(['edgeCtrl'], function(edgeCtrl){
                 $scope.consoleCode = code;
             };
             $scope.stopFunction = edge.stopFunction;
+
+            $interval(function(){
+                $rootScope.engineInfo = edge.engineInfo;
+            }, 100);
         }]);
 });

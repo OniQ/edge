@@ -42,8 +42,8 @@ define(['edgeDirectives'], function(edgeDirectives){
                             if (typeof obj[key] == 'object' ) {
                                 if (obj[key].type == 'sprite') {
                                     var img = resourceService.resources[obj[key].name];
-                                    obj.x = edge.mouseState.x;
-                                    obj.y = edge.mouseState.y;
+                                    obj.x = edge.engineInfo.x;
+                                    obj.y = edge.engineInfo.y;
                                     if (img) {
                                         $scope.appendImage(obj, key, img);
                                     }
@@ -72,7 +72,7 @@ define(['edgeDirectives'], function(edgeDirectives){
                     edge.editorEnabled = true;
                     edge.turnOn(canvas);
                     $interval(function(){
-                        $rootScope.mouseState = edge.mouseState;
+                        $rootScope.engineInfo = edge.engineInfo;
                     }, 100);
                 });
             }
