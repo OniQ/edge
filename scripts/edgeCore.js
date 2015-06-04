@@ -442,6 +442,8 @@ function edgeCore() {
         else if (typeof(build) == "object"){
             edge.gameObjects = build;
         }
+        else
+            edge.gameObjects = []
         initWebGL(canvas);
         if (!gl)
             return;

@@ -92,6 +92,7 @@ define(['edgeCtrl'], function(edgeCtrl){
 
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/kuroir");
+            editor.$blockScrolling = Infinity;
             //editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/javascript");
             editor.commands.addCommand({
