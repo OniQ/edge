@@ -6,12 +6,12 @@ define([
     'ngRoute'
 ], function(
 ){
-    var edge = angular.module('edge', ['ngRoute',
+    var app = angular.module('edge', ['ngRoute',
         'edge.controllers', 'edge.directives', 'edge.services',
         'ui.bootstrap', 'ngDragDrop', 'jackrabbitsgroup.angular-area-select',
     'ui.bootstrap', 'LocalStorageModule', 'ngFileUpload']);
 
-    edge.config(function($routeProvider, localStorageServiceProvider){
+    app.config(function($routeProvider, localStorageServiceProvider, $provide){
         $routeProvider
             .when('/app1', {
                 templateUrl: 'templates/main1.html',
@@ -21,7 +21,28 @@ define([
                 templateUrl: 'templates/main2.html',
                 controller: 'mainController2'
             })
-            .otherwise({ redirectTo: "/app1" });
+            .otherwise({ redirectTo: "/app2" });
+
+        $provide.decorator('$modalStack', function ($delegate) {
+            var close = $delegate.close;
+            $delegate.close = function (modalInstance, result) {
+                edge.setKeysDisabled(false)
+                close(modalInstance, result);
+            };
+
+            var open = $delegate.open;
+            $delegate.open = function (instance, modal) {
+                edge.setKeysDisabled(true)
+                open(instance, modal);
+            };
+
+            var dismiss = $delegate.dismiss;
+            $delegate.dismiss = function (modalInstance, method) {
+                edge.setKeysDisabled(false)
+                dismiss(modalInstance, method);
+            };
+            return $delegate;
+        });
 
         localStorageServiceProvider
             .setPrefix('edge');
@@ -110,12 +131,12 @@ define([
         };
     });
 
-    edge.run(function($rootScope, $timeout){
+    app.run(function($rootScope, $timeout){
         $rootScope.isResizable = false;
         $rootScope.canvasWidth = 640;
         $rootScope.canvasHeight = 480;
         $rootScope.autoSaveComponents = true;
     });
 
-    return edge;
+    return app;
 });

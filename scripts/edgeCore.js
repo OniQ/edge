@@ -24,6 +24,7 @@ function edgeCore() {
     this.frameCounter = 0;
     this.editorEnabled = false;
     this.functionParameters = {};
+    this.keysDisabled = false;
 
     function initWebGL(canvas) {
         try {
@@ -268,17 +269,21 @@ function edgeCore() {
     }
 
     function setSelectedObject(x, y){
+        edge.selectedObject = null;
         if (!x || !y)
             return;
-        for(var i = 0; i < edge.gameObjects.length; i++) {
+        for(var i = edge.gameObjects.length-1; i >= 0; i--) {
             var obj = edge.gameObjects[i];
             if (x >= obj.x && x <= obj.x + obj.width
                 && y >= obj.y && y <= obj.y + obj.height) {
+                if (edge.selectedObject) {
+                    obj.controllable = false;
+                    continue
+                }
                 edge.selectedObject = obj;
                 obj.controllable = true;
                 var event = new CustomEvent("edgeObjectSelected", { "detail": obj });
                 document.dispatchEvent(event);
-                //return;
             }
             else {
                 obj.controllable = false;
@@ -620,7 +625,13 @@ function edgeCore() {
         }
     }
 
+    this.setKeysDisabled = function(bool){
+        edge.keysDisabled = bool;
+    }
+
     function checkKey(ev){
+        if (edge.keysDisabled)
+            return;
         switch(ev.keyCode){
             case KEYCODES['right_arrow']:
             case KEYCODES['left_arrow']:

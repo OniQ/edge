@@ -6,6 +6,8 @@ var edgeEditor = new edgeEditor();
 function edgeEditor(){
 
     this.processKeyDown = function(ev){
+        if (edge.keysDisabled)
+            return;
         switch(ev.keyCode){
             case KEYCODES['w']:
             {
