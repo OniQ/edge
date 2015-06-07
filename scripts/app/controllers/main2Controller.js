@@ -18,7 +18,8 @@ define(['edgeCtrl'], function(edgeCtrl){
                                 title: 'Load game',
                                 label: 'Select build',
                                 type: "list",
-                                options: localStorageService.get("builds")
+                                options: localStorageService.get("builds"),
+                                defaultValue: localStorageService.get("builds")[0]
                             }
                         }
                     }

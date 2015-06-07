@@ -78,6 +78,7 @@ function edgeCore() {
     }
 
     function render(obj) {
+        var hasTexture = obj._texture;
         var image = getResource(obj.appearance.name, "image");
         if (!image || image === "loading")
             return;
@@ -89,8 +90,10 @@ function edgeCore() {
         var positionLocation = gl.getAttribLocation(program, "a_position");
         var texCoordLocation = gl.getAttribLocation(program, "a_texCoord");
         // provide texture coordinates for the rectangle.
-        var texCoordBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+        if (!obj._texCoordBuffer)
+            obj._texCoordBuffer = gl.createBuffer();
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, obj._texCoordBuffer);
         var tx1, tx2, ty1, ty2;
         tx1 = obj.animation * obj.width;
         ty1 = 0;
@@ -112,12 +115,11 @@ function edgeCore() {
             tx2,  ty1,
             tx2,  ty2];
 
-
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureMap), gl.STATIC_DRAW);
         gl.enableVertexAttribArray(texCoordLocation);
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
 
-        var hasTexture = obj._texture;
+
         if (!hasTexture) {
             // Create a texture.
             var texture = gl.createTexture();
@@ -144,8 +146,11 @@ function edgeCore() {
         gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
 
         // Create a buffer for the position of the rectangle corners.
-        var buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        if (!obj._positionBuffer) {
+            var buffer = gl.createBuffer();
+            obj._positionBuffer = buffer;
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, obj._positionBuffer);
         gl.enableVertexAttribArray(positionLocation);
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
