@@ -447,13 +447,16 @@ function edgeCore() {
         if (typeof(build) == "string") {
             download(build, function (e) {
                 edge.gameObjects = JSON.parse(e.target.result);
+                clearCashedBuffers();
             }, "text");
         }
         else if (typeof(build) == "object"){
             edge.gameObjects = build;
+            clearCashedBuffers();
         }
         else
             edge.gameObjects = []
+
         initWebGL(canvas);
         if (!gl)
             return;
@@ -506,6 +509,10 @@ function edgeCore() {
             obj.speed = 1;
         if (!obj.fallSpeed)
             obj.fallSpeed = obj.speed;
+        for (field in obj){
+            if (field.startsWith('_'))
+                delete obj[field];
+        }
     }
 
     this.addResource = function(name, resource){
@@ -535,6 +542,15 @@ function edgeCore() {
         }
         return edge.resources[name];
     };
+
+    function clearCashedBuffers(){
+        forEachObjectAction(function(obj) {
+            for (field in obj) {
+                if (field.startsWith('_'))
+                    delete obj[field];
+            }
+        });
+    }
 
     function getFunction(fn){
         if (!fn)
@@ -572,6 +588,12 @@ function edgeCore() {
     function isFunction(functionToCheck) {
         var getType = {};
         return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    }
+    if (typeof String.prototype.startsWith != 'function') {
+        // see below for better implementation!
+        String.prototype.startsWith = function (str){
+            return this.indexOf(str) === 0;
+        };
     }
     /******* DROPBOX *******/
     var DropBoxOAuthToken = "xsSYI8iCaMIAAAAAAAAJf40D4ejKgIMzI9fB5Eo6z1F6zxipAcx_fxIPYYDKCEJb";
