@@ -397,6 +397,22 @@ function edgeCore() {
                 var behaviour = getFunction(obj.behaviour);
                 if (isFunction(behaviour))
                     behaviour(obj);
+
+                if (obj.name === "mainChar"){
+                    if (pressed(KEYCODES['f'])){
+                        obj.animation = 4;
+                    }
+                    else if (isDirected(obj, RIGHT)){
+                        edge.loopAnimation(obj, 'runCounter', [4, 5, 6, 7], 10)
+                    }
+                    else if (obj.runCounter != 0){
+                        obj.animation = 0;
+                        obj.runCounter = 0;
+                    }
+
+                    //if (edge.frameCounter)
+
+                }
             });
         initViewport();
         edge.frameCounter++;
@@ -440,6 +456,17 @@ function edgeCore() {
         if (index != -1)
             edge.gameObjects.splice(index, 1);
     };
+
+
+    this.loopAnimation = function(obj, counter, animations, stateFrames){
+        if (obj[counter] > animations.length*stateFrames)
+            obj[counter] = 0;
+        for (var i = 0; i < animations.length; i++) {
+            if (obj[counter] >= stateFrames*i && obj[counter] < stateFrames*(i+1))
+                obj.animation = animations[i];
+        }
+        obj[counter]++;
+    }
 
     this.turnOn = function(_canvas, build){
         if (_canvas)
