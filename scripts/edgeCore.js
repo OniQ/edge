@@ -399,19 +399,25 @@ function edgeCore() {
                     behaviour(obj);
 
                 if (obj.name === "mainChar"){
-                    if (pressed(KEYCODES['f'])){
-                        obj.animation = 4;
+                    var m = edge.getObjAnimationCount(obj) / 2;
+                    if (edge.pressed('f') && !obj.inHit){
+                        obj.hitCounter = 0;
+                        obj.inHit = true;
                     }
                     else if (isDirected(obj, RIGHT)){
                         edge.loopAnimation(obj, 'runCounter', [4, 5, 6, 7], 10)
+                    }
+                    else if (isDirected(obj, LEFT)){
+                        edge.loopAnimation(obj, 'runCounter', [4, 5, 6, 7], 10, m);
                     }
                     else if (obj.runCounter != 0){
                         obj.animation = 0;
                         obj.runCounter = 0;
                     }
-
-                    //if (edge.frameCounter)
-
+                    if (obj.inHit){
+                        if (!edge.playAnimation(obj, 'hitCounter', [13, 14, 15], 10))
+                            obj.inHit = false;
+                    }
                 }
             });
         initViewport();
@@ -458,15 +464,35 @@ function edgeCore() {
     };
 
 
-    this.loopAnimation = function(obj, counter, animations, stateFrames){
+    this.loopAnimation = function(obj, counter, animations, stateFrames, mirrored){
+        if (!mirrored)
+            mirrored = 0;
         if (obj[counter] > animations.length*stateFrames)
             obj[counter] = 0;
         for (var i = 0; i < animations.length; i++) {
             if (obj[counter] >= stateFrames*i && obj[counter] < stateFrames*(i+1))
-                obj.animation = animations[i];
+                obj.animation = animations[i] + mirrored;
         }
         obj[counter]++;
-    }
+    };
+
+    this.playAnimation = function(obj, counter, animations, stateFrames){
+        if (obj[counter] > animations.length*stateFrames) {
+            obj.animation = 0;
+            return false;
+        }
+        edge.loopAnimation(obj, counter, animations, stateFrames);
+        return true;
+    };
+
+    this.getObjAnimationCount = function(obj){
+        var image = getResource(obj.appearance.name, "image");
+        return image.width / obj.width * image.height / obj.height;
+    };
+
+    this.pressed = function(key){
+        return pressed(KEYCODES[key]);
+    };
 
     this.turnOn = function(_canvas, build){
         if (_canvas)
@@ -597,6 +623,7 @@ function edgeCore() {
         initObject(obj);
         edge.gameObjects.push(obj);
         edge.gameObjects.sort(compareByZ);
+        edge.gameObjects.sort(compareByZ);
     };
 
     /******* Util functions ******/
@@ -690,6 +717,7 @@ function edgeCore() {
                     ev.preventDefault();
                     //ev.stopPropagation();
                 }
+            default:
                 if (!pressed(ev.keyCode))
                     edge.pressedKeys.push(ev.keyCode);
                 break;
