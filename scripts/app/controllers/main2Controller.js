@@ -63,7 +63,7 @@ define(['edgeCtrl'], function(edgeCtrl){
                     localStorageService.set("builds", builds);
                 });
 
-            }
+            };
 
             function setBlocklyStyle(){
                 var result = document.getElementsByClassName("middleComponent");

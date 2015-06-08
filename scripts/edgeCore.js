@@ -389,7 +389,6 @@ function edgeCore() {
         forEachObjectAction(
             function(obj){
                 if(obj.appearance) {
-                    //if (!obj.rendered)
                     render(obj);
                     control(obj);
                     physics(obj);
@@ -397,28 +396,6 @@ function edgeCore() {
                 var behaviour = getFunction(obj.behaviour);
                 if (isFunction(behaviour))
                     behaviour(obj);
-
-                if (obj.name === "mainChar"){
-                    var m = edge.getObjAnimationCount(obj) / 2;
-                    if (edge.pressed('f') && !obj.inHit){
-                        obj.hitCounter = 0;
-                        obj.inHit = true;
-                    }
-                    else if (isDirected(obj, RIGHT)){
-                        edge.loopAnimation(obj, 'runCounter', [4, 5, 6, 7], 10)
-                    }
-                    else if (isDirected(obj, LEFT)){
-                        edge.loopAnimation(obj, 'runCounter', [4, 5, 6, 7], 10, m);
-                    }
-                    else if (obj.runCounter != 0){
-                        obj.animation = 0;
-                        obj.runCounter = 0;
-                    }
-                    if (obj.inHit){
-                        if (!edge.playAnimation(obj, 'hitCounter', [13, 14, 15], 10))
-                            obj.inHit = false;
-                    }
-                }
             });
         initViewport();
         edge.frameCounter++;
@@ -493,6 +470,8 @@ function edgeCore() {
     this.pressed = function(key){
         return pressed(KEYCODES[key]);
     };
+
+    this.isDirected = isDirected;
 
     this.turnOn = function(_canvas, build){
         if (_canvas)

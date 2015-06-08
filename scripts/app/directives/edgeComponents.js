@@ -4,7 +4,7 @@
 define(['edgeDirectives'], function(edgeDirectives){
     edgeDirectives.directive('edgeComponents', function($http, $q, localStorageService,
                                                         $interval, $rootScope, $modal,
-                                                        $timeout, resourceService){
+                                                        $timeout, resourceService, fileUploadService){
         return {
             templateUrl: "templates/panels/componentsPanel.html",
             controller: function($scope, $element, $attrs) {
@@ -34,6 +34,11 @@ define(['edgeDirectives'], function(edgeDirectives){
                             name: 'Animation Test'
                         });
                     });
+
+                    var builds = localStorageService.get("builds") || [];
+                    if (builds.indexOf("demo") == -1)
+                        builds.push("demo");
+                    localStorageService.set("builds", builds);
 
                     var promiseChains = [chain1, chain2, chain3];
                     $q.all(promiseChains).then(function(){
