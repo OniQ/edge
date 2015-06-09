@@ -356,15 +356,18 @@ function edgeCore() {
             o[0].y1 <= o[1].y2 &&
             o[0].y2 >= o[1].y1) {
             onCollision(obj1, obj2, o);
-            if (obj1.collide == false) {
+            if (obj1.collide.indexOf(obj2.name) == -1) {
                 onCollisionEnter(obj1, obj2);
             }
-            obj1.collide = obj2;
+            obj1.collide.push(obj2.name);
         }
         else{
-            if (obj1.collide)
+            var index = obj1.collide.indexOf(obj2.name);
+            if (index != -1)
+            {
                 onCollisionExit(obj1, obj2);
-            obj1.collide = false;
+                obj1.collide.splice(index, 1);
+            }
         }
     }
 
@@ -535,6 +538,7 @@ function edgeCore() {
         obj.movementDirection = 0;
         obj.animation = 0;
         obj.currentSpeed = 0;
+        obj.collide = [];
         if (!obj.z)
             obj.z = 0;
         if (!obj.speed)
@@ -577,6 +581,7 @@ function edgeCore() {
 
     function clearCashedBuffers(){
         forEachObjectAction(function(obj) {
+            obj.collide = [];
             for (field in obj) {
                 if (field.startsWith('_'))
                     delete obj[field];
