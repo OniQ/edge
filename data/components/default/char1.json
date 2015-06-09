@@ -1,0 +1,30 @@
+{
+  "appearance": {
+    "type": "sprite",
+    "name": "bunnySprites2.png",
+    "status": "notLoaded"
+  },
+  "solid": true,
+  "width": 80,
+  "speed": 2,
+  "collisionBox": {
+    "left": 16,
+    "top": 10,
+    "right": 58,
+    "bottom": 80,
+    "height": 70,
+    "width": 42
+  },
+  "height": 80,
+  "physics": true,
+  "sound": {
+    "type": "audio",
+    "name": "SND-Funny_-_Bird_Shooting.mp3",
+    "status": "notLoaded"
+  },
+  "z": 5,
+  "behaviour": {
+    "name": "runAndHit",
+    "type": "function"
+  }
+}

@@ -14,10 +14,10 @@ define(['edgeDirectives'], function(edgeDirectives){
                 $scope.loadDefault = function(){
                     var defaultComponents = [];
                     $scope.categories['default'] = [];
-                    var chain1 = $http.get('data/components/default/test1.json').success(function(testComponent){
+                    var chain1 = $http.get('data/components/default/char1.json').success(function(testComponent){
                         defaultComponents.push({
                             config: testComponent,
-                            name: 'Test1'
+                            name: 'Bunny'
                         });
                     });
 
@@ -38,6 +38,8 @@ define(['edgeDirectives'], function(edgeDirectives){
                     var builds = localStorageService.get("builds") || [];
                     if (builds.indexOf("demo") == -1)
                         builds.push("demo");
+                    if (builds.indexOf("presentation") == -1)
+                        builds.push("presentation");
                     localStorageService.set("builds", builds);
 
                     var promiseChains = [chain1, chain2, chain3];
